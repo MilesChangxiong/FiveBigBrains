@@ -4,72 +4,65 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float speed = 5.0f;
-    [SerializeField] private float Jump_speed = 8.0f;
-    //[SerializeField] private float flyForce = 20.0f;
-    private Rigidbody2D body;
-    //private Animator Anim;
-    private bool grounded;
-    //private GameManager gameManager;
+    public float moveSpeed = 5.0f;
+    public float jumpForce = 10.0f;
+    private bool isGrounded = true;
+    private bool isHopping;
+    private GameObject[] objs;
+    private Rigidbody2D rb;
+    private float hopTimer;
+    public float hopDuration = 0.5f;
 
-
-    private void Start()
+    void Start()
     {
+        objs = GameObject.FindGameObjectsWithTag("Player");
+        if (objs.Length > 0)
+        {
+            // Move the first player and get its Rigidbody
+            rb = objs[0].GetComponent<Rigidbody2D>();
+        }
     }
 
-    private void Awake()
+    void Update()
     {
-        //reference to rigidbody and animator
-        body = GetComponent<Rigidbody2D>();
-        //Anim = GetComponent<Animator>();
-    }
-
-    private void Update()
-    {
+        // Move horizontally
         float horizontalInput = Input.GetAxis("Horizontal");
-        body.velocity = new Vector3(horizontalInput * speed, body.velocity.y);
+        Vector2 moveDirection = new Vector2(horizontalInput, 0);
+        rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
 
-
-        if (horizontalInput > 0.01f)
-            transform.localScale = Vector3.one;
-        else if (horizontalInput < -0.01f)
-            transform.localScale = new Vector3(-1, 1, 1);
-
-        if (Input.GetKey(KeyCode.Space) && grounded)
-            Jump();
-
-        //if (Input.GetKey(KeyCode.LeftShift))
-        //    Jump();
-
-        //Anim.SetBool("Walk", horizontalInput != 0);
-        //Anim.SetBool("grounded", grounded);
-
-    }
-
-
-    private void Jump(){
-        body.velocity = new Vector3(body.velocity.x, Jump_speed);
-        grounded = false;
-    }
-
-    /*private void Float()
-    {
-        //body.velocity = new Vector3(body.velocity.x, Jump_speed);
-        if (currentAirTime < maxAirTime)
+        // Jump when spacebar is pressed and the player is grounded
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            body.AddForce(Vector2.up * flyForce);
-            currentAirTime += Time.deltaTime;
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            isHopping = true;
+            hopTimer = 0;
         }
-        grounded = false;
-    }*/
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Platform")
+        if (isHopping)
         {
-            grounded = true;
+            hopTimer += Time.deltaTime;
+            if (hopTimer >= hopDuration)
+            {
+                isHopping = false;
+                // Apply an opposing force to bring the player back to the ground
+                rb.AddForce(Vector2.down * jumpForce, ForceMode2D.Impulse);
+            }
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            isGrounded = false;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            isGrounded = true;
+        }
+    }
 }
-
