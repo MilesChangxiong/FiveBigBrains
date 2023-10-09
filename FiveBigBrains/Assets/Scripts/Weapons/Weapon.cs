@@ -4,14 +4,24 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    public float damage = 10f;
-    public float fireRate = 1f;
-    protected float nextFireTime = 0;
+    public float damage = 1f;
+    public float attackRate = 1f;
+    protected float nextAttackTime = 0;
 
-    public abstract void Fire();
-
-    protected bool CanFire()
+    // This method checks if the weapon can attack and if it can, it triggers the Attack method.
+    public void TryAttack()
     {
-        return Time.time >= nextFireTime;
+        if (CanAttack())
+        {
+            Attack();
+            nextAttackTime = Time.time + 1f / attackRate;
+        }
+    }
+
+    protected abstract void Attack();
+
+    private bool CanAttack()
+    {
+        return Time.time >= nextAttackTime;
     }
 }

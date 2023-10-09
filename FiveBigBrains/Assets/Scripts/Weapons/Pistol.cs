@@ -7,20 +7,13 @@ public class Pistol : Weapon
     public GameObject bulletPrefab;
     public Transform firePoint;
 
-    public override void Fire()
+    protected override void Attack()
     {
-        if (CanFire())
-        {
-            Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            nextFireTime = Time.time + 1f / fireRate;
-        }
+        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
     }
 
     private void Start()
     {
-        // JUST FOR TESTING: Shoot 3 times
-        Fire();
-        Invoke("Fire", fireRate);
-        Invoke("Fire", fireRate * 2);
+
     }
 }
