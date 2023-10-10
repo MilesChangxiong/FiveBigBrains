@@ -17,6 +17,16 @@ public class Player : MonoBehaviour
     private bool isGrounded = true;
     private Rigidbody2D rb;
 
+    public void TakeDamage(int damageAmount)
+    {
+        remainingLives -= damageAmount;
+
+        if (remainingLives <= 0)
+        {
+            Die();
+        }
+    }
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>(); // initialize rb
@@ -93,6 +103,12 @@ public class Player : MonoBehaviour
     }
     
     private void Taunt() { }
+
+    private void Die()
+    {
+        // TODO
+        Debug.Log("Player died!");
+    }
 
 
     private void OnCollisionEnter2D(Collision2D collision)
