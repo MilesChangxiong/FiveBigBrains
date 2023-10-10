@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     public int remainingLives = 3;
     public Weapon currentWeapon;
 
+    public int currentDirection; // 0: left; 1: right;
+
     private Renderer playerRenderer;
     private bool isGrounded = true;
     private Rigidbody2D rb;
@@ -96,6 +98,18 @@ public class Player : MonoBehaviour
         {
             h = Input.GetAxis("Horizontal");
             v = Input.GetAxis("Vertical");
+        }
+
+        if (h > 0.01f)
+        {
+            currentDirection = 1;
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+            
+        else if (h < -0.01f)
+        {
+            currentDirection = 0;
+            transform.localScale = new Vector3(-1, 1, 1);
         }
 
         Vector3 moveDirection = new Vector3(h, 0, v).normalized;
