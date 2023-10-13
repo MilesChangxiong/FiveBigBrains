@@ -18,7 +18,7 @@ public class Spear : Weapon
         }
 
         // print current direction
-        print(owningPlayer.currentDirection);
+        print("forward: " + owningPlayer.currentDirection);
 
         // move the spear in current direction by 1, then sleep 0.3s, then backward by 1
         if(owningPlayer.currentDirection == 1) {
@@ -36,6 +36,8 @@ public class Spear : Weapon
     // Backward() is a coroutine that moves the spear backward by 1 after 0.3s
     IEnumerator Backward()
     {
+
+        print("backward: " + owningPlayer.currentDirection);
         yield return new WaitForSeconds(0.05f);
         
         if(owningPlayer.currentDirection == 1) {

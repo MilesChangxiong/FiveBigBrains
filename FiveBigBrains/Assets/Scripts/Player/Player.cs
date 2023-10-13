@@ -80,7 +80,7 @@ public class Player : MonoBehaviour
     }
 
     private void Attack() {
-        if (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.Q) && currentWeapon != null)
+        if (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.R) && currentWeapon != null)
         {
             currentWeapon.TryAttack();
         }
