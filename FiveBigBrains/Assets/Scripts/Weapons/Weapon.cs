@@ -8,6 +8,9 @@ public abstract class Weapon : MonoBehaviour
     public float attackRate = 1f;
     protected float nextAttackTime = 0;
 
+    public Player owningPlayer;
+    
+
     // This method checks if the weapon can attack and if it can, it triggers the Attack method.
     public void TryAttack()
     {

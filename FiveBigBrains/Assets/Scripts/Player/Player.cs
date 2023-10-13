@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     public float jumpForce = 16.0f;
     public int remainingLives = 3;
     public Weapon currentWeapon;
+    public Spear spearPrefab;
+    public GameObject ShieldPrefab;
 
     public int currentDirection; // 0: left; 1: right;
 
@@ -52,7 +54,20 @@ public class Player : MonoBehaviour
 
     private void initializePlayerWeapon()
     {
-        currentWeapon = gameObject.AddComponent<Spear>();
+        Weapon newWeapon = Instantiate(spearPrefab, transform);
+        currentWeapon = newWeapon;
+        currentWeapon.owningPlayer = this; 
+
+        // Ingore collision between spears
+        GameObject[] spears = GameObject.FindGameObjectsWithTag("Spear"); // Find all spears with the same tag
+
+        foreach (GameObject otherSpear in spears)
+        {
+            if (otherSpear != currentWeapon.gameObject)
+            {
+                Physics2D.IgnoreCollision(currentWeapon.GetComponent<Collider2D>(), otherSpear.GetComponent<Collider2D>());
+            }
+        }
     }
 
     private void Update()
@@ -76,7 +91,48 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Defense() { }
+    // instantiate a shield in front of the player and destroy it after 1s
+    private void Defense() { 
+        // for WASD
+        if (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.E))
+        {   
+            // Generate a shield
+            GameObject shield = Instantiate(ShieldPrefab);
+
+            // make the shield transparent to the player
+            Physics2D.IgnoreCollision(shield.GetComponent<Collider2D>(), currentWeapon.GetComponent<Collider2D>());
+
+            // put the shield in front of the player
+            if(currentDirection == 1) {
+                shield.transform.position = transform.position + new Vector3(1, 0, 0);
+            } else {
+                shield.transform.position = transform.position + new Vector3(-1, 0, 0);
+            }
+
+            // destroy the shield after 1s
+            Destroy(shield, 1f);
+
+        }
+
+        if (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.K)) {
+            // Generate a shield
+            GameObject shield = Instantiate(ShieldPrefab);
+
+            // make the shield transparent to the player's spear
+            Physics2D.IgnoreCollision(shield.GetComponent<Collider2D>(), currentWeapon.GetComponent<Collider2D>());
+
+            // put the shield in front of the player
+            if(currentDirection == 1) {
+                shield.transform.position = transform.position + new Vector3(1, 0, 0);
+            } else {
+                shield.transform.position = transform.position + new Vector3(-1, 0, 0);
+            }
+
+            // destroy the shield after 1s
+            Destroy(shield, 2f);
+
+        }
+    }
 
     private void Jump()
     {
