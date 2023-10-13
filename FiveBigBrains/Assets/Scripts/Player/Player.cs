@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
         playerRenderer.material.color = playerColor;
     }
 
-    private void initializePlayerWeapon()
+    public void initializePlayerWeapon()
     {
         currentWeapon = gameObject.AddComponent<Spear>();
     }

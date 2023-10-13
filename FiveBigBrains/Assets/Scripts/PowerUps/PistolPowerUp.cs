@@ -10,9 +10,13 @@ public class PistolPowerUp : PowerUp
 
     public override void ActivatePowerUp(Player player)
     {
+        Destroy(player.currentWeapon);
+
         Weapon newWeapon = Instantiate(pistolPrefab, player.transform.position + offset, Quaternion.identity, player.transform);
+        newWeapon.currentAmmo = 3; // 3 bullets
         newWeapon.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         player.currentWeapon = newWeapon;
+        newWeapon.owningPlayer = player;
         Destroy(gameObject);  // Destroy the PowerUp from the scene
     }
 
@@ -22,7 +26,7 @@ public class PistolPowerUp : PowerUp
         {
             Debug.Log("Player collected the power-up!");
             ActivatePowerUp(col.gameObject.GetComponent<Player>());
-            Destroy(gameObject); // 销毁PowerUp
+            Destroy(gameObject);
         }
     }
 }

@@ -106,7 +106,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   attackRate: 1
-  bulletPrefab: {fileID: 5451493114193044299, guid: da71518a391cc4b38a4b0921896f5465, type: 3}
+  currentAmmo: 0
+  owningPlayer: {fileID: 0}
+  bulletPrefab: {fileID: 2978368369157809259, guid: da71518a391cc4b38a4b0921896f5465, type: 3}
   firePoint: {fileID: 3718889154618865290}
 --- !u!1 &5351674546694704089
 GameObject:
