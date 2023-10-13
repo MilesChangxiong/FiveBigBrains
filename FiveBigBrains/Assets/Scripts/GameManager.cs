@@ -6,9 +6,10 @@ public class GameManager : MonoBehaviour
 {
     public Player player1Prefab;
     public Player player2Prefab;
-
-    private Player player1Instance;
-    private Player player2Instance;
+    
+    //change to public to be used in Taunt()
+    public static Player player1Instance;
+    public static Player player2Instance;
 
     private void Start()
     {
