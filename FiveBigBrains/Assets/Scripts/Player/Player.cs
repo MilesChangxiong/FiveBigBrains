@@ -17,7 +17,8 @@ public class Player : MonoBehaviour
 
     public int currentDirection; // 0: left; 1: right;
 
-    private Renderer playerRenderer;
+    private Renderer bodyRenderer;
+
     private bool isGrounded = true;
     private Rigidbody2D rb;
     
@@ -46,10 +47,10 @@ public class Player : MonoBehaviour
         initializePlayerWeapon();
     }
 
-    private void initializePlayerColor()
+    private void initializePlayerColor() 
     {
-        playerRenderer = GetComponent<Renderer>();
-        playerRenderer.material.color = playerColor;
+        bodyRenderer = transform.Find("Body").GetComponent<Renderer>();
+        bodyRenderer.material.color = playerColor;
     }
 
     private void initializePlayerWeapon()
