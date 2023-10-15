@@ -7,11 +7,15 @@ public class Spear : Weapon
 
     protected float spearSpeed = 500f;
     public Transform spearTransform;
+    public List<string> headTags = new List<string>{"Head3", "Head2", "Head1"};
+    private int collideTimes = 0; // avoid destroying three heads simultaneously
 
-    
+
+
 
     protected override void Attack()
     {
+        collideTimes = 0;
         if (spearTransform == null)
         {
             spearTransform = transform;
@@ -26,9 +30,8 @@ public class Spear : Weapon
         } else {
             spearTransform.position -= spearTransform.right * 5;
         }
-    
-        // when spear collide with ballon, destroy the ballon only
 
+        
         StartCoroutine(Backward());
 
     }
@@ -36,7 +39,6 @@ public class Spear : Weapon
     // Backward() is a coroutine that moves the spear backward by 1 after 0.3s
     IEnumerator Backward()
     {
-
         print("backward: " + owningPlayer.currentDirection);
         yield return new WaitForSeconds(0.05f);
         
@@ -46,5 +48,28 @@ public class Spear : Weapon
             spearTransform.position += spearTransform.right * 5;
         }
 
+    }
+
+    // When spear collide with head, destroy the head only
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        collideTimes += 1;
+        if (collideTimes == 1 && headTags.Count > 0)
+        {
+            string headTag = headTags[0];
+            if (collision.gameObject.CompareTag(headTag))
+            {
+                Transform parentTrans = collision.gameObject.transform.parent;
+                Player playerHit = parentTrans.gameObject.GetComponent<Player>();
+
+                if (playerHit)
+                {
+                    playerHit.TakeDamage(1);
+                    Destroy(collision.gameObject);
+                }
+            }
+            headTags.RemoveAt(0);
+      
+        }
     }
 }

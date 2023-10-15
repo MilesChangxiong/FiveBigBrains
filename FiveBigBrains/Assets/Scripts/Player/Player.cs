@@ -90,6 +90,18 @@ public class Player : MonoBehaviour
         {
             currentWeapon.TryAttack();
         }
+
+        //Destroy the eye when all heads gone
+        Transform head1Trans = transform.Find("Head1");
+        if (head1Trans == null)
+        {
+            Transform eyeTrans = transform.Find("Eye");
+            if (eyeTrans != null)
+            {
+                GameObject eyeObj = eyeTrans.gameObject;
+                Destroy(eyeObj);
+            }
+        }
     }
 
     // instantiate a shield in front of the player and destroy it after 1s
@@ -234,14 +246,61 @@ public class Player : MonoBehaviour
     private IEnumerator TauntOpponent(Player self,Player opponent)
     {
         opponent.isTaunted = true;
-         yield return new WaitForSeconds(tauntDuration);
+        opponent.EnlargeHead();
+        yield return new WaitForSeconds(tauntDuration);
         opponent.isTaunted = false;
+        opponent.ShrinkHead();
+    }
+
+    // Enlarge the head when the player is taunted
+    private void EnlargeHead()
+    {
+        Transform head3Trans = transform.Find("Head3");
+        Transform head2Trans = transform.Find("Head2");
+        Transform head1Trans = transform.Find("Head1");
+        if (head3Trans != null)
+        {
+            head3Trans.localScale *= 1.3f;
+        }
+        if (head2Trans != null)
+        {
+            head2Trans.localScale *= 1.3f;
+        }
+        if (head1Trans != null)
+        {
+            head1Trans.localScale *= 1.3f;
+        }
+    }
+
+    private void ShrinkHead()
+    {
+        Transform head3Trans = transform.Find("Head3");
+        Transform head2Trans = transform.Find("Head2");
+        Transform head1Trans = transform.Find("Head1");
+        if (head3Trans != null)
+        {
+            head3Trans.localScale /= 1.3f;
+        }
+        if (head2Trans != null)
+        {
+            head2Trans.localScale /= 1.3f;
+        }
+        if (head1Trans != null)
+        {
+            head1Trans.localScale /= 1.3f;
+        }
     }
 
     private void Die()
     {
-        // TODO
-        Debug.Log("Player died!");
+        if (controlType == PlayerControlType.WASD)
+        {
+            Debug.Log("Player1 died!");
+        }
+        else
+        {
+            Debug.Log("Player2 died!");
+        }
     }
 
 

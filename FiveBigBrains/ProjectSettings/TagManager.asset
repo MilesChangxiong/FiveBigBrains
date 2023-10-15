@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Spear
+  - Head3
+  - Head2
+  - Head1
+  - Eye
   layers:
   - Default
   - TransparentFX
