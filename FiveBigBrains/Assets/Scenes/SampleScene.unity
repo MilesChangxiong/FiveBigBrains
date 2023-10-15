@@ -561,8 +561,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 060f780f64757465fa200132dce87f6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1Prefab: {fileID: 472862603421811072, guid: 3afa25c817a9249b7b7d2c0380e1b676, type: 3}
-  player2Prefab: {fileID: 472862603421811072, guid: 3afa25c817a9249b7b7d2c0380e1b676, type: 3}
+  player1Prefab: {fileID: 6946468557141905351, guid: 0ad06434421314f60a29769d4bbc439c, type: 3}
+  player2Prefab: {fileID: 6946468557141905351, guid: 0ad06434421314f60a29769d4bbc439c, type: 3}
 --- !u!4 &1515246252
 Transform:
   m_ObjectHideFlags: 0

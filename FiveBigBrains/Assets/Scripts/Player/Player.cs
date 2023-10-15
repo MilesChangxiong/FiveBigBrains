@@ -180,62 +180,62 @@ public class Player : MonoBehaviour
         transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
     }
     
-    private void Taunt() {
-
-    if (tauntCooldown > 0)
-        tauntCooldown -= Time.deltaTime;
-
-    // Enable the taunt when cooldown is over
-    if (tauntCooldown <= 0)
-        canTaunt = true;
-
-    // Handle WASD player taunt button (for this example, let's use "Q" for player 1)
-    if (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.Q) && canTaunt)
+    private void Taunt()
     {
-        StartCoroutine(TauntSelf(GameManager.player1Instance,GameManager.player2Instance));
-        StartCoroutine(TauntOpponent(GameManager.player1Instance,GameManager.player2Instance));
-        tauntCooldown = 6f;
-        canTaunt = false;
-    }
+        if (tauntCooldown > 0)
+            tauntCooldown -= Time.deltaTime;
 
-    // Handle ARROW_KEYS player taunt button (for this example, let's use "RightShift" for player 2)
-    else if (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.RightShift) && canTaunt)
-    {
-        StartCoroutine(TauntSelf(GameManager.player2Instance,GameManager.player1Instance));
-        StartCoroutine(TauntOpponent(GameManager.player2Instance,GameManager.player1Instance));
-        tauntCooldown = 6f;
-        canTaunt = false;
-    }
+        // Enable the taunt when cooldown is over
+        if (tauntCooldown <= 0)
+            canTaunt = true;
+
+        // Handle WASD player taunt button (for this example, let's use "Q" for player 1)
+        if (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.Q) && canTaunt)
+        {
+            StartCoroutine(TauntSelf(GameManager.player1Instance,GameManager.player2Instance));
+            StartCoroutine(TauntOpponent(GameManager.player1Instance,GameManager.player2Instance));
+            tauntCooldown = 6f;
+            canTaunt = false;
+        }
+
+        // Handle ARROW_KEYS player taunt button (for this example, let's use "RightShift" for player 2)
+        else if (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.RightShift) && canTaunt)
+        {
+            StartCoroutine(TauntSelf(GameManager.player2Instance,GameManager.player1Instance));
+            StartCoroutine(TauntOpponent(GameManager.player2Instance,GameManager.player1Instance));
+            tauntCooldown = 6f;
+            canTaunt = false;
+        }
     }
      
-     private IEnumerator TauntSelf(Player self,Player opponent){
+    private IEnumerator TauntSelf(Player self,Player opponent){
         float originalSpeed = moveSpeed;
 
-    // Freeze the taunting player and change direction based on the opponent's position on the X-axis
-    moveSpeed = 0;
-    if (self.transform.position.x < opponent.transform.position.x)
-    {
-        currentDirection = 0;
+        // Freeze the taunting player and change direction based on the opponent's position on the X-axis
+        moveSpeed = 0;
+        if (self.transform.position.x < opponent.transform.position.x)
+        {
+            currentDirection = 0;
        
-    }
-    else
-    {
-        currentDirection = 1;
+        }
+        else
+        {
+            currentDirection = 1;
         
+        }
+        isFreezed=true;
+        yield return new WaitForSeconds(freezeDuration);
+        isFreezed=false;
+        // Unfreeze the taunting player
+        moveSpeed = originalSpeed;
     }
-    isFreezed=true;
-    yield return new WaitForSeconds(freezeDuration);
-    isFreezed=false;
-    // Unfreeze the taunting player
-    moveSpeed = originalSpeed;
 
-     }
     private IEnumerator TauntOpponent(Player self,Player opponent)
-{
-    opponent.isTaunted = true;
-     yield return new WaitForSeconds(tauntDuration);
-    opponent.isTaunted = false;
-}
+    {
+        opponent.isTaunted = true;
+         yield return new WaitForSeconds(tauntDuration);
+        opponent.isTaunted = false;
+    }
 
     private void Die()
     {
