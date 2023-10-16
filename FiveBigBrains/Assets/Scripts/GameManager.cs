@@ -6,9 +6,10 @@ public class GameManager : MonoBehaviour
 {
     public Player player1Prefab;
     public Player player2Prefab;
-
-    private Player player1Instance;
-    private Player player2Instance;
+    
+    //change to public to be used in Taunt()
+    public static Player player1Instance;
+    public static Player player2Instance;
 
     private void Start()
     {
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
     private void SpawnPlayers()
     {
         player1Instance = Instantiate(player1Prefab, new Vector3(-10, -2, 0), Quaternion.identity);
-        player2Instance = Instantiate(player2Prefab, new Vector3(10, -2, 0), Quaternion.identity);
+        player2Instance = Instantiate(player2Prefab, new Vector3(10, -2, 0), Quaternion.Euler(0, 180, 0));
 
         player1Instance.controlType = Player.PlayerControlType.WASD;
         player1Instance.playerColor = new Color(33 / 255f, 147 / 255f, 255 / 255f, 255 / 255f); // Blue

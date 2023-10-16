@@ -21,6 +21,7 @@ public class Bullet : MonoBehaviour
         transform.Translate(Vector3.right * speed * Time.deltaTime);
     }
 
+<<<<<<< HEAD
     private bool IsOutsideScreenBounds()
     {
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
@@ -42,4 +43,6 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject); // destroy the bullet
         }
     }
+=======
+>>>>>>> master
 }

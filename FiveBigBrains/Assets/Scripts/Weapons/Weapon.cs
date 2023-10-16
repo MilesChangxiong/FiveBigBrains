@@ -10,6 +10,9 @@ public abstract class Weapon : MonoBehaviour
     public Player owningPlayer;
 
     protected float nextAttackTime = 0;
+    public List<string> headTags = new List<string> { "Head3", "Head2", "Head1"};
+    public Player owningPlayer;
+    
 
     // This method checks if the weapon can attack and if it can, it triggers the Attack method.
     public void TryAttack()
