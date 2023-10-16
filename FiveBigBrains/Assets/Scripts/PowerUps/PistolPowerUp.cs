@@ -6,10 +6,18 @@ public class PistolPowerUp : PowerUp
 {
     public Pistol pistolPrefab;
 
-    private Vector3 offset = new Vector3(0.6f, 0.18f, 0);
+    private Vector3 offset = new Vector3();
 
     public override void ActivatePowerUp(Player player)
     {
+        if (player.controlType == Player.PlayerControlType.WASD)
+        {
+            offset = new Vector3(0.6f, 0.18f, 0);
+        }
+        else
+        {
+            offset = new Vector3(-0.6f, 0.18f, 0);
+        }
         Weapon newWeapon = Instantiate(pistolPrefab, player.transform.position + offset, Quaternion.identity, player.transform);
         newWeapon.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         player.currentWeapon = newWeapon;
