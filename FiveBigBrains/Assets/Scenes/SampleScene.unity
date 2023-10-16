@@ -373,7 +373,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 405182519252872744, guid: f9a2adcb9aef7504a99d6c339a72c3cd, type: 3}
       propertyPath: m_Name
-      value: AIrWall (1)
+      value: AirWall (1)
       objectReference: {fileID: 0}
     - target: {fileID: 405182519252872744, guid: f9a2adcb9aef7504a99d6c339a72c3cd, type: 3}
       propertyPath: m_Layer
@@ -405,7 +405,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3458373984722537054, guid: f9a2adcb9aef7504a99d6c339a72c3cd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 29.6
+      value: 26.52
       objectReference: {fileID: 0}
     - target: {fileID: 3458373984722537054, guid: f9a2adcb9aef7504a99d6c339a72c3cd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -459,7 +459,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 405182519252872744, guid: f9a2adcb9aef7504a99d6c339a72c3cd, type: 3}
       propertyPath: m_Name
-      value: AIrWall
+      value: AirWall
       objectReference: {fileID: 0}
     - target: {fileID: 405182519252872744, guid: f9a2adcb9aef7504a99d6c339a72c3cd, type: 3}
       propertyPath: m_Layer
@@ -491,7 +491,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3458373984722537054, guid: f9a2adcb9aef7504a99d6c339a72c3cd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -29.8
+      value: -26.9
       objectReference: {fileID: 0}
     - target: {fileID: 3458373984722537054, guid: f9a2adcb9aef7504a99d6c339a72c3cd, type: 3}
       propertyPath: m_LocalPosition.y
