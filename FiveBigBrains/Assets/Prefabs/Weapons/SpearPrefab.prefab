@@ -101,12 +101,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   attackRate: 1
-  owningPlayer: {fileID: 0}
-  spearTransform: {fileID: 5206508683536189934}
   headTags:
   - Head3
   - Head2
   - Head1
+  owningPlayer: {fileID: 0}
+  spearTransform: {fileID: 5206508683536189934}
 --- !u!61 &-8475868863940072999
 BoxCollider2D:
   m_ObjectHideFlags: 0

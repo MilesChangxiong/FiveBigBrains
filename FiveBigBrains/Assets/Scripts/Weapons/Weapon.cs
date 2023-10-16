@@ -7,7 +7,7 @@ public abstract class Weapon : MonoBehaviour
     public float damage = 1f;
     public float attackRate = 1f;
     protected float nextAttackTime = 0;
-
+    public List<string> headTags = new List<string> { "Head3", "Head2", "Head1"};
     public Player owningPlayer;
     
 

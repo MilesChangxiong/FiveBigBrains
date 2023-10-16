@@ -10,6 +10,7 @@ TagManager:
   - Head2
   - Head1
   - Eye
+  - Bullet
   layers:
   - Default
   - TransparentFX

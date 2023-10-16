@@ -7,7 +7,6 @@ public class Spear : Weapon
 
     protected float spearSpeed = 500f;
     public Transform spearTransform;
-    public List<string> headTags = new List<string>{"Head3", "Head2", "Head1"};
     private bool destroySucc = false;
 
     private void Update()

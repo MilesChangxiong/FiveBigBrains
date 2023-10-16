@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     private float tauntDuration = 4f;
     private float freezeDuration = 2f;
     private bool canTaunt = true;
+    private int bulletTimes = 0;
 
     public void TakeDamage(int damageAmount)
     {
@@ -113,6 +114,7 @@ public class Player : MonoBehaviour
             GameObject shield = Instantiate(ShieldPrefab);
 
             // make the shield transparent to the player
+            //TODO: should change to the opponent's currentWeapon
             Physics2D.IgnoreCollision(shield.GetComponent<Collider2D>(), currentWeapon.GetComponent<Collider2D>());
 
             // put the shield in front of the player
@@ -132,6 +134,7 @@ public class Player : MonoBehaviour
             GameObject shield = Instantiate(ShieldPrefab);
 
             // make the shield transparent to the player's spear
+            //TODO: should change to the opponent's currentWeapon
             Physics2D.IgnoreCollision(shield.GetComponent<Collider2D>(), currentWeapon.GetComponent<Collider2D>());
 
             // put the shield in front of the player
@@ -142,7 +145,7 @@ public class Player : MonoBehaviour
             }
 
             // destroy the shield after 1s
-            Destroy(shield, 2f);
+            Destroy(shield, 1f);
 
         }
     }
@@ -175,18 +178,25 @@ public class Player : MonoBehaviour
         {
             h = Input.GetAxis("Horizontal");
             v = Input.GetAxis("Vertical");
+            
         }
 
         if (h > 0.01f)
         {
             currentDirection = 1;
-            transform.localScale = new Vector3(1, 1, 1);
+            if (controlType == PlayerControlType.WASD)
+                transform.localScale = new Vector3(1, 1, 1);
+            else
+                transform.localScale = new Vector3(-1, 1, 1);
         }
             
         else if (h < -0.01f)
         {
             currentDirection = 0;
-            transform.localScale = new Vector3(-1, 1, 1);
+            if (controlType == PlayerControlType.WASD)
+                transform.localScale = new Vector3(-1, 1, 1);
+            else
+                transform.localScale = new Vector3(1, 1, 1);
         }
 
         Vector3 moveDirection = new Vector3(h, 0, v).normalized;
@@ -312,6 +322,19 @@ public class Player : MonoBehaviour
             isGrounded = true;
         }
 
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        bulletTimes += 1;
+        //TODO: Rather than use bulletTimes, try more concise way.
+        if (collision.CompareTag("Bullet") && bulletTimes % 2 == 1)
+        {
+            if (remainingLives == 3) Destroy(transform.Find("Head3").gameObject);
+            else if (remainingLives == 2) Destroy(transform.Find("Head2").gameObject);
+            else if (remainingLives == 1) Destroy(transform.Find("Head1").gameObject);
+            TakeDamage(1);
+        }
     }
 
 }

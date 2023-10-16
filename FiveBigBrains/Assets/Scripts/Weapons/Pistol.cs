@@ -9,7 +9,11 @@ public class Pistol : Weapon
 
     protected override void Attack()
     {
+        
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        // TODO: Potential hint?
+        //if (owningPlayer.controlType == Player.PlayerControlType.ARROW_KEYS)
+        //    firePoint.Rotate(Vector3.up, 180);
     }
 
     private void Start()
