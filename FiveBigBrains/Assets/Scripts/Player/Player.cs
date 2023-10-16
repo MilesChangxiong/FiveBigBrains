@@ -293,6 +293,7 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
+
         if (controlType == PlayerControlType.WASD)
         {
             Debug.Log("Player1 died!");
