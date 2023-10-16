@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
         bodyRenderer.material.color = playerColor;
     }
 
-    private void initializePlayerWeapon()
+    public void initializePlayerWeapon()
     {
         Weapon newWeapon = Instantiate(spearPrefab, transform);
         currentWeapon = newWeapon;

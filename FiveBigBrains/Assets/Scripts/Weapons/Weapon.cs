@@ -6,6 +6,9 @@ public abstract class Weapon : MonoBehaviour
 {
     public float damage = 1f;
     public float attackRate = 1f;
+    public int currentAmmo = 0;
+    public Player owningPlayer;
+
     protected float nextAttackTime = 0;
     public List<string> headTags = new List<string> { "Head3", "Head2", "Head1"};
     public Player owningPlayer;
@@ -18,7 +21,19 @@ public abstract class Weapon : MonoBehaviour
         {
             Attack();
             nextAttackTime = Time.time + 1f / attackRate;
+            currentAmmo--;
+
+            if (currentAmmo == 0)
+            {
+                OutOfAmmo();
+            }
         }
+    }
+
+    void OutOfAmmo()
+    {
+        Destroy(gameObject);
+        owningPlayer.initializePlayerWeapon();
     }
 
     protected abstract void Attack();

@@ -6,21 +6,17 @@ public class PistolPowerUp : PowerUp
 {
     public Pistol pistolPrefab;
 
-    private Vector3 offset = new Vector3();
+    private Vector3 offset = new Vector3(0.6f, 0.18f, 0);
 
     public override void ActivatePowerUp(Player player)
     {
-        if (player.controlType == Player.PlayerControlType.WASD)
-        {
-            offset = new Vector3(0.6f, 0.18f, 0);
-        }
-        else
-        {
-            offset = new Vector3(-0.6f, 0.18f, 0);
-        }
+        Destroy(player.currentWeapon);
+
         Weapon newWeapon = Instantiate(pistolPrefab, player.transform.position + offset, Quaternion.identity, player.transform);
+        newWeapon.currentAmmo = 3; // 3 bullets
         newWeapon.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         player.currentWeapon = newWeapon;
+        newWeapon.owningPlayer = player;
         Destroy(gameObject);  // Destroy the PowerUp from the scene
     }
 
@@ -30,7 +26,7 @@ public class PistolPowerUp : PowerUp
         {
             Debug.Log("Player collected the power-up!");
             ActivatePowerUp(col.gameObject.GetComponent<Player>());
-            Destroy(gameObject); // 销毁PowerUp
+            Destroy(gameObject);
         }
     }
 }
