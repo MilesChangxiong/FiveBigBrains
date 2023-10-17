@@ -11,9 +11,11 @@ public class Player : MonoBehaviour
     public float moveSpeed = 5.0f;
     public float jumpForce = 16.0f;
     public int remainingLives = 3;
+    private GameObject[] heads = new GameObject[3];
     public Weapon currentWeapon;
     public Spear spearPrefab;
     public GameObject ShieldPrefab;
+    public Player opponent;
 
     public int currentDirection; // 0: left; 1: right;
 
@@ -21,21 +23,26 @@ public class Player : MonoBehaviour
 
     private bool isGrounded = true;
     private Rigidbody2D rb;
-    
+
     //the variable to be used in Taunt; 
-    public bool isTaunted=false; 
-    public bool isFreezed=false;
+    public bool isTaunted = false;
+    public bool isFreezed = false;
     private float tauntCooldown = 0f;
     private float tauntDuration = 4f;
     private float freezeDuration = 2f;
-    private bool canTaunt = true;
-    private int bulletTimes = 0;
 
-    public delegate void PlayerLivesChanged(Player player); // ����ί��
-    public event PlayerLivesChanged OnPlayerLivesChanged; // �����¼�
+    public delegate void PlayerLivesChanged(Player player);
+    public event PlayerLivesChanged OnPlayerLivesChanged;
 
     public void TakeDamage(int damageAmount)
     {
+        for (int i = remainingLives - 1; i > remainingLives - damageAmount - 1; i--)
+        {
+            if (i < heads.Length && i >= 0 && heads[i] != null)
+            {
+                Destroy(heads[i]);
+            }
+        }
         remainingLives -= damageAmount;
         OnPlayerLivesChanged?.Invoke(this);
         if (remainingLives <= 0)
@@ -49,10 +56,20 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>(); // initialize rb
         initializePlayerColor();
         initializePlayerWeapon();
-        //StartCoroutine(DelayedEventTrigger());
+        initializePlayerDirection();
+        initializePlayerHeads();
     }
 
-    private void initializePlayerColor() 
+    private void Update()
+    {
+        Attack();
+        Defense();
+        Jump();
+        Move();
+        Taunt();
+    }
+
+    private void initializePlayerColor()
     {
         bodyRenderer = transform.Find("Body").GetComponent<Renderer>();
         bodyRenderer.material.color = playerColor;
@@ -62,7 +79,7 @@ public class Player : MonoBehaviour
     {
         Weapon newWeapon = Instantiate(spearPrefab, transform);
         currentWeapon = newWeapon;
-        currentWeapon.owningPlayer = this; 
+        currentWeapon.owningPlayer = this;
 
         // Ingore collision between spears
         GameObject[] spears = GameObject.FindGameObjectsWithTag("Spear"); // Find all spears with the same tag
@@ -76,16 +93,40 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void initializePlayerDirection()
     {
-        Attack();
-        Defense();
-        Jump();
-        Move();
-        Taunt();
+        if (controlType == PlayerControlType.WASD)
+        {
+            TurnRight();
+        }
+        if (controlType == PlayerControlType.ARROW_KEYS)
+        {
+            TurnLeft();
+        }
     }
 
-    private void Attack() {
+    void initializePlayerHeads()
+    {
+        heads[0] = transform.Find("Head1").gameObject;
+        heads[1] = transform.Find("Head2").gameObject;
+        heads[2] = transform.Find("Head3").gameObject;
+
+        foreach (GameObject head in heads)
+        {
+            if (head == null)
+            {
+                Debug.LogError("Error: cannot find all heads.");
+            }
+        }
+    }
+
+
+    private void Attack()
+    {
+        if (isFreezed)
+        {
+            return;
+        }
         if (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.R) && currentWeapon != null)
         {
             currentWeapon.TryAttack();
@@ -110,47 +151,34 @@ public class Player : MonoBehaviour
     }
 
     // instantiate a shield in front of the player and destroy it after 1s
-    private void Defense() { 
+    private void Defense()
+    {
+        if (isFreezed)
+        {
+            return;
+        }
         // for WASD
-        if (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.E))
-        {   
+        if (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.E) || controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.K))
+        {
             // Generate a shield
             GameObject shield = Instantiate(ShieldPrefab);
 
             // make the shield transparent to the player
-            //TODO: should change to the opponent's currentWeapon
+            // TODO: should change to the opponent's currentWeapon
             Physics2D.IgnoreCollision(shield.GetComponent<Collider2D>(), currentWeapon.GetComponent<Collider2D>());
 
             // put the shield in front of the player
-            if(currentDirection == 1) {
+            if (currentDirection == 1)
+            {
                 shield.transform.position = transform.position + new Vector3(1, 0, 0);
-            } else {
+            }
+            else
+            {
                 shield.transform.position = transform.position + new Vector3(-1, 0, 0);
             }
 
             // destroy the shield after 1s
             Destroy(shield, 1f);
-
-        }
-
-        if (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.K)) {
-            // Generate a shield
-            GameObject shield = Instantiate(ShieldPrefab);
-
-            // make the shield transparent to the player's spear
-            //TODO: should change to the opponent's currentWeapon
-            Physics2D.IgnoreCollision(shield.GetComponent<Collider2D>(), currentWeapon.GetComponent<Collider2D>());
-
-            // put the shield in front of the player
-            if(currentDirection == 1) {
-                shield.transform.position = transform.position + new Vector3(1, 0, 0);
-            } else {
-                shield.transform.position = transform.position + new Vector3(-1, 0, 0);
-            }
-
-            // destroy the shield after 1s
-            Destroy(shield, 1f);
-
         }
     }
 
@@ -173,6 +201,11 @@ public class Player : MonoBehaviour
         float h = 0;
         float v = 0;
 
+        if (isFreezed)
+        {
+            return;
+        }
+
         if (controlType == PlayerControlType.WASD)
         {
             h = Input.GetAxis("HorizontalWASD");
@@ -182,82 +215,87 @@ public class Player : MonoBehaviour
         {
             h = Input.GetAxis("Horizontal");
             v = Input.GetAxis("Vertical");
-            
         }
 
         if (h > 0.01f)
         {
-            currentDirection = 1;
-            if (controlType == PlayerControlType.WASD)
-                transform.localScale = new Vector3(1, 1, 1);
-            else
-                transform.localScale = new Vector3(-1, 1, 1);
+            TurnRight();
         }
-            
+
         else if (h < -0.01f)
         {
-            currentDirection = 0;
-            if (controlType == PlayerControlType.WASD)
-                transform.localScale = new Vector3(-1, 1, 1);
-            else
-                transform.localScale = new Vector3(1, 1, 1);
+            TurnLeft();
         }
 
         Vector3 moveDirection = new Vector3(h, 0, v).normalized;
         transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
     }
-    
+
     private void Taunt()
     {
         if (tauntCooldown > 0)
             tauntCooldown -= Time.deltaTime;
 
-        // Enable the taunt when cooldown is over
-        if (tauntCooldown <= 0)
-            canTaunt = true;
-
-        // Handle WASD player taunt button (for this example, let's use "Q" for player 1)
-        if (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.Q) && canTaunt)
+        // Handle WASD player taunt button
+        if (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.Q) && tauntCooldown <= 0)
         {
-            StartCoroutine(TauntSelf(GameManager.player1Instance,GameManager.player2Instance));
-            StartCoroutine(TauntOpponent(GameManager.player1Instance,GameManager.player2Instance));
+            StartCoroutine(TauntSelf(this, opponent));
+            StartCoroutine(TauntOpponent(this, opponent));
             tauntCooldown = 6f;
-            canTaunt = false;
         }
 
-        // Handle ARROW_KEYS player taunt button (for this example, let's use "RightShift" for player 2)
-        else if (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.RightShift) && canTaunt)
+        // Handle ARROW_KEYS player taunt button
+        else if (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.RightShift) && tauntCooldown <= 0)
         {
-            StartCoroutine(TauntSelf(GameManager.player2Instance,GameManager.player1Instance));
-            StartCoroutine(TauntOpponent(GameManager.player2Instance,GameManager.player1Instance));
+            StartCoroutine(TauntSelf(this, opponent));
+            StartCoroutine(TauntOpponent(this, opponent));
             tauntCooldown = 6f;
-            canTaunt = false;
         }
     }
-     
-    private IEnumerator TauntSelf(Player self,Player opponent){
-        float originalSpeed = moveSpeed;
 
-        // Freeze the taunting player and change direction based on the opponent's position on the X-axis
-        moveSpeed = 0;
-        if (self.transform.position.x < opponent.transform.position.x)
+    public void TurnLeft()
+    {
+        currentDirection = 0;
+        transform.localScale = new Vector3(-1, 1, 1);
+    }
+
+    public void TurnRight()
+    {
+        currentDirection = 1;
+        transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    public void Flip()
+    {
+        if (currentDirection == 0)
         {
-            currentDirection = 0;
-       
+            TurnRight();
         }
         else
         {
-            currentDirection = 1;
-        
+            TurnLeft();
         }
-        isFreezed=true;
-        yield return new WaitForSeconds(freezeDuration);
-        isFreezed=false;
-        // Unfreeze the taunting player
-        moveSpeed = originalSpeed;
     }
 
-    private IEnumerator TauntOpponent(Player self,Player opponent)
+    // Side-effect for self after taunting
+    private IEnumerator TauntSelf(Player self, Player opponent)
+    {
+
+        if (self.transform.position.x < opponent.transform.position.x)
+        {
+            TurnLeft();
+        }
+        else
+        {
+            TurnRight();
+        }
+
+        isFreezed = true;
+        yield return new WaitForSeconds(freezeDuration);
+        isFreezed = false;
+    }
+
+    private IEnumerator TauntOpponent(Player self, Player opponent)
     {
         opponent.isTaunted = true;
         opponent.EnlargeHead();
@@ -330,14 +368,9 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        bulletTimes += 1;
-        //TODO: Rather than use bulletTimes, try more concise way.
-        if (collision.CompareTag("Bullet") && bulletTimes % 2 == 1)
+        if (collision.CompareTag("Bullet"))
         {
-            if (remainingLives == 3) Destroy(transform.Find("Head3").gameObject);
-            else if (remainingLives == 2) Destroy(transform.Find("Head2").gameObject);
-            else if (remainingLives == 1) Destroy(transform.Find("Head1").gameObject);
-            TakeDamage(1);
+
         }
     }
 

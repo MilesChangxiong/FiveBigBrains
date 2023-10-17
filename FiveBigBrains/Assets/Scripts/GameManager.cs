@@ -30,20 +30,22 @@ public class GameManager : MonoBehaviour
 
     private void SpawnPlayers()
     {
-        player1Instance = Instantiate(player1Prefab, new Vector3(-10, -2, 0), Quaternion.identity);
-        player2Instance = Instantiate(player2Prefab, new Vector3(10, -2, 0), Quaternion.Euler(0, 180, 0));
+        player1Instance = Instantiate(player1Prefab, new Vector3(-10, 2, 0), Quaternion.identity);
+        player2Instance = Instantiate(player2Prefab, new Vector3(10, 2, 0), Quaternion.identity);
 
         player1Instance.controlType = Player.PlayerControlType.WASD;
         player1Instance.playerColor = new Color(33 / 255f, 147 / 255f, 255 / 255f, 255 / 255f); // Blue
+        player1Instance.opponent = player2Instance;
 
         player2Instance.controlType = Player.PlayerControlType.ARROW_KEYS;
         player2Instance.playerColor = new Color(255 / 255f, 67 / 255f, 40 / 255f, 255 / 255f); // Red
+        player2Instance.opponent = player1Instance;
 
         player1Instance.OnPlayerLivesChanged += CheckForGameOver;
         player2Instance.OnPlayerLivesChanged += CheckForGameOver;
     }
 
-    private void OnDestroy() // 在GameManager被销毁时反订阅事件，以避免潜在的内存泄漏或其他问题
+    private void OnDestroy() 
     {
         if (player1Instance != null)
             player1Instance.OnPlayerLivesChanged -= CheckForGameOver;
