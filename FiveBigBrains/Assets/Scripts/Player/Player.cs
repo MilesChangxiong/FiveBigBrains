@@ -31,10 +31,13 @@ public class Player : MonoBehaviour
     private bool canTaunt = true;
     private int bulletTimes = 0;
 
+    public delegate void PlayerLivesChanged(Player player); // ����ί��
+    public event PlayerLivesChanged OnPlayerLivesChanged; // �����¼�
+
     public void TakeDamage(int damageAmount)
     {
         remainingLives -= damageAmount;
-
+        OnPlayerLivesChanged?.Invoke(this);
         if (remainingLives <= 0)
         {
             Die();
@@ -46,6 +49,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>(); // initialize rb
         initializePlayerColor();
         initializePlayerWeapon();
+        //StartCoroutine(DelayedEventTrigger());
     }
 
     private void initializePlayerColor() 
