@@ -10,9 +10,17 @@ public class PistolPowerUp : PowerUp
 
     public override void ActivatePowerUp(Player player)
     {
-        Destroy(player.currentWeapon);
+        if (!(player.currentWeapon is Spear))
+        {
+            return;
+        }
 
-        Weapon newWeapon = Instantiate(pistolPrefab, player.transform.position + offset, Quaternion.identity, player.transform);
+        Destroy(player.currentWeapon.gameObject);
+
+        Vector3 adjustedOffset = player.currentDirection == 0 ?
+                              new Vector3(-offset.x, offset.y, offset.z) : offset;
+
+        Weapon newWeapon = Instantiate(pistolPrefab, player.transform.position + adjustedOffset, Quaternion.identity, player.transform);
         newWeapon.currentAmmo = 3; // 3 bullets
         newWeapon.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         player.currentWeapon = newWeapon;
