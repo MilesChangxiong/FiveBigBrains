@@ -14,6 +14,8 @@ public class Pistol : Weapon
         {
             bullet.speed *= -1;
         }
+
+        GameReport.Instance.PostDataToFirebase("", new GameEvent("PistolBulletShot"));
     }
 
     private void Start()

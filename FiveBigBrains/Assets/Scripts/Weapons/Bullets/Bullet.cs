@@ -40,6 +40,8 @@ public class Bullet : MonoBehaviour
         {
             playerHit.TakeDamage(1); // deal 1 damage
             Destroy(gameObject); // destroy the bullet
+
+            GameReport.Instance.PostDataToFirebase("", new GameEvent("PistolBulletHit"));
         }
     }
 }
