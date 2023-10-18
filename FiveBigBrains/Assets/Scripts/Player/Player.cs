@@ -31,11 +31,22 @@ public class Player : MonoBehaviour
     private float tauntDuration = 4f;
     private float freezeDuration = 2f;
 
+    //the defense-related variables
+    public bool isDefensing = false;
+    protected float nextDefendTime = 0;
+
     public delegate void PlayerLivesChanged(Player player);
     public event PlayerLivesChanged OnPlayerLivesChanged;
 
     public void TakeDamage(int damageAmount)
     {
+        // print("I'm taking damage!");
+        // print("I'm defending: " + isDefensing);
+        // when oppenent is defending, no damage
+        if(isDefensing)
+        {   
+            return;
+        }
         for (int i = remainingLives - 1; i > remainingLives - damageAmount - 1; i--)
         {
             if (i < heads.Length && i >= 0 && heads[i] != null)
@@ -157,9 +168,25 @@ public class Player : MonoBehaviour
         {
             return;
         }
+
+
         // for WASD
         if (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.E) || controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.K))
-        {
+        {   
+            // determine if we can defend now
+            if (CanDefend())
+            {
+                nextDefendTime = Time.time + 1f;
+            } else
+            {
+                print("Cannot defend now, current time is " + Time.time + ", next defend time is " + nextDefendTime);
+                return;
+            }
+
+            // isDefensing
+            isDefensing = true;
+            print("I'm defending!");
+
             // Generate a shield
             GameObject shield = Instantiate(ShieldPrefab);
 
@@ -177,9 +204,26 @@ public class Player : MonoBehaviour
                 shield.transform.position = transform.position + new Vector3(-1, 0, 0);
             }
 
-            // destroy the shield after 1s
+            // Destroy the shield after 1s
             Destroy(shield, 1f);
+
+            // change isDefensing to false after 1s
+            StartCoroutine(Sleeping());
+            
         }
+    }
+    // helper function to sleep for 1s
+    IEnumerator Sleeping()
+    {
+        yield return new WaitForSeconds(1);
+        isDefensing = false;
+        print("Done defending!");
+    }
+
+    // determine if we can defend now
+    private bool CanDefend()
+    {
+        return Time.time >= nextDefendTime;
     }
 
     private void Jump()
