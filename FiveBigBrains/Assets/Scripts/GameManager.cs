@@ -83,6 +83,20 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         Destroy(player1Instance.gameObject);
         Destroy(player2Instance.gameObject);
+        DeletePistolPowerUpClone();
         StartGame();
+    }
+
+    void DeletePistolPowerUpClone()
+    {
+        GameObject obj = GameObject.Find("PistolPowerUp(Clone)");
+        if (obj != null)
+        {
+            Destroy(obj);
+        }
+        else
+        {
+            Debug.LogError("找不到名为 'PistolPowerUp(Clone)' 的GameObject");
+        }
     }
 }
