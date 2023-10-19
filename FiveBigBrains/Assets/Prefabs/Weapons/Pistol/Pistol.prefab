@@ -109,10 +109,6 @@ MonoBehaviour:
   currentAmmo: 0
   owningPlayer: {fileID: 0}
   bulletPrefab: {fileID: 2978368369157809259, guid: da71518a391cc4b38a4b0921896f5465, type: 3}
-  headTags:
-  - Head3
-  - Head2
-  - Head1
   firePoint: {fileID: 3718889154618865290}
 --- !u!1 &5351674546694704089
 GameObject:
