@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
     public Player player1Prefab;
     public Player player2Prefab;
     
-    //change to public to be used in Taunt()
     public static Player player1Instance;
     public static Player player2Instance;
 
@@ -45,26 +44,26 @@ public class GameManager : MonoBehaviour
         player2Instance.playerColor = new Color(255 / 255f, 67 / 255f, 40 / 255f, 255 / 255f); // Red
         player2Instance.opponent = player1Instance;
 
-        player1Instance.OnPlayerLivesChanged += CheckForGameOver;
-        player2Instance.OnPlayerLivesChanged += CheckForGameOver;
+        player1Instance.OnPlayerDied += ShowGameOver;
+        player2Instance.OnPlayerDied += ShowGameOver;
     }
 
     private void OnDestroy() 
     {
         if (player1Instance != null)
-            player1Instance.OnPlayerLivesChanged -= CheckForGameOver;
+            player1Instance.OnPlayerDied -= ShowGameOver;
 
         if (player2Instance != null)
-            player2Instance.OnPlayerLivesChanged -= CheckForGameOver;
+            player2Instance.OnPlayerDied -= ShowGameOver;
     }
 
-    private void CheckForGameOver(Player player)
+    private void ShowGameOver(Player player)
     {
-        if (player1Instance.remainingLives == 0)
+        if (player1Instance.remainingLives <= 0)
         {
             EndGame("Red Wins");
         }
-        else if (player2Instance.remainingLives == 0)
+        else if (player2Instance.remainingLives <= 0)
         {
             EndGame("Blue Wins");
         }
@@ -83,20 +82,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         Destroy(player1Instance.gameObject);
         Destroy(player2Instance.gameObject);
-        DeletePistolPowerUpClone();
+        dropManager.DestroyAllPowerUps();
         StartGame();
-    }
-
-    void DeletePistolPowerUpClone()
-    {
-        GameObject obj = GameObject.Find("PistolPowerUp(Clone)");
-        if (obj != null)
-        {
-            Destroy(obj);
-        }
-        else
-        {
-            Debug.LogError("找不到名为 'PistolPowerUp(Clone)' 的GameObject");
-        }
     }
 }

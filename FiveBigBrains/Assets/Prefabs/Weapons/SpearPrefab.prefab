@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3876764056833070611}
   - component: {fileID: 8475948650682009575}
   - component: {fileID: -8475868863940072999}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SpearPrefab
   m_TagString: Spear
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -2.354157}

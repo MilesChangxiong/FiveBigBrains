@@ -42,11 +42,11 @@ public class Player : MonoBehaviour
     public bool isAttacking = false;
 
     public delegate void PlayerLivesChanged(Player player);
-    public event PlayerLivesChanged OnPlayerLivesChanged;
+    public event PlayerLivesChanged OnPlayerDied;
 
     public void TakeDamage(int damageAmount)
     {
-        if (isDefensing || !opponent.isAttacking)
+        if (isDefensing)
         {
             return;
         }
@@ -59,17 +59,9 @@ public class Player : MonoBehaviour
             }
         }
         remainingLives -= damageAmount;
-        OnPlayerLivesChanged?.Invoke(this);
         if (remainingLives <= 0)
         {
-            //Destroy the eye
-            Transform eyeTrans = transform.Find("Eye");
-            if (eyeTrans != null)
-            {
-                GameObject eyeObj = eyeTrans.gameObject;
-                Destroy(eyeObj);
-            }
-
+            OnPlayerDied?.Invoke(this);
             Die();
         }
     }
@@ -381,6 +373,13 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
+        //Destroy the eye
+        Transform eyeTrans = transform.Find("Eye");
+        if (eyeTrans != null)
+        {
+            GameObject eyeObj = eyeTrans.gameObject;
+            Destroy(eyeObj);
+        }
 
         if (controlType == PlayerControlType.WASD)
         {
