@@ -13,7 +13,8 @@ public abstract class Weapon : MonoBehaviour
     
 
     // This method checks if the weapon can attack and if it can, it triggers the Attack method.
-    public void TryAttack()
+    // change return type to know if we can attack
+    public bool TryAttack()
     {
         if (CanAttack())
         {
@@ -25,6 +26,9 @@ public abstract class Weapon : MonoBehaviour
             {
                 OutOfAmmo();
             }
+            return true;
+        } else {
+            return false;
         }
     }
 
