@@ -21,19 +21,17 @@ public class Spear : Weapon
             spearTransform = transform;
         }
 
-        // print current direction
-        // print("forward: " + owningPlayer.currentDirection);
+        gameObject.layer = LayerMask.NameToLayer("SpearAttacking");
 
         // move the spear in current direction by 1, then sleep 0.3s, then backward by 1
-        if(owningPlayer.currentDirection == 1) {
+        if (owningPlayer.currentDirection == 1) {
             spearTransform.position += spearTransform.right * 5;
         } else {
             spearTransform.position -= spearTransform.right * 5;
         }
 
-        
-        StartCoroutine(Backward());
 
+        StartCoroutine(Backward());
     }
 
     // Backward() is a coroutine that moves the spear backward by 1 after 0.3s
@@ -47,7 +45,7 @@ public class Spear : Weapon
         } else {
             spearTransform.position += spearTransform.right * 5;
         }
-
+        gameObject.layer = LayerMask.NameToLayer("SpearDefault");
     }
 
 
@@ -56,7 +54,6 @@ public class Spear : Weapon
         if (collision.gameObject.tag == "Head")
         {
             owningPlayer.opponent.TakeDamage(1);
-            // print("Trigger!");
         }
     }
 

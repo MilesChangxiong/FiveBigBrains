@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4906849542487208947}
   - component: {fileID: 6028751733660677664}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HeadCollisionBox
   m_TagString: Head
   m_Icon: {fileID: 0}
@@ -234,6 +234,8 @@ MonoBehaviour:
   currentDirection: 0
   isTaunted: 0
   isFreezed: 0
+  isDefensing: 0
+  isAttacking: 0
 --- !u!212 &8023998753856976036
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -311,11 +313,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.059138767, y: 0.95226}
-      - {x: -0.95380074, y: 0.98491645}
+    - - {x: -0.97668886, y: 2.9972253}
       - {x: -0.99095404, y: -1.0276421}
       - {x: 0.98917305, y: -0.9882157}
-      - {x: 1.0334723, y: 0.97889185}
+      - {x: 0.99149925, y: 3.0019898}
 --- !u!50 &1731911375331784916
 Rigidbody2D:
   serializedVersion: 4
