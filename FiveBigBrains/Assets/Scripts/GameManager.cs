@@ -13,11 +13,14 @@ public class GameManager : MonoBehaviour
     public static Player player1Instance;
     public static Player player2Instance;
 
+    private DropManager dropManager;
+
     public TextMeshProUGUI winText;
     public Button restartButton;
 
     private void Start()
     {
+        dropManager = FindObjectOfType<DropManager>();
         StartGame();
     }
 
@@ -25,7 +28,8 @@ public class GameManager : MonoBehaviour
     {
         SpawnPlayers();
         winText.gameObject.SetActive(false);
-        restartButton.gameObject.SetActive(false); 
+        restartButton.gameObject.SetActive(false);
+        dropManager.SpawnPistolPowerUp();
     }
 
     private void SpawnPlayers()
