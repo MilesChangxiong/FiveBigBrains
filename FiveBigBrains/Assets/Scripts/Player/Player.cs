@@ -35,6 +35,9 @@ public class Player : MonoBehaviour
     public bool isDefensing = false;
     protected float nextDefendTime = 0;
 
+    //the attachking-related variables
+    public bool isAttacking = false;
+
     public delegate void PlayerLivesChanged(Player player);
     public event PlayerLivesChanged OnPlayerLivesChanged;
 
@@ -43,8 +46,9 @@ public class Player : MonoBehaviour
         // print("I'm taking damage!");
         // print("I'm defending: " + isDefensing);
         // when oppenent is defending, no damage
-        if(isDefensing)
+        if(isDefensing || !opponent.isAttacking)
         {   
+            print("oponent is not attacking");
             return;
         }
         for (int i = remainingLives - 1; i > remainingLives - damageAmount - 1; i--)
@@ -140,12 +144,21 @@ public class Player : MonoBehaviour
         }
         if (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.R) && currentWeapon != null)
         {
-            currentWeapon.TryAttack();
+            if(currentWeapon.TryAttack()){
+                isAttacking = true;
+                print("I'm attacking");
+            }
+            // change isDefensing to false after 1s
+            StartCoroutine(attackSleeping());
         }
 
         if (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.L) && currentWeapon != null)
         {
-            currentWeapon.TryAttack();
+            if(currentWeapon.TryAttack()){
+                isAttacking = true;
+                print("I'm attacking");
+            }
+            isAttacking = false;
         }
 
         //Destroy the eye when all heads gone
@@ -159,6 +172,14 @@ public class Player : MonoBehaviour
                 Destroy(eyeObj);
             }
         }
+    }
+
+    // helper function to sleep for 1s
+    IEnumerator attackSleeping()
+    {
+        yield return new WaitForSeconds(0.3f);
+        isAttacking = false;
+        print("Done attacking!");
     }
 
     // instantiate a shield in front of the player and destroy it after 1s
@@ -208,12 +229,12 @@ public class Player : MonoBehaviour
             Destroy(shield, 1f);
 
             // change isDefensing to false after 1s
-            StartCoroutine(Sleeping());
+            StartCoroutine(defenceSleeping());
             
         }
     }
     // helper function to sleep for 1s
-    IEnumerator Sleeping()
+    IEnumerator defenceSleeping()
     {
         yield return new WaitForSeconds(1);
         isDefensing = false;
