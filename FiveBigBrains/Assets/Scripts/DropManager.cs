@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DropManager : MonoBehaviour
 {
+    public static DropManager instance;
+
     public GameObject pistolPowerUpPrefab;
     public Vector2 spawnPosition = new Vector2(0, 30);
 
@@ -23,5 +25,18 @@ public class DropManager : MonoBehaviour
         }
 
         spawnedPowerUps.Clear();
+    }
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
     }
 }
