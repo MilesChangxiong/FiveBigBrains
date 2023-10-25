@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Tutorial.unity
     guid: d49b7fd3209b34ff7b24d40626deb508
   - enabled: 1
+    path: Assets/Scenes/FiregunAndIce.unity
+    guid: 75dd3f04bb6b142448399ced80c5e3e4
+  - enabled: 1
     path: Assets/Scenes/Victory.unity
     guid: 138e458e2435c481d918f034e67168d8
   m_configObjects: {}

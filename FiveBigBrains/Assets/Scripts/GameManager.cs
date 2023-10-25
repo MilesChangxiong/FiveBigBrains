@@ -138,7 +138,8 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        SwitchScene("Map1"); // TODO: change to next random map.
+        //SwitchScene("Map1"); // TODO: change to next random map.
+        SwitchScene("FiregunAndIce"); // TODO: change to next random map.
     }
 
     void SetPlayerScoreTexts()
