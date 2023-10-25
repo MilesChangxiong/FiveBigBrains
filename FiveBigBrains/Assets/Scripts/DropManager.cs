@@ -8,6 +8,7 @@ public class DropManager : MonoBehaviour
 
     public GameObject pistolPowerUpPrefab;
     public GameObject fireGunPowerUpPrefab;
+    public GameObject magnifyGunPowerUpPrefab;
     public Vector2 spawnPosition = new Vector2(0, 30);
 
     private List<GameObject> spawnedPowerUps = new List<GameObject>();
@@ -15,7 +16,8 @@ public class DropManager : MonoBehaviour
     public void SpawnPistolPowerUp()
     {
         //GameObject spawnedPowerUp = Instantiate(pistolPowerUpPrefab, spawnPosition, Quaternion.identity);
-        GameObject spawnedPowerUp = Instantiate(fireGunPowerUpPrefab, spawnPosition, Quaternion.identity);
+        //GameObject spawnedPowerUp = Instantiate(fireGunPowerUpPrefab, spawnPosition, Quaternion.identity);
+        GameObject spawnedPowerUp = Instantiate(magnifyGunPowerUpPrefab, spawnPosition, Quaternion.identity);
         spawnedPowerUps.Add(spawnedPowerUp);
     }
 
