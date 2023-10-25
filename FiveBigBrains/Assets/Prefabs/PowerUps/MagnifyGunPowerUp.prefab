@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7374843345268312776}
   - component: {fileID: 7077892998869250165}
   - component: {fileID: 6730188316231042996}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: MagnifyGunPowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6308886122074474389}
   - component: {fileID: 5497887494189214161}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
