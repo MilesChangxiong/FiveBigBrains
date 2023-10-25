@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     public Spear spearPrefab;
     public GameObject ShieldPrefab;
     public Player opponent;
+    public float deathYThreshold = -20f;
 
     public int currentDirection; // 0: left; 1: right;
 
@@ -82,6 +83,7 @@ public class Player : MonoBehaviour
         Jump();
         Move();
         Taunt();
+        CheckForFallDamage();
     }
 
     private void initializePlayerColor()
@@ -142,26 +144,14 @@ public class Player : MonoBehaviour
         {
             return;
         }
+
         if (
             (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.R) && currentWeapon != null) ||
             (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.L) && currentWeapon != null)
            )
         {
-            if (currentWeapon.TryAttack())
-            {
-                isAttacking = true;
-            }
-            // change isDefensing to false after 1s
-            StartCoroutine(attackSleeping());
+            currentWeapon.TryAttack();
         }
-    }
-
-    // helper function to sleep for 1s
-    IEnumerator attackSleeping()
-    {
-        yield return new WaitForSeconds(0.3f);
-        isAttacking = false;
-        print("Done attacking!");
     }
 
     // instantiate a shield in front of the player and destroy it after 1s
@@ -368,6 +358,14 @@ public class Player : MonoBehaviour
         {
             BoxCollider2D collider = headCollisionBoxTransform.GetComponent<BoxCollider2D>();
             collider.size /= tauntedHeadSizeRatio;
+        }
+    }
+
+    void CheckForFallDamage()
+    {
+        if (transform.position.y < deathYThreshold)
+        {
+            TakeDamage(100);
         }
     }
 

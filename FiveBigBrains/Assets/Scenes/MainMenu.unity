@@ -1034,7 +1034,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Map1
+          m_StringArgument: Laser
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1672866747
@@ -1105,6 +1105,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pistolPowerUpPrefab: {fileID: 7262097274297160612, guid: 39696fd4892554c2a877d7180ab51ec1, type: 3}
+  fireGunPowerUpPrefab: {fileID: 7633872927414318352, guid: 2e9f7c1e046e14f5fbb176ed7464412d, type: 3}
+  magnifyGunPowerUpPrefab: {fileID: 7262097274297160612, guid: 69ac5ef172c2740caa08d25de7122c88, type: 3}
   spawnPosition: {x: 0, y: 30}
 --- !u!4 &1799154843
 Transform:
