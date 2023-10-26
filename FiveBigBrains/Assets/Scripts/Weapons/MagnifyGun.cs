@@ -27,11 +27,13 @@ public class MagnifyGun : Weapon
 
     public void SetShootingAngle(float angle)
     {
-        float finalAngle = (owningPlayer.currentDirection == 1) ? angle : 180 - angle; // Flip angle if direction is left
+        float finalAngle = (owningPlayer.currentDirection == 1) ? angle : -angle;
         firePoint.eulerAngles = new Vector3(0, 0, finalAngle);
 
-        // update position of Line Renderer
-        Vector3 endPosition = firePoint.position + firePoint.right * lineLength;
+        // Use player direction to determine endPosition of the line
+        Vector3 direction = (owningPlayer.currentDirection == 1) ? firePoint.right : -firePoint.right;
+        Vector3 endPosition = firePoint.position + direction * lineLength;
+
         lineRenderer.SetPosition(0, firePoint.position);
         lineRenderer.SetPosition(1, endPosition);
     }
