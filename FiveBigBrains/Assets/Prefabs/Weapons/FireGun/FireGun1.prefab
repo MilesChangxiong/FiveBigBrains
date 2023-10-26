@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 806249440924359533}
   - component: {fileID: 7831368398255626709}
   m_Layer: 0
-  m_Name: Firegun
+  m_Name: FireGun1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
