@@ -16,8 +16,8 @@ public class DropManager : MonoBehaviour
     public void SpawnPistolPowerUp()
     {
         //GameObject spawnedPowerUp = Instantiate(pistolPowerUpPrefab, spawnPosition, Quaternion.identity);
-        //GameObject spawnedPowerUp = Instantiate(fireGunPowerUpPrefab, spawnPosition, Quaternion.identity);
-        GameObject spawnedPowerUp = Instantiate(magnifyGunPowerUpPrefab, spawnPosition, Quaternion.identity);
+        GameObject spawnedPowerUp = Instantiate(fireGunPowerUpPrefab, spawnPosition, Quaternion.identity);
+        //GameObject spawnedPowerUp = Instantiate(magnifyGunPowerUpPrefab, spawnPosition, Quaternion.identity);
         spawnedPowerUps.Add(spawnedPowerUp);
     }
 

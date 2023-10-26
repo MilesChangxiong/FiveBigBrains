@@ -42,5 +42,25 @@ public class MagnifyBullet : MonoBehaviour
             box.Magnify(magnificationFactor);
             Destroy(gameObject);
         }
+
+        if (collision.gameObject.CompareTag("IronBall"))
+        {
+            // enlarge it
+            collision.gameObject.transform.localScale *= 1.5f;
+            // destroy SpringJoint2D
+            SpringJoint2D springJoint = collision.gameObject.GetComponent<SpringJoint2D>();
+            if (springJoint)
+                Destroy(springJoint);
+            // find parent object
+            Transform parentTransform = collision.gameObject.transform.parent;
+            if (parentTransform)
+            {
+                Transform ropeTransform = parentTransform.Find("Rope");
+                if (ropeTransform)
+                {
+                    Destroy(ropeTransform.gameObject);
+                }
+            }
+        }
     }
 }

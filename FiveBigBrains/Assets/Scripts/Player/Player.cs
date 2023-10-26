@@ -39,8 +39,10 @@ public class Player : MonoBehaviour
     private float defenseDuration = 1f;
     private float defenseCooldown = 2f;
 
-    // the attachking-related variables
-    public bool isAttacking = false;
+    // the shooting-angle related variables
+    private float shootingAngle = 0f; // 0 means straight ahead
+    private float maxShootingAngle = 45f;
+    private float angleAdjustmentSpeed = 90f; // per second
 
     public delegate void PlayerLivesChanged(Player player);
     public event PlayerLivesChanged OnPlayerDied;
@@ -84,6 +86,7 @@ public class Player : MonoBehaviour
         Move();
         Taunt();
         CheckForFallDamage();
+        UpdateShootingAngle();
     }
 
     private void initializePlayerColor()
@@ -151,6 +154,39 @@ public class Player : MonoBehaviour
            )
         {
             currentWeapon.TryAttack();
+        }
+    }
+
+    private void UpdateShootingAngle()
+    {
+        if (currentWeapon == null || !currentWeapon.isShootingAngleAdjustable)
+        {
+            return;
+        }
+
+        float adjustment = 0;
+
+        if (controlType == PlayerControlType.WASD)
+        {
+            if (Input.GetKey(KeyCode.W)) adjustment = 1;
+            if (Input.GetKey(KeyCode.S)) adjustment = -1;
+        }
+        else if (controlType == PlayerControlType.ARROW_KEYS)
+        {
+            if (Input.GetKey(KeyCode.UpArrow)) adjustment = 1;
+            if (Input.GetKey(KeyCode.DownArrow)) adjustment = -1;
+        }
+
+        shootingAngle += adjustment * angleAdjustmentSpeed * Time.deltaTime;
+        shootingAngle = Mathf.Clamp(shootingAngle, -maxShootingAngle, maxShootingAngle);
+
+        if (currentWeapon != null)
+        {
+            MagnifyGun gun = currentWeapon.GetComponent<MagnifyGun>();
+            if (gun != null)
+            {
+                gun.SetShootingAngle(shootingAngle);
+            }
         }
     }
 
