@@ -9,6 +9,7 @@ TagManager:
   - Eye
   - Bullet
   - Head
+  - IronBall
   layers:
   - Default
   - TransparentFX
@@ -20,8 +21,8 @@ TagManager:
   - SpearAttacking
   - PlayerHeadCollisionBox
   - Mirror
-  - 
-  - 
+  - PowerUp
+  - Wind
   - 
   - 
   - 

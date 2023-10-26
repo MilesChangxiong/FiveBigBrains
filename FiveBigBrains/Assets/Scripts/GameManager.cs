@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
     public static Player player1Instance;
     public static Player player2Instance;
 
+    public Vector3 defaultSpawnPoint1 = new Vector3(-10, 2, 0);
+    public Vector3 defaultSpawnPoint2 = new Vector3(10, 2, 0);
+
     private int player1Score = 0;
     private int player2Score = 0;
     public TextMeshProUGUI player1ScoreText;
@@ -87,7 +90,12 @@ public class GameManager : MonoBehaviour
 
     void SpawnPlayer1()
     {
-        player1Instance = Instantiate(player1Prefab, new Vector3(-10, 2, 0), Quaternion.identity);
+        Vector3 spawnPosition = defaultSpawnPoint1;
+        GameObject spawnPoint = GameObject.Find("SpawnPoint1");
+        if (spawnPoint)
+            spawnPosition = spawnPoint.transform.position;
+
+        player1Instance = Instantiate(player1Prefab, spawnPosition, Quaternion.identity);
 
         player1Instance.controlType = Player.PlayerControlType.WASD;
         player1Instance.playerColor = new Color(33 / 255f, 147 / 255f, 255 / 255f, 255 / 255f); // Blue
@@ -96,7 +104,11 @@ public class GameManager : MonoBehaviour
 
     void SpawnPlayer2()
     {
-        player2Instance = Instantiate(player2Prefab, new Vector3(10, 2, 0), Quaternion.identity);
+        Vector3 spawnPosition = defaultSpawnPoint2;
+        GameObject spawnPoint = GameObject.Find("SpawnPoint2");
+        if (spawnPoint)
+            spawnPosition = spawnPoint.transform.position;
+        player2Instance = Instantiate(player2Prefab, spawnPosition, Quaternion.identity);
 
         player2Instance.controlType = Player.PlayerControlType.ARROW_KEYS;
         player2Instance.playerColor = new Color(255 / 255f, 67 / 255f, 40 / 255f, 255 / 255f); // Red

@@ -8,6 +8,7 @@ public abstract class Weapon : MonoBehaviour
     public float attackRate = 1f;
     public int currentAmmo = 0;
     public Player owningPlayer;
+    public bool isShootingAngleAdjustable = false;
 
     protected float nextAttackTime = 0;
     

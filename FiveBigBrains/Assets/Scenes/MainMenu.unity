@@ -651,6 +651,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player1Prefab: {fileID: 6946468557141905351, guid: 0ad06434421314f60a29769d4bbc439c, type: 3}
   player2Prefab: {fileID: 6946468557141905351, guid: 0ad06434421314f60a29769d4bbc439c, type: 3}
+  defaultSpawnPoint1: {x: -10, y: 2, z: 0}
+  defaultSpawnPoint2: {x: 10, y: 2, z: 0}
   player1ScoreText: {fileID: 240729978}
   player2ScoreText: {fileID: 1863858864}
   WinningScore: 3
@@ -1034,7 +1036,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Laser
+          m_StringArgument: WindRopeBallBox
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1672866747
