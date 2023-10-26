@@ -12,6 +12,14 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    private List<string> scenes = new List<string>()
+        {
+            "FiregunAndIce",
+            "MagnifyGun",
+            "Laser",
+            "Victory"
+        };
+
     public Player player1Prefab;
     public Player player2Prefab;
     
