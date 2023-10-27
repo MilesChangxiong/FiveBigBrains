@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
@@ -7,6 +8,7 @@ public class LaserBeam : MonoBehaviour
     public float laserRange = 100f;
     public int maxReflections = 5;
     public LayerMask collisionLayers;
+    private bool isDamagingPlayer = false;
 
     private void Awake()
     {
@@ -16,6 +18,14 @@ public class LaserBeam : MonoBehaviour
     private void Update()
     {
         DrawLaser();
+    }
+
+    IEnumerator DamagePlayer(Player player)
+    {
+        isDamagingPlayer = true;
+        player.TakeDamage(1);  // 每次掉一滴血
+        yield return new WaitForSeconds(1f);  // 等待1秒
+        isDamagingPlayer = false;
     }
 
     private void DrawLaser()
@@ -38,10 +48,20 @@ public class LaserBeam : MonoBehaviour
                 lastLaserPosition = hit.point + hit.normal * 0.01f;
 
                 Player player = hit.collider.GetComponent<Player>();
-                if (player)
+
+                /***if (player)
                 {
                     player.TakeDamage(100); // Kills the player
                     break;
+                }***/
+
+                if (player)
+                {
+                    if (!isDamagingPlayer)
+                    {
+                        StartCoroutine(DamagePlayer(player));  // 使用协程来实现延时
+                    }
+                    return;  // 这里应该是 return 而不是 break，以便继续激光的其他逻辑
                 }
 
                 Mirror mirror = hit.collider.GetComponent<Mirror>();
