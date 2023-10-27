@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3415460678609241449}
   - component: {fileID: 2659939131801633334}
   - component: {fileID: 4427562022920252473}
-  - component: {fileID: 7579964377426914642}
+  - component: {fileID: -576461835893568228}
   m_Layer: 0
   m_Name: smallIceRock
   m_TagString: Ground
@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4767433266474039790}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25.119766, y: -2.1749291, z: 0}
+  m_LocalPosition: {x: -25.119766, y: -2.1749291, z: -11.75287}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -112,24 +112,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.12, y: 5.12}
   m_EdgeRadius: 0
---- !u!50 &7579964377426914642
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!114 &-576461835893568228
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4767433266474039790}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f062223d7702b4aecbc40cc260a2e741, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
