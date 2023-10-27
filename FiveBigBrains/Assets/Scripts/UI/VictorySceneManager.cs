@@ -17,6 +17,7 @@ public class VictorySceneManager : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
+        Debug.Log("Returning to Main Menu...");
         if (GameManager.instance != null)
         {
             GameManager.instance.RestartGameAfterVictory();

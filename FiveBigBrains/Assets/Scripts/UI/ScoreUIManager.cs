@@ -23,7 +23,7 @@ public class ScoreUIManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "MainMenu")
+        if (scene.name == "MainMenu"||scene.name == "Tutorial")
         {
             ScoreUI.SetActive(false);
         }
