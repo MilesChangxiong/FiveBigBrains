@@ -225,7 +225,7 @@ MonoBehaviour:
   controlType: 0
   playerColor: {r: 1, g: 1, b: 1, a: 0}
   moveSpeed: 12
-  jumpForce: 6.7
+  jumpForce: 8
   remainingLives: 3
   currentWeapon: {fileID: 0}
   spearPrefab: {fileID: 8475948650682009575, guid: 40eba9d60712b41e085248961feb3766, type: 3}
@@ -236,7 +236,6 @@ MonoBehaviour:
   isTaunted: 0
   isFreezed: 0
   isDefensing: 0
-  isAttacking: 0
 --- !u!212 &8023998753856976036
 SpriteRenderer:
   m_ObjectHideFlags: 0
