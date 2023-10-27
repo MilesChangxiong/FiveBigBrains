@@ -18,9 +18,19 @@ public class TutoralSceneManager : MonoBehaviour
     public void ReturnToMainMenu()
     {
         Debug.Log("Returning to Main Menu...");
-        // if (GameManager.instance != null)
-        // {
-        //     GameManager.instance.RestartGameAfterVictory();
-        // }
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.RestartGameAfterVictory();
+        }
+    }
+
+     private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other.name + " has entered the checkpoint.");
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Checkpoint Activated!");
+
+        }
     }
 }
