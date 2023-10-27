@@ -385,6 +385,7 @@ MonoBehaviour:
   player2ScoreText: {fileID: 1863858864}
   WinningScore: 3
   winnerName: 
+  currScene: 
 --- !u!4 &681789521
 Transform:
   m_ObjectHideFlags: 0
@@ -977,7 +978,7 @@ PrefabInstance:
       objectReference: {fileID: 681789520}
     - target: {fileID: 5364847828397241806, guid: 24c656e364382da4c93c229245a5091a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: WindRopeBallBox
+      value: FiregunAndIce
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24c656e364382da4c93c229245a5091a, type: 3}
