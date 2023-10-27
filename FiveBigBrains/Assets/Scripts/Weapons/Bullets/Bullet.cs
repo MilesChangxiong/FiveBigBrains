@@ -43,5 +43,10 @@ public class Bullet : MonoBehaviour
 
             GameReport.Instance.PostDataToFirebase("", new GameEvent("PistolBulletHit"));
         }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Mirror")) // if the bullet hit a mirror
+        {
+            Destroy(collision.gameObject); // destroy the mirror
+            Destroy(gameObject); // destroy the bullet
+        }
     }
 }

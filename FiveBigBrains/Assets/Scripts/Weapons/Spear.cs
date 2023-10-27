@@ -55,6 +55,14 @@ public class Spear : Weapon
         {
             owningPlayer.opponent.TakeDamage(1);
         }
+        
+    }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Mirror")) // if the spear hit a mirror
+        {
+            Destroy(collision.gameObject); // destroy the mirror
+        }
     }
 
 }
