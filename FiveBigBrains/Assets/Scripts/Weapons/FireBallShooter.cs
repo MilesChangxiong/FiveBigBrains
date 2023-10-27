@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireGun : Weapon
+public class FireBallShooter : Weapon
 {
     public FireBullet bulletPrefab;
     public Transform firePoint;
@@ -15,6 +15,6 @@ public class FireGun : Weapon
 
         FireBullet bullet = Instantiate(bulletPrefab, firePoint.position, firingAngle);
 
-        GameReport.Instance.PostDataToFirebase("", new GameEvent("FireBulletShot"));
+        GameReport.Instance.PostDataToFirebase("", new GameEvent("FireBallShot"));
     }
 }

@@ -37,19 +37,15 @@ public class GameManager : MonoBehaviour
     public int WinningScore = 2; // TODO: changable in MainMenu
     public string winnerName; // this is used in Victory scene.
 
-    private DropManager dropManager;
-
     public string currScene; 
 
     private void Start()
     {
-        dropManager = FindObjectOfType<DropManager>();
     }
 
     private void StartGame()
     {
         SpawnPlayers();
-        dropManager.SpawnPistolPowerUp();
     }
 
     public void SwitchScene(string sceneName)

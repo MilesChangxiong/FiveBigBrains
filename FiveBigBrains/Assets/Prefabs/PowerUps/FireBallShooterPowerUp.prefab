@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 3685613522654095983}
   - component: {fileID: 7947719041725154031}
   m_Layer: 10
-  m_Name: FireGunPowerUp
+  m_Name: FireBallShooterPowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7633872927414318352}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 743fd41625e0b4429a99d16654758b1b, type: 3}
+  m_Script: {fileID: 11500000, guid: d65ea09f046664a2990819be268b1c93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireGunPrefab: {fileID: 7831368398255626709, guid: 313963091bdf344829b768ec2486da9d, type: 3}
+  fireBallShooterPrefab: {fileID: 7831368398255626709, guid: 313963091bdf344829b768ec2486da9d, type: 3}
