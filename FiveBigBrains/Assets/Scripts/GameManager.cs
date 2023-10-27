@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     private DropManager dropManager;
 
     public string currScene; 
-
+    // public bool isTutorialfinish=false;
     private void Start()
     {
         dropManager = FindObjectOfType<DropManager>();
@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
 
     void OnVictorySceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (player1Score == WinningScore)
+        if (player1Score == WinningScore||(currScene=="Tutorial"&&winnerName=="Player 1"))
         {
             SpawnPlayer1();
         }
@@ -128,13 +128,23 @@ public class GameManager : MonoBehaviour
         if (player1Instance.remainingLives <= 0)
         {
             player2Score += 1;
+            if(currScene=="Tutorial"){
+                winnerName = "Player 2";
+                SwitchToVictoryScene();
+                return;
+            }
         }
         else if (player2Instance.remainingLives <= 0)
         {
             player1Score += 1;
+            if(currScene=="Tutorial"){
+                winnerName = "Player 1";
+                SwitchToVictoryScene();
+                return;
+            }
         }
 
-        SetPlayerScoreTexts();
+        SetPlayerScoreTexts();       
 
         if (player1Score == WinningScore)
         {
