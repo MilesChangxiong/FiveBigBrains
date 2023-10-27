@@ -12,12 +12,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    private List<string> scenes = new List<string>()
+    private List<string> allMaps = new List<string>()
         {
             "FiregunAndIce",
-            "MagnifyGun",
             "Laser",
-            "Victory"
+            "WindRopeBallBox",
         };
 
     public Player player1Prefab;
@@ -157,12 +156,20 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        //SwitchScene("Map1"); // TODO: change to next random map.
-
         if (currScene != "Tutorial"){
-            SwitchScene("FiregunAndIce"); // TODO: change to next random map.
+            SwitchToDifferentRandomMap();
         }
-        
+    }
+
+    public void SwitchToDifferentRandomMap()
+    {
+        List<string> availableMaps = new List<string>(allMaps); // Create a copy of all maps
+        availableMaps.Remove(currScene); // Remove current scene from the list
+
+        int randomIndex = UnityEngine.Random.Range(0, availableMaps.Count);
+        string nextMap = availableMaps[randomIndex];
+
+        SwitchScene(nextMap);
     }
 
     void SetPlayerScoreTexts()
