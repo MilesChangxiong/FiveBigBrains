@@ -385,6 +385,7 @@ MonoBehaviour:
   player2ScoreText: {fileID: 1863858864}
   WinningScore: 3
   winnerName: 
+  currScene: 
 --- !u!4 &681789521
 Transform:
   m_ObjectHideFlags: 0

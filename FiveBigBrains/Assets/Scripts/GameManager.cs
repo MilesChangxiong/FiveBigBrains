@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
 
     private DropManager dropManager;
 
+    public string currScene; 
+
     private void Start()
     {
         dropManager = FindObjectOfType<DropManager>();
@@ -51,7 +53,8 @@ public class GameManager : MonoBehaviour
     }
 
     public void SwitchScene(string sceneName)
-    {
+    {   
+        currScene=sceneName;
         SceneManager.LoadScene(sceneName);
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -159,7 +162,11 @@ public class GameManager : MonoBehaviour
         }
 
         //SwitchScene("Map1"); // TODO: change to next random map.
-        SwitchScene("FiregunAndIce"); // TODO: change to next random map.
+
+        if (currScene != "Tutorial"){
+            SwitchScene("FiregunAndIce"); // TODO: change to next random map.
+        }
+        
     }
 
     void SetPlayerScoreTexts()
