@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7953129454298247132}
   - component: {fileID: 806249440924359533}
-  - component: {fileID: 7831368398255626709}
+  - component: {fileID: 8118957468388052636}
   m_Layer: 0
   m_Name: FireBallShooter
   m_TagString: Untagged
@@ -92,7 +92,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &7831368398255626709
+--- !u!114 &8118957468388052636
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,6 +108,7 @@ MonoBehaviour:
   attackRate: 1
   currentAmmo: 0
   owningPlayer: {fileID: 0}
+  isShootingAngleAdjustable: 0
   bulletPrefab: {fileID: 6178962576536253511, guid: 3ed229e60ab4a49da8d3faec47306c0f, type: 3}
   firePoint: {fileID: 3718889154618865290}
 --- !u!1 &5351674546694704089
