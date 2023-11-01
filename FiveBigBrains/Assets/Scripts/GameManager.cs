@@ -37,7 +37,8 @@ public class GameManager : MonoBehaviour
     public string winnerName; // this is used in Victory scene.
 
     public string currScene; 
-    // public bool isTutorialfinish=false;
+    public bool showLifeLayerText; //if its true, will display"layers=life" text 
+
     private void Start()
     {
     }
@@ -46,7 +47,11 @@ public class GameManager : MonoBehaviour
     {
         SpawnPlayers();
     }
+    
+    private void Update(){
+        CheckShowLifeText();
 
+    }
     public void SwitchScene(string sceneName)
     {   
         currScene=sceneName;
@@ -95,8 +100,13 @@ public class GameManager : MonoBehaviour
     }
 
     void SpawnPlayer1()
-    {
-        Vector3 spawnPosition = defaultSpawnPoint1;
+    {   
+        Vector3 spawnPosition;
+        if (currScene=="Tutorial"){
+            spawnPosition=new Vector3(-20, 2, 0);
+        }else{
+            spawnPosition = defaultSpawnPoint1;
+        }
         GameObject spawnPoint = GameObject.Find("SpawnPoint1");
         if (spawnPoint)
             spawnPosition = spawnPoint.transform.position;
@@ -110,7 +120,12 @@ public class GameManager : MonoBehaviour
 
     void SpawnPlayer2()
     {
-        Vector3 spawnPosition = defaultSpawnPoint2;
+        Vector3 spawnPosition;
+        if (currScene=="Tutorial"){
+            spawnPosition=new Vector3(20, 2, 0);
+        }else{
+            spawnPosition = defaultSpawnPoint2;
+        }
         GameObject spawnPoint = GameObject.Find("SpawnPoint2");
         if (spawnPoint)
             spawnPosition = spawnPoint.transform.position;
@@ -129,7 +144,7 @@ public class GameManager : MonoBehaviour
         if (player2Instance != null)
             player2Instance.OnPlayerDied -= OnPlayerDies;
     }
-
+    
     private void OnPlayerDies(Player player)
     {
         if (player1Instance.remainingLives <= 0)
@@ -169,6 +184,15 @@ public class GameManager : MonoBehaviour
         if (currScene != "Tutorial"){
             SwitchToDifferentRandomMap();
         }
+    }
+    
+    private void CheckShowLifeText(){
+        if (player1Instance == null || player2Instance == null) {
+        return; 
+        }
+        if((player1Instance.remainingLives==2||player2Instance.remainingLives==2)&&currScene=="Tutorial"){
+            showLifeLayerText=true;
+        }   
     }
 
     public void SwitchToDifferentRandomMap()
