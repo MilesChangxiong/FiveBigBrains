@@ -8,6 +8,8 @@ public class Spear : Weapon
     protected float spearSpeed = 16f;
     public Transform spearTransform;
 
+    private bool hasTriggeredDamage = false;
+
     private void Awake()
     {
         attackCD = 0.5f;
@@ -16,6 +18,7 @@ public class Spear : Weapon
 
     protected override void Attack()
     {
+        hasTriggeredDamage = false;
         owningPlayer.isSpearAttacking = true;
         if (spearTransform == null)
         {
@@ -65,18 +68,20 @@ public class Spear : Weapon
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        if (hasTriggeredDamage)
+        {
+            return;
+        }
+
         if (collision.gameObject.tag == "Head")
         {
             owningPlayer.opponent.TakeDamage(1);
+            hasTriggeredDamage = true;
         }
-        
-    }
-    void OnCollisionEnter2D(Collision2D collision)
-    {
+
         if (collision.gameObject.layer == LayerMask.NameToLayer("Mirror")) // if the spear hit a mirror
         {
             Destroy(collision.gameObject); // destroy the mirror
         }
     }
-
 }
