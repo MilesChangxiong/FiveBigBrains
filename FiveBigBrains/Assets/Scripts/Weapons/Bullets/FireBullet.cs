@@ -8,6 +8,8 @@ public class FireBullet : MonoBehaviour
     public LayerMask explosionLayers;
     private Rigidbody2D rb;
 
+    private bool hasExploded = false;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -34,7 +36,11 @@ public class FireBullet : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Explode();
+        if (!hasExploded)
+        {
+            hasExploded = true;
+            Explode();
+        }
     }
 
     void Explode()

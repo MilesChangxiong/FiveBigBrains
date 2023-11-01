@@ -517,7 +517,7 @@ PrefabInstance:
       objectReference: {fileID: 7633872927414318352, guid: 2e9f7c1e046e14f5fbb176ed7464412d, type: 3}
     - target: {fileID: 2277845245426314234, guid: 1c2f0013ddf7f4fc8b3643560887264b, type: 3}
       propertyPath: delayBeforeDrop
-      value: 7
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4048466881282257011, guid: 1c2f0013ddf7f4fc8b3643560887264b, type: 3}
       propertyPath: m_Name
@@ -1145,7 +1145,7 @@ PrefabInstance:
       objectReference: {fileID: 7633872927414318352, guid: 2e9f7c1e046e14f5fbb176ed7464412d, type: 3}
     - target: {fileID: 2277845245426314234, guid: 1c2f0013ddf7f4fc8b3643560887264b, type: 3}
       propertyPath: delayBeforeDrop
-      value: 7
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4048466881282257011, guid: 1c2f0013ddf7f4fc8b3643560887264b, type: 3}
       propertyPath: m_Name
@@ -2386,7 +2386,7 @@ PrefabInstance:
       objectReference: {fileID: 7633872927414318352, guid: 2e9f7c1e046e14f5fbb176ed7464412d, type: 3}
     - target: {fileID: 2277845245426314234, guid: 1c2f0013ddf7f4fc8b3643560887264b, type: 3}
       propertyPath: delayBeforeDrop
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4048466881282257011, guid: 1c2f0013ddf7f4fc8b3643560887264b, type: 3}
       propertyPath: m_Name
