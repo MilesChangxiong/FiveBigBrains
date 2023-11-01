@@ -25,6 +25,8 @@ public class Player : MonoBehaviour
     private bool isGrounded = true;
     private Rigidbody2D rb;
 
+    public bool isSpearAttacking = false;
+
     // the variable to be used in Taunt; 
     public bool isTaunted = false;
     public bool isFreezed = false;
@@ -32,6 +34,7 @@ public class Player : MonoBehaviour
     private float tauntDuration = 6f;
     private float freezeDuration = 2f;
     private const float tauntedHeadSizeRatio = 2f;
+    public float headResizeDuration = 0.5f; // Time it takes for the head to resize.
 
     // the defense-related variables
     public bool isDefensing = false;
@@ -97,7 +100,12 @@ public class Player : MonoBehaviour
 
     public void initializePlayerWeapon()
     {
-        Weapon newWeapon = Instantiate(spearPrefab, transform);
+        // Calculate the spawn position based on player's position
+        Vector2 spawnPosition = (Vector2)transform.position + new Vector2(0.18f, 0.09f);
+        // Set rotation on Z axis to 23 degrees
+        Quaternion rotation = Quaternion.Euler(0, 0, 23);
+
+        Weapon newWeapon = Instantiate(spearPrefab, spawnPosition, rotation, transform);
         currentWeapon = newWeapon;
         currentWeapon.owningPlayer = this;
 
@@ -248,7 +256,7 @@ public class Player : MonoBehaviour
     {
         float h = 0;
 
-        if (isFreezed)
+        if (isFreezed || isSpearAttacking)
         {
             return;
         }
@@ -287,8 +295,8 @@ public class Player : MonoBehaviour
             (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.RightShift) && tauntCooldown <= 0)
         )
         {
-            StartCoroutine(TauntSelf(this, opponent));
-            StartCoroutine(TauntOpponent(this, opponent));
+            StartCoroutine(TauntSelf());
+            StartCoroutine(TauntOpponent());
             tauntCooldown = 6f;
         }
     }
@@ -318,10 +326,10 @@ public class Player : MonoBehaviour
     }
 
     // Side-effect for self after taunting
-    private IEnumerator TauntSelf(Player self, Player opponent)
+    private IEnumerator TauntSelf()
     {
 
-        if (self.transform.position.x < opponent.transform.position.x)
+        if (transform.position.x < opponent.transform.position.x)
         {
             TurnLeft();
         }
@@ -335,13 +343,13 @@ public class Player : MonoBehaviour
         isFreezed = false;
     }
 
-    private IEnumerator TauntOpponent(Player self, Player opponent)
+    private IEnumerator TauntOpponent()
     {
         opponent.isTaunted = true;
-        opponent.EnlargeHead();
+        StartCoroutine(opponent.ChangeHeadSize(tauntedHeadSizeRatio, headResizeDuration));
         yield return new WaitForSeconds(tauntDuration);
         opponent.isTaunted = false;
-        opponent.ShrinkHead();
+        StartCoroutine(opponent.ChangeHeadSize(1 / tauntedHeadSizeRatio, headResizeDuration));
     }
 
     // Enlarge the head when the player is taunted
@@ -369,6 +377,54 @@ public class Player : MonoBehaviour
             BoxCollider2D collider = headCollisionBoxTransform.GetComponent<BoxCollider2D>();
             collider.size *= tauntedHeadSizeRatio;
         }
+    }
+
+    private IEnumerator ChangeHeadSize(float targetSizeRatio, float duration)
+    {
+        float startTime = Time.time;
+        Transform[] heads =
+        {
+            transform.Find("Head1"),
+            transform.Find("Head2"),
+            transform.Find("Head3")
+        };
+
+        // Store initial sizes
+        Vector3[] initialSizes = new Vector3[heads.Length];
+        for (int i = 0; i < heads.Length; i++)
+        {
+            if (heads[i] != null)
+                initialSizes[i] = heads[i].localScale;
+        }
+
+        Transform headCollisionBoxTransform = transform.Find("HeadCollisionBox");
+        BoxCollider2D collider = headCollisionBoxTransform?.GetComponent<BoxCollider2D>();
+        Vector2 initialColliderSize = collider ? collider.size : Vector2.one;
+
+        while (Time.time - startTime < duration)
+        {
+            float t = (Time.time - startTime) / duration;
+            for (int i = 0; i < heads.Length; i++)
+            {
+                if (heads[i] != null)
+                    heads[i].localScale = Vector3.Lerp(initialSizes[i], initialSizes[i] * targetSizeRatio, t);
+            }
+
+            if (collider)
+                collider.size = Vector2.Lerp(initialColliderSize, initialColliderSize * targetSizeRatio, t);
+
+            yield return null;
+        }
+
+        // Ensure it reaches the target size
+        for (int i = 0; i < heads.Length; i++)
+        {
+            if (heads[i] != null)
+                heads[i].localScale = initialSizes[i] * targetSizeRatio;
+        }
+
+        if (collider)
+            collider.size = initialColliderSize * targetSizeRatio;
     }
 
     private void ShrinkHead()
@@ -426,14 +482,21 @@ public class Player : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Platform")
         {
-            isGrounded = true;
+            foreach (ContactPoint2D point in collision.contacts)
+            {
+                if (point.normal.y > 0.5)  // Check if the collision is mostly upwards
+                {
+                    isGrounded = true;
+                    break;
+                }
+            }
         }
-
     }
+
 
     void OnTriggerEnter2D(Collider2D collision)
     {

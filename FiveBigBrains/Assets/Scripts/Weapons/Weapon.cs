@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
     public float damage = 1f;
-    public float attackRate = 1f;
+    public float attackCD = 1f;
     public int currentAmmo = 0;
     public Player owningPlayer;
     public bool isShootingAngleAdjustable = false;
@@ -20,7 +20,7 @@ public abstract class Weapon : MonoBehaviour
         if (CanAttack())
         {
             Attack();
-            nextAttackTime = Time.time + 1f / attackRate;
+            nextAttackTime = Time.time + attackCD;
             currentAmmo--;
 
             if (currentAmmo == 0)
