@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     public Spear spearPrefab;
     public GameObject ShieldPrefab;
     public Player opponent;
-    public float deathYThreshold = -20f;
+    public float deathYThreshold = -15f;
 
     public int currentDirection; // 0: left; 1: right;
 

@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
     public string currScene; 
     public bool showLifeLayerText; //if its true, will display"layers=life" text 
 
+    public TextMeshProUGUI sceneInstruction;
+
     private void Start()
     {
     }
@@ -57,6 +59,19 @@ public class GameManager : MonoBehaviour
         currScene=sceneName;
         SceneManager.LoadScene(sceneName);
         SceneManager.sceneLoaded += OnSceneLoaded;
+        if(currScene=="WindRopeBallBox"){
+            StartCoroutine(ShowInstruction("Shoot pumpkins to grow, smash the blocks below.", 3f));
+        } else if(currScene=="Laser"){
+            StartCoroutine(ShowInstruction("Mirror is fragile", 3f));
+        } else if(currScene=="FiregunAndIce"){
+            StartCoroutine(ShowInstruction("Only fire can melt ice", 3f));
+        }
+    }
+    private IEnumerator ShowInstruction(string text, float delay) {
+        sceneInstruction.enabled = true;
+        sceneInstruction.text = text;
+        yield return new WaitForSeconds(delay);
+        sceneInstruction.enabled = false;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
