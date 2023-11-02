@@ -52,6 +52,17 @@ public class WeaponEvent : GameEventBase
     }
 }
 
+[System.Serializable]
+public class HealthLostDuringTauntFreezeEvent : GameEventBase
+{
+    public int healthLostDuringTauntFreeze;
+
+    public HealthLostDuringTauntFreezeEvent(int healthLostDuringTauntFreeze)
+    {
+        this.healthLostDuringTauntFreeze = healthLostDuringTauntFreeze;
+    }
+}
+
 public class GameReport : MonoBehaviour
 {
     public static GameReport Instance { get; private set; }

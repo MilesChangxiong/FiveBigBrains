@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
     private float freezeDuration = 2f;
     private const float tauntedHeadSizeRatio = 2f;
     public float headResizeDuration = 0.5f; // Time it takes for the head to resize.
+    private int initialHealthOnFreeze;
 
     // the defense-related variables
     public bool isDefensing = false;
@@ -73,8 +74,8 @@ public class Player : MonoBehaviour
         remainingLives -= damageAmount;
         if (remainingLives <= 0)
         {
-            OnPlayerDied?.Invoke(this);
             Die();
+            OnPlayerDied?.Invoke(this);
         }
     }
 
@@ -326,6 +327,42 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Side-effect for self after taunting
+    private IEnumerator TauntSelf()
+    {
+        initialHealthOnFreeze = remainingLives;
+        if (transform.position.x < opponent.transform.position.x)
+        {
+            TurnLeft();
+        }
+        else
+        {
+            TurnRight();
+        }
+
+        isFreezed = true;
+        yield return new WaitForSeconds(freezeDuration);
+        isFreezed = false;
+
+        ReportHealthLostDuringTauntFreeze(initialHealthOnFreeze - remainingLives);
+    }
+
+    private IEnumerator TauntOpponent()
+    {
+        opponent.isTaunted = true;
+        StartCoroutine(opponent.ChangeHeadSize(tauntedHeadSizeRatio, headResizeDuration));
+        yield return new WaitForSeconds(tauntDuration);
+        opponent.isTaunted = false;
+        StartCoroutine(opponent.ChangeHeadSize(1 / tauntedHeadSizeRatio, headResizeDuration));
+    }
+
+    private void ReportHealthLostDuringTauntFreeze(int healthLost)
+    {
+        var eventData = new HealthLostDuringTauntFreezeEvent(healthLost);
+
+        GameReport.Instance.PostDataToFirebase("HealthLostDuringTauntFreeze", eventData);
+    }
+
     public void TurnLeft()
     {
         currentDirection = 0;
@@ -350,32 +387,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Side-effect for self after taunting
-    private IEnumerator TauntSelf()
-    {
 
-        if (transform.position.x < opponent.transform.position.x)
-        {
-            TurnLeft();
-        }
-        else
-        {
-            TurnRight();
-        }
-
-        isFreezed = true;
-        yield return new WaitForSeconds(freezeDuration);
-        isFreezed = false;
-    }
-
-    private IEnumerator TauntOpponent()
-    {
-        opponent.isTaunted = true;
-        StartCoroutine(opponent.ChangeHeadSize(tauntedHeadSizeRatio, headResizeDuration));
-        yield return new WaitForSeconds(tauntDuration);
-        opponent.isTaunted = false;
-        StartCoroutine(opponent.ChangeHeadSize(1 / tauntedHeadSizeRatio, headResizeDuration));
-    }
 
     // Enlarge the head when the player is taunted
     private void EnlargeHead()
@@ -503,6 +515,12 @@ public class Player : MonoBehaviour
         else
         {
             Debug.Log("Player2 died!");
+        }
+
+        //
+        if (isFreezed)
+        {
+            ReportHealthLostDuringTauntFreeze(initialHealthOnFreeze - remainingLives);
         }
     }
 
