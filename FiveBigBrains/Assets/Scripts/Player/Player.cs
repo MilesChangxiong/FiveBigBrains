@@ -100,39 +100,9 @@ public class Player : MonoBehaviour
 
     public void initializePlayerWeapon()
     {
-        if (currentDirection == 0)
-        {
-            TurnRight();
-            _intializePlayerWeapon();
-            TurnLeft();
-        }
-        else
-        {
-            _intializePlayerWeapon();
-        }
-    }
-
-    void _intializePlayerWeapon()
-    {
-        // Calculate the spawn position based on player's position
-        Vector2 spawnPosition = (Vector2)transform.position + new Vector2(0.18f, 0.09f);
-        // Set rotation on Z axis to 23 degrees
-        Quaternion rotation = Quaternion.Euler(0, 0, 23);
-
-        Weapon newWeapon = Instantiate(spearPrefab, spawnPosition, rotation, transform);
+        Weapon newWeapon = Instantiate(spearPrefab, transform);
         currentWeapon = newWeapon;
         currentWeapon.owningPlayer = this;
-
-        // Ingore collision between spears
-        GameObject[] spears = GameObject.FindGameObjectsWithTag("Spear"); // Find all spears with the same tag
-
-        foreach (GameObject otherSpear in spears)
-        {
-            if (otherSpear != currentWeapon.gameObject)
-            {
-                Physics2D.IgnoreCollision(currentWeapon.GetComponent<Collider2D>(), otherSpear.GetComponent<Collider2D>());
-            }
-        }
     }
 
     private void initializePlayerDirection()
