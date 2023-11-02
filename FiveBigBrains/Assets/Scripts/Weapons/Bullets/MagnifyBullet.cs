@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MagnifyBullet : MonoBehaviour
+public class MagnifyBullet : Bullet
 {
     public float speed = 10f;
     public float magnificationFactor = 2.5f;
@@ -40,6 +40,9 @@ public class MagnifyBullet : MonoBehaviour
         if (box)
         {
             box.Magnify(magnificationFactor);
+
+            owningPlayer.currentWeapon.ReportWeaponAction("HitIronBox");
+
             Destroy(gameObject);
         }
 
@@ -61,6 +64,10 @@ public class MagnifyBullet : MonoBehaviour
                     Destroy(ropeTransform.gameObject);
                 }
             }
+
+            owningPlayer.currentWeapon.ReportWeaponAction("HitIronBall");
+
+            Destroy(gameObject);
         }
     }
 }
