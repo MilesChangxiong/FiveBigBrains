@@ -164,8 +164,17 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.8080358
-        value: 0.10753375
+        time: 0.253969
+        value: 0.29730162
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.802741
+        value: 0.1345647
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -178,7 +187,7 @@ LineRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 0.990566, g: 0.9765486, b: 0.9765486, a: 1}
-      key1: {r: 0.11320752, g: 0.081324704, b: 0.0048059775, a: 1}
+      key1: {r: 0.3301887, g: 0.29748133, b: 0.23206659, a: 1}
       key2: {r: 0.9622642, g: 0.95772517, b: 0.95772517, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -186,7 +195,7 @@ LineRenderer:
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 35273
-      ctime1: 39514
+      ctime1: 35466
       ctime2: 52043
       ctime3: 0
       ctime4: 0
@@ -285,12 +294,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -668280731567999620, guid: 3ad56d0daa98d8a41b2846a87a936e73, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 040ed79bc686847aba2c1f2c64e706b0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 4.64, y: 3.25}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
