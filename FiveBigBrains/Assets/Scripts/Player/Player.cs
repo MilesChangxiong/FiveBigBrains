@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         Attack();
-        Defense();
+        //Defense();
         Jump();
         Move();
         Taunt();
