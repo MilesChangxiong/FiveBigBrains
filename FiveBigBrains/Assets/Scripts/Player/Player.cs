@@ -56,6 +56,8 @@ public class Player : MonoBehaviour
     public delegate void PlayerLivesChanged(Player player);
     public event PlayerLivesChanged OnPlayerDied;
 
+    public bool isBeingDamagedByLaser;
+
     public void TakeDamage(int damageAmount)
     {
         if (isDefensing)

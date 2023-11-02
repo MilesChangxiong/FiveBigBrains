@@ -23,11 +23,26 @@ public class LaserBeam : MonoBehaviour
     IEnumerator DamagePlayer(Player player)
     {
         isDamagingPlayer = true;
-        //player.TakeDamage(1);  // 每次掉一滴血
-        yield return new WaitForSeconds(1f);  // 等待1秒
-        player.TakeDamage(1);  // 每次掉一滴血
+
+        float elapsedTime = 0f;
+        while (elapsedTime < 1f)
+        {
+            if (player == null || !player.isBeingDamagedByLaser)
+            {
+                // leave laser in 1s = no deduction for health
+                isDamagingPlayer = false;
+                yield break;
+            }
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // take damage if stay for a whole second
+        player.TakeDamage(1);
         isDamagingPlayer = false;
     }
+
 
     private void DrawLaser()
     {
@@ -37,32 +52,35 @@ public class LaserBeam : MonoBehaviour
         Vector2 lastLaserPosition = transform.position;
         Vector2 currentDirection = transform.right;
 
+        Player playerHit = null;
+
         for (int i = 0; i < maxReflections; i++)
         {
             RaycastHit2D hit = Physics2D.Raycast(lastLaserPosition, currentDirection, laserRange, collisionLayers);
             if (hit)
             {
-                Debug.DrawLine(hit.point, hit.point + (Vector2)hit.normal, Color.blue, 1f);
-
                 lineRenderer.positionCount++;
                 lineRenderer.SetPosition(lineRenderer.positionCount - 1, hit.point);
                 lastLaserPosition = hit.point + hit.normal * 0.01f;
 
                 Player player = hit.collider.GetComponent<Player>();
 
-                /***if (player)
-                {
-                    player.TakeDamage(100); // Kills the player
-                    break;
-                }***/
-
                 if (player)
                 {
+                    player.isBeingDamagedByLaser = true;  // the player is being hit
+
                     if (!isDamagingPlayer)
                     {
-                        StartCoroutine(DamagePlayer(player));  // 使用协程来实现延时
+                        StartCoroutine(DamagePlayer(player));  // Counting time
                     }
-                    return;  // 这里应该是 return 而不是 break，以便继续激光的其他逻辑
+                    return;  // should not be break
+                }
+                else
+                {
+                    if (player)
+                    {
+                        player.isBeingDamagedByLaser = false;  // not hit
+                    }
                 }
 
                 Mirror mirror = hit.collider.GetComponent<Mirror>();
@@ -82,5 +100,14 @@ public class LaserBeam : MonoBehaviour
                 break;
             }
         }
+        if (playerHit == null)
+        {
+            // if not hit, set isBeingDamagedByLaser to false
+            foreach (var player in FindObjectsOfType<Player>())
+            {
+                player.isBeingDamagedByLaser = false;
+            }
+        }
     }
+
 }
