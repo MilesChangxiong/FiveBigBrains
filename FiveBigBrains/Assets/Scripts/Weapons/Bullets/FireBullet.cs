@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class FireBullet : MonoBehaviour
+public class FireBullet : Bullet
 {
     public float speed = 10f;
     public float explosionRadius = 2f;
@@ -56,11 +56,13 @@ public class FireBullet : MonoBehaviour
             if (player)
             {
                 player.TakeDamage(1);
+                owningPlayer.currentWeapon.ReportWeaponAction("HitPlayer");
             }
 
             if (iceBlock)
             {
                 Destroy(iceBlock.gameObject);
+                owningPlayer.currentWeapon.ReportWeaponAction("HitIce");
             }
         }
 

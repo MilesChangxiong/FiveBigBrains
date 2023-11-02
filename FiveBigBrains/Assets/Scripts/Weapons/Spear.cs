@@ -77,11 +77,13 @@ public class Spear : Weapon
         {
             owningPlayer.opponent.TakeDamage(1);
             hasTriggeredDamage = true;
+            ReportWeaponAction("HitPlayer");
         }
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Mirror")) // if the spear hit a mirror
         {
             Destroy(collision.gameObject); // destroy the mirror
+            ReportWeaponAction("HitMirror");
         }
     }
 }

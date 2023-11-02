@@ -7,6 +7,21 @@ using UnityEngine.SceneManagement;
 
 using TMPro;
 
+[System.Serializable]
+public class MapStatistics
+{
+    public float MovementDistance = 0f;
+    public int AttackCount = 0;
+    public int JumpCount = 0;
+    public int PowerupPickupCount = 0;
+    public int TauntCount = 0;
+
+
+    public int Player1PowerupPickupCount = 0;
+    public int Player2PowerupPickupCount = 0;
+    public int Player1Wins = 0;
+    public int Player2Wins = 0;
+}
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +33,7 @@ public class GameManager : MonoBehaviour
             "Laser",
             "WindRopeBallBox",
         };
+    public MapStatistics currentMapStats = new MapStatistics();
 
     public Player player1Prefab;
     public Player player2Prefab;
@@ -52,11 +68,19 @@ public class GameManager : MonoBehaviour
     
     private void Update(){
         CheckShowLifeText();
-
     }
+
+    void reportMapStatisticsAndReset()
+    {
+        MapEvent mapEvent = new MapEvent(currScene, currentMapStats);
+        GameReport.Instance.PostDataToFirebase("mapData", mapEvent);
+        currentMapStats = new MapStatistics();
+    }
+
     public void SwitchScene(string sceneName)
-    {   
-        currScene=sceneName;
+    {
+        reportMapStatisticsAndReset();
+        currScene = sceneName;
         SceneManager.LoadScene(sceneName);
         SceneManager.sceneLoaded += OnSceneLoaded;
         if(currScene=="WindRopeBallBox"){
@@ -82,6 +106,7 @@ public class GameManager : MonoBehaviour
 
     void SwitchToVictoryScene()
     {
+        reportMapStatisticsAndReset();
         SceneManager.LoadScene("Victory");
         SceneManager.sceneLoaded += OnVictorySceneLoaded;
     }
@@ -165,6 +190,7 @@ public class GameManager : MonoBehaviour
         if (player1Instance.remainingLives <= 0)
         {
             player2Score += 1;
+            currentMapStats.Player2Wins = 1;
             if(currScene=="Tutorial"){
                 winnerName = "Player 2";
                 SwitchToVictoryScene();
@@ -174,7 +200,8 @@ public class GameManager : MonoBehaviour
         else if (player2Instance.remainingLives <= 0)
         {
             player1Score += 1;
-            if(currScene=="Tutorial"){
+            currentMapStats.Player1Wins = 1;
+            if (currScene=="Tutorial"){
                 winnerName = "Player 1";
                 SwitchToVictoryScene();
                 return;

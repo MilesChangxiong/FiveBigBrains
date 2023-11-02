@@ -14,7 +14,6 @@ public class FireBallShooter : Weapon
                                  Quaternion.Euler(0, 0, 45);   // If facing right, use the default angle
 
         FireBullet bullet = Instantiate(bulletPrefab, firePoint.position, firingAngle);
-
-        GameReport.Instance.PostDataToFirebase("", new GameEvent("FireBallShot"));
+        bullet.owningPlayer = owningPlayer;
     }
 }

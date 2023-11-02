@@ -11,7 +11,7 @@ public abstract class Weapon : MonoBehaviour
     public bool isShootingAngleAdjustable = false;
 
     protected float nextAttackTime = 0;
-    
+
 
     // This method checks if the weapon can attack and if it can, it triggers the Attack method.
     // change return type to know if we can attack
@@ -27,10 +27,27 @@ public abstract class Weapon : MonoBehaviour
             {
                 OutOfAmmo();
             }
+
+            ReportWeaponAction("Attack");
+
             return true;
-        } else {
+        }
+        else
+        {
             return false;
         }
+    }
+
+    public void ReportWeaponAction(string hitType)
+    {
+        var eventData = new WeaponEvent(
+            weaponName: GetType().Name,
+            isFreezed: owningPlayer.isFreezed,
+            isOpponentTaunted: owningPlayer.opponent.isTaunted,
+            eventType: hitType
+        );
+
+        GameReport.Instance.PostDataToFirebase("weaponEvent", eventData);
     }
 
     void OutOfAmmo()

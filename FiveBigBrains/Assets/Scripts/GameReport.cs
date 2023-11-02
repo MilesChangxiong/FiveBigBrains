@@ -8,20 +8,58 @@ public static class GameEnvironment
 }
 
 [System.Serializable]
-public class GameEvent
+public class GameEventBase
 {
-    public string EventType;
     public string Environment;
 
-    public GameEvent(string EventType)
+    public GameEventBase()
     {
-        this.EventType = EventType;
+#if UNITY_EDITOR
+        Environment = GameEnvironment.UnityEditor;
+#elif UNITY_WEBGL
+            Environment = GameEnvironment.WebGL;
+#endif
+    }
+}
 
-        #if UNITY_EDITOR
-                Environment = GameEnvironment.UnityEditor;
-        #elif UNITY_WEBGL
-                Environment = GameEnvironment.WebGL;
-        #endif
+[System.Serializable]
+public class MapEvent : GameEventBase
+{
+    public string mapName;
+    public MapStatistics statistics;
+
+    public MapEvent(string mapName, MapStatistics statistics)
+    {
+        this.mapName = mapName;
+        this.statistics = statistics;
+    }
+}
+
+[System.Serializable]
+public class WeaponEvent : GameEventBase
+{
+    public string weaponName;
+    public bool isFreezed;
+    public bool isOpponentTaunted;
+    public string eventType; // "bulletShot" or "bulletHit"
+
+    public WeaponEvent(string weaponName, bool isFreezed, bool isOpponentTaunted, string eventType)
+    {
+        this.weaponName = weaponName;
+        this.isFreezed = isFreezed;
+        this.isOpponentTaunted = isOpponentTaunted;
+        this.eventType = eventType;
+    }
+}
+
+[System.Serializable]
+public class HealthLostDuringTauntFreezeEvent : GameEventBase
+{
+    public int healthLostDuringTauntFreeze;
+
+    public HealthLostDuringTauntFreezeEvent(int healthLostDuringTauntFreeze)
+    {
+        this.healthLostDuringTauntFreeze = healthLostDuringTauntFreeze;
     }
 }
 
@@ -44,8 +82,8 @@ public class GameReport : MonoBehaviour
 
     private string databaseURL = "https://fivebigbrains-usccs526fall2023-default-rtdb.firebaseio.com/";
 
-    public void PostDataToFirebase(string path, GameEvent gameEvent)
+    public void PostDataToFirebase(string path, object data)
     {
-        RestClient.Post(databaseURL + path + ".json", gameEvent);
+        RestClient.Post(databaseURL + path + ".json", data);
     }
 }
