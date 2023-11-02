@@ -15,6 +15,12 @@ public class MapStatistics
     public int JumpCount = 0;
     public int PowerupPickupCount = 0;
     public int TauntCount = 0;
+
+
+    public int Player1PowerupPickupCount = 0;
+    public int Player2PowerupPickupCount = 0;
+    public int Player1Wins = 0;
+    public int Player2Wins = 0;
 }
 
 public class GameManager : MonoBehaviour
@@ -169,6 +175,7 @@ public class GameManager : MonoBehaviour
         if (player1Instance.remainingLives <= 0)
         {
             player2Score += 1;
+            currentMapStats.Player2Wins = 1;
             if(currScene=="Tutorial"){
                 winnerName = "Player 2";
                 SwitchToVictoryScene();
@@ -178,7 +185,8 @@ public class GameManager : MonoBehaviour
         else if (player2Instance.remainingLives <= 0)
         {
             player1Score += 1;
-            if(currScene=="Tutorial"){
+            currentMapStats.Player1Wins = 1;
+            if (currScene=="Tutorial"){
                 winnerName = "Player 1";
                 SwitchToVictoryScene();
                 return;
