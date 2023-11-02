@@ -40,10 +40,11 @@ public class PistolBullet : Bullet
         {
             playerHit.TakeDamage(1); // deal 1 damage
             Destroy(gameObject); // destroy the bullet
-            owningPlayer.currentWeapon.ReportWeaponAction("HitPlayer");
+            ReportWeaponAction("HitPlayer");
         }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Mirror")) // if the bullet hit a mirror
         {
+            ReportWeaponAction("HitMirror");
             Destroy(collision.gameObject); // destroy the mirror
             Destroy(gameObject); // destroy the bullet
         }

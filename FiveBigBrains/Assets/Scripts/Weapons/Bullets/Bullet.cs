@@ -5,4 +5,16 @@ using UnityEngine;
 public abstract class Bullet : MonoBehaviour
 {
     public Player owningPlayer;
+
+    public void ReportWeaponAction(string hitType)
+    {
+        var eventData = new WeaponEvent(
+            weaponName: GetType().Name,
+            isFreezed: owningPlayer.isFreezed,
+            isOpponentTaunted: owningPlayer.opponent.isTaunted,
+            eventType: hitType
+        );
+
+        GameReport.Instance.PostDataToFirebase("weaponEvent", eventData);
+    }
 }

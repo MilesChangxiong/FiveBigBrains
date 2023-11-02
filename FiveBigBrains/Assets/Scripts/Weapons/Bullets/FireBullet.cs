@@ -56,13 +56,13 @@ public class FireBullet : Bullet
             if (player)
             {
                 player.TakeDamage(1);
-                owningPlayer.currentWeapon.ReportWeaponAction("HitPlayer");
+                ReportWeaponAction("HitPlayer");
             }
 
             if (iceBlock)
             {
                 Destroy(iceBlock.gameObject);
-                owningPlayer.currentWeapon.ReportWeaponAction("HitIce");
+                ReportWeaponAction("HitIce");
             }
         }
 
