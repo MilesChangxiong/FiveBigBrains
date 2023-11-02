@@ -100,6 +100,20 @@ public class Player : MonoBehaviour
 
     public void initializePlayerWeapon()
     {
+        if (currentDirection == 0)
+        {
+            TurnRight();
+            _intializePlayerWeapon();
+            TurnLeft();
+        }
+        else
+        {
+            _intializePlayerWeapon();
+        }
+    }
+
+    void _intializePlayerWeapon()
+    {
         // Calculate the spawn position based on player's position
         Vector2 spawnPosition = (Vector2)transform.position + new Vector2(0.18f, 0.09f);
         // Set rotation on Z axis to 23 degrees
