@@ -7,6 +7,15 @@ using UnityEngine.SceneManagement;
 
 using TMPro;
 
+[System.Serializable]
+public class MapStatistics
+{
+    public float MovementDistance = 0f;
+    public int AttackCount = 0;
+    public int JumpCount = 0;
+    public int PowerupPickupCount = 0;
+    public int TauntCount = 0;
+}
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +27,7 @@ public class GameManager : MonoBehaviour
             "Laser",
             "WindRopeBallBox",
         };
+    public MapStatistics currentMapStats = new MapStatistics();
 
     public Player player1Prefab;
     public Player player2Prefab;
@@ -50,11 +60,19 @@ public class GameManager : MonoBehaviour
     
     private void Update(){
         CheckShowLifeText();
-
     }
+
+    void reportMapStatisticsAndReset()
+    {
+        MapEvent mapEvent = new MapEvent(currScene, currentMapStats);
+        GameReport.Instance.PostDataToFirebase("mapData", mapEvent);
+        currentMapStats = new MapStatistics();
+    }
+
     public void SwitchScene(string sceneName)
-    {   
-        currScene=sceneName;
+    {
+        reportMapStatisticsAndReset();
+        currScene = sceneName;
         SceneManager.LoadScene(sceneName);
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -67,6 +85,7 @@ public class GameManager : MonoBehaviour
 
     void SwitchToVictoryScene()
     {
+        reportMapStatisticsAndReset();
         SceneManager.LoadScene("Victory");
         SceneManager.sceneLoaded += OnVictorySceneLoaded;
     }

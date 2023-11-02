@@ -151,7 +151,14 @@ public class Player : MonoBehaviour
             (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.L) && currentWeapon != null)
            )
         {
-            currentWeapon.TryAttack();
+            if (currentWeapon.TryAttack())
+            {
+                // Data-report related logic
+                if (GameManager.instance != null && GameManager.instance.currentMapStats != null)
+                {
+                    GameManager.instance.currentMapStats.AttackCount += 1;
+                }
+            }
         }
     }
 
@@ -249,6 +256,12 @@ public class Player : MonoBehaviour
             rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             jumpsDone++;
             nextJumpTime = Time.time + jumpInterval;
+
+            // Data-report related logic
+            if (GameManager.instance != null && GameManager.instance.currentMapStats != null)
+            {
+                GameManager.instance.currentMapStats.JumpCount += 1;
+            }
         }
     }
 
@@ -282,6 +295,12 @@ public class Player : MonoBehaviour
 
         Vector3 moveDirection = new Vector3(h, 0, 0).normalized;
         transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
+
+        // Data-report related logic
+        if (GameManager.instance != null && GameManager.instance.currentMapStats != null)
+        {
+            GameManager.instance.currentMapStats.MovementDistance += moveDirection.magnitude * moveSpeed * Time.deltaTime;
+        }
     }
 
     private void Taunt()
@@ -298,6 +317,12 @@ public class Player : MonoBehaviour
             StartCoroutine(TauntSelf());
             StartCoroutine(TauntOpponent());
             tauntCooldown = 6f;
+
+            // Data-report related logic
+            if (GameManager.instance != null && GameManager.instance.currentMapStats != null)
+            {
+                GameManager.instance.currentMapStats.TauntCount += 1;
+            }
         }
     }
 

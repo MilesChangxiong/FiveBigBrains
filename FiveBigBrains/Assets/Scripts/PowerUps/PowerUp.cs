@@ -10,8 +10,14 @@ public abstract class PowerUp : MonoBehaviour
     {
         if (col.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player collected the power-up!");
             ActivatePowerUp(col.gameObject.GetComponent<Player>());
+
+            // Data-report related logic
+            if (GameManager.instance != null && GameManager.instance.currentMapStats != null)
+            {
+                GameManager.instance.currentMapStats.PowerupPickupCount += 1;
+            }
+
             Destroy(gameObject);
         }
     }
