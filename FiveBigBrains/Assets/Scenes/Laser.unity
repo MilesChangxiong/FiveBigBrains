@@ -134,6 +134,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mirror (4) Variant (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6929496770407025633, guid: d62e5716d66deb64c9f861ab751205c7, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 7727843634004534132, guid: d62e5716d66deb64c9f861ab751205c7, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -190,6 +194,10 @@ PrefabInstance:
     - target: {fileID: 6929496770407025633, guid: d62e5716d66deb64c9f861ab751205c7, type: 3}
       propertyPath: m_Name
       value: Mirror (4) Variant (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6929496770407025633, guid: d62e5716d66deb64c9f861ab751205c7, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 7727843634004534132, guid: d62e5716d66deb64c9f861ab751205c7, type: 3}
       propertyPath: m_RootOrder
@@ -665,6 +673,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mirror (4) Variant (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6929496770407025633, guid: d62e5716d66deb64c9f861ab751205c7, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 7727843634004534132, guid: d62e5716d66deb64c9f861ab751205c7, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -766,6 +778,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mirror (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4510833743108358180, guid: feb10ddefc2ae4399b82aaecd78bfddc, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: feb10ddefc2ae4399b82aaecd78bfddc, type: 3}
 --- !u!1001 &1255789557
@@ -822,6 +838,10 @@ PrefabInstance:
     - target: {fileID: 4510833743108358180, guid: feb10ddefc2ae4399b82aaecd78bfddc, type: 3}
       propertyPath: m_Name
       value: Mirror
+      objectReference: {fileID: 0}
+    - target: {fileID: 4510833743108358180, guid: feb10ddefc2ae4399b82aaecd78bfddc, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: feb10ddefc2ae4399b82aaecd78bfddc, type: 3}
@@ -904,6 +924,10 @@ PrefabInstance:
     - target: {fileID: 6929496770407025633, guid: d62e5716d66deb64c9f861ab751205c7, type: 3}
       propertyPath: m_Name
       value: Mirror (4) Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 6929496770407025633, guid: d62e5716d66deb64c9f861ab751205c7, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 7727843634004534132, guid: d62e5716d66deb64c9f861ab751205c7, type: 3}
       propertyPath: m_RootOrder
@@ -1005,6 +1029,10 @@ PrefabInstance:
     - target: {fileID: 4510833743108358180, guid: feb10ddefc2ae4399b82aaecd78bfddc, type: 3}
       propertyPath: m_Name
       value: Mirror (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4510833743108358180, guid: feb10ddefc2ae4399b82aaecd78bfddc, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: feb10ddefc2ae4399b82aaecd78bfddc, type: 3}

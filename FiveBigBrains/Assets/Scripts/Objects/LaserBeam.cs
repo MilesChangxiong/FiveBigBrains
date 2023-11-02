@@ -23,8 +23,9 @@ public class LaserBeam : MonoBehaviour
     IEnumerator DamagePlayer(Player player)
     {
         isDamagingPlayer = true;
-        player.TakeDamage(1);  // 每次掉一滴血
+        //player.TakeDamage(1);  // 每次掉一滴血
         yield return new WaitForSeconds(1f);  // 等待1秒
+        player.TakeDamage(1);  // 每次掉一滴血
         isDamagingPlayer = false;
     }
 
