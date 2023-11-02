@@ -62,7 +62,7 @@ public class TutoralSceneManager : MonoBehaviour
             movementInstructionText.text = "Taunt";
             attackIcon.SetActive(false);
             tauntIcon.SetActive(true);
-            textToDisplay.text = "Each balloon layer is a life"; 
+            textToDisplay.text = "Each balloon layer is a life, beat your opponent!"; 
             textToDisplay.enabled = true;
 
         }
