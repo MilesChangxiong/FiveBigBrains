@@ -577,7 +577,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -40}
+  m_AnchoredPosition: {x: 0, y: 40}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1376108711
@@ -978,6 +978,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 564529668}
     m_Modifications:
+    - target: {fileID: 5364847828105643918, guid: 24c656e364382da4c93c229245a5091a, type: 3}
+      propertyPath: m_text
+      value: Play
+      objectReference: {fileID: 0}
     - target: {fileID: 5364847828397241804, guid: 24c656e364382da4c93c229245a5091a, type: 3}
       propertyPath: m_Name
       value: StartButton
@@ -1052,7 +1056,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5364847828397241805, guid: 24c656e364382da4c93c229245a5091a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 40
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 5364847828397241805, guid: 24c656e364382da4c93c229245a5091a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
