@@ -41,7 +41,7 @@ public class MagnifyBullet : Bullet
         {
             box.Magnify(magnificationFactor);
 
-            owningPlayer.currentWeapon.ReportWeaponAction("HitIronBox");
+            ReportWeaponAction("HitIronBox");
 
             Destroy(gameObject);
         }
@@ -65,7 +65,7 @@ public class MagnifyBullet : Bullet
                 }
             }
 
-            owningPlayer.currentWeapon.ReportWeaponAction("HitIronBall");
+            ReportWeaponAction("HitIronBall");
 
             Destroy(gameObject);
         }
