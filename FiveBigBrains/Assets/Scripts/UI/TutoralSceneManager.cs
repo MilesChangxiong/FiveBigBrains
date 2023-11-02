@@ -13,8 +13,12 @@ public class TutoralSceneManager : MonoBehaviour
     public GameObject moveCheckPoint2;
     public GameObject jumpCheckPoint; 
     private bool hasShownText = false;
-
     
+    public GameObject moveIcon;
+    public GameObject jumpIcon;
+    public GameObject attackIcon;
+    public GameObject tauntIcon;
+
     public float blinkInterval = 0.5f;
     public Color blinkColor1=Color.yellow ;
     public Color blinkColor2 = Color.white;
@@ -26,6 +30,10 @@ public class TutoralSceneManager : MonoBehaviour
         moveCheckPoint1.SetActive(true);
         moveCheckPoint2.SetActive(true);
         jumpCheckPoint.SetActive(false);
+        moveIcon.SetActive(true);
+        jumpIcon.SetActive(false);
+        attackIcon.SetActive(false);
+        tauntIcon.SetActive(false);
         StartCoroutine(BlinkCheckpoints());
         
     }
@@ -35,24 +43,28 @@ public class TutoralSceneManager : MonoBehaviour
     {
          if(!isTrigger1)
         {
-            movementInstructionText.text = "A/D  Move  Arrows";
+            movementInstructionText.text = "Move";
         }
         else if(isTrigger1&&!isTrigger2)
         {
             moveCheckPoint1.SetActive(false);
             moveCheckPoint2.SetActive(false);
             jumpCheckPoint.SetActive(true);
-            movementInstructionText.text = "Space  Jump  Enter";
-        }else {
+            moveIcon.SetActive(false);
+            jumpIcon.SetActive(true);
+            movementInstructionText.text = "Jump";
+        }else if( isTrigger1&&isTrigger2&&GameManager.instance != null &&( !GameManager.instance.showLifeLayerText)){
             jumpCheckPoint.SetActive(false);
-            movementInstructionText.text = "R  Attack  L";
-        }
-        
-        if (!hasShownText && GameManager.instance != null && GameManager.instance.showLifeLayerText)
-        {
-            movementInstructionText.text = "Q  Taunt  Shift";
-            StartCoroutine(ShowTextTemporarily(2f)); // Show text for 5 seconds
-            hasShownText = true;
+            jumpIcon.SetActive(false);
+            attackIcon.SetActive(true);
+            movementInstructionText.text = "Attack";
+        }else{
+            movementInstructionText.text = "Taunt";
+            attackIcon.SetActive(false);
+            tauntIcon.SetActive(true);
+            textToDisplay.text = "Each balloon layer is a life"; 
+            textToDisplay.enabled = true;
+
         }
     }
     public void ReturnToMainMenu()
@@ -62,14 +74,6 @@ public class TutoralSceneManager : MonoBehaviour
         {
             GameManager.instance.RestartGameAfterVictory();
         }
-    }
-    private IEnumerator ShowTextTemporarily(float duration)
-    {
-        textToDisplay.enabled = true;
-        textToDisplay.text = "Each balloon layer is a life"; 
-        yield return new WaitForSeconds(duration);
-        textToDisplay.enabled = false;
-        GameManager.instance.showLifeLayerText = false;
     }
     
     private IEnumerator BlinkCheckpoints()
