@@ -9,7 +9,6 @@ public class Player : MonoBehaviour
     public PlayerControlType controlType;
     public Color playerColor;
     public float moveSpeed = 5.0f;
-    public float jumpForce = 16.0f;
     public int remainingLives = 3;
     private GameObject[] heads = new GameObject[3];
     public Weapon currentWeapon;
@@ -22,10 +21,17 @@ public class Player : MonoBehaviour
 
     private Renderer bodyRenderer;
 
-    private bool isGrounded = true;
     private Rigidbody2D rb;
 
     public bool isSpearAttacking = false;
+
+    // jump-related variables
+    public float jumpForce = 16.0f;
+    public int maxJumps = 2;
+    private int jumpsDone = 0;
+    private float nextJumpTime = 0f;
+    public float jumpInterval = 0.15f;
+    private bool isGrounded = true;
 
     // the variable to be used in Taunt; 
     public bool isTaunted = false;
@@ -84,7 +90,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         Attack();
-        Defense();
+        //Defense();
         Jump();
         Move();
         Taunt();
@@ -100,25 +106,9 @@ public class Player : MonoBehaviour
 
     public void initializePlayerWeapon()
     {
-        // Calculate the spawn position based on player's position
-        Vector2 spawnPosition = (Vector2)transform.position + new Vector2(0.18f, 0.09f);
-        // Set rotation on Z axis to 23 degrees
-        Quaternion rotation = Quaternion.Euler(0, 0, 23);
-
-        Weapon newWeapon = Instantiate(spearPrefab, spawnPosition, rotation, transform);
+        Weapon newWeapon = Instantiate(spearPrefab, transform);
         currentWeapon = newWeapon;
         currentWeapon.owningPlayer = this;
-
-        // Ingore collision between spears
-        GameObject[] spears = GameObject.FindGameObjectsWithTag("Spear"); // Find all spears with the same tag
-
-        foreach (GameObject otherSpear in spears)
-        {
-            if (otherSpear != currentWeapon.gameObject)
-            {
-                Physics2D.IgnoreCollision(currentWeapon.GetComponent<Collider2D>(), otherSpear.GetComponent<Collider2D>());
-            }
-        }
     }
 
     private void initializePlayerDirection()
@@ -240,15 +230,25 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        if (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (jumpsDone >= maxJumps)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
-            isGrounded = false;
+            return;
         }
-        else if (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.Return) && isGrounded)
+
+        if (Time.time < nextJumpTime)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
-            isGrounded = false;
+            return;
+        }
+
+        if (
+            (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.Space)) ||
+            (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.Return))
+        )
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0); // Reset the vertical velocity (to avoid adding forces together)
+            rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            jumpsDone++;
+            nextJumpTime = Time.time + jumpInterval;
         }
     }
 
@@ -491,19 +491,18 @@ public class Player : MonoBehaviour
                 if (point.normal.y > 0.5)  // Check if the collision is mostly upwards
                 {
                     isGrounded = true;
+                    jumpsDone = 0;
                     break;
                 }
             }
         }
     }
 
-
-    void OnTriggerEnter2D(Collider2D collision)
+    void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.CompareTag("Bullet"))
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Platform")
         {
-
+            isGrounded = false;
         }
     }
-
 }
