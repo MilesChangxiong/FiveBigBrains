@@ -8,40 +8,47 @@ public static class GameEnvironment
 }
 
 [System.Serializable]
-public class MapEvent
+public class GameEventBase
+{
+    public string Environment;
+
+    public GameEventBase()
+    {
+#if UNITY_EDITOR
+        Environment = GameEnvironment.UnityEditor;
+#elif UNITY_WEBGL
+            Environment = GameEnvironment.WebGL;
+#endif
+    }
+}
+
+[System.Serializable]
+public class MapEvent : GameEventBase
 {
     public string mapName;
     public MapStatistics statistics;
-    public string Environment;
 
     public MapEvent(string mapName, MapStatistics statistics)
     {
         this.mapName = mapName;
         this.statistics = statistics;
-
-        #if UNITY_EDITOR
-            Environment = GameEnvironment.UnityEditor;
-        #elif UNITY_WEBGL
-            Environment = GameEnvironment.WebGL;
-        #endif
     }
 }
 
 [System.Serializable]
-public class GameEvent
+public class WeaponEvent : GameEventBase
 {
-    public string EventType;
-    public string Environment;
+    public string weaponName;
+    public bool isFreezed;
+    public bool isOpponentTaunted;
+    public string eventType; // "bulletShot" or "bulletHit"
 
-    public GameEvent(string EventType)
+    public WeaponEvent(string weaponName, bool isFreezed, bool isOpponentTaunted, string eventType)
     {
-        this.EventType = EventType;
-
-        #if UNITY_EDITOR
-             Environment = GameEnvironment.UnityEditor;
-        #elif UNITY_WEBGL
-             Environment = GameEnvironment.WebGL;
-        #endif
+        this.weaponName = weaponName;
+        this.isFreezed = isFreezed;
+        this.isOpponentTaunted = isOpponentTaunted;
+        this.eventType = eventType;
     }
 }
 

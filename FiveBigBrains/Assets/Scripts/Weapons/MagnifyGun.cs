@@ -13,6 +13,7 @@ public class MagnifyGun : Weapon
     protected override void Attack()
     {
         MagnifyBullet bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        bullet.owningPlayer = owningPlayer;
         if (owningPlayer.currentDirection == 0)
         {
             bullet.speed *= -1;
