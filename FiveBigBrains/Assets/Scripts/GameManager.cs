@@ -182,7 +182,8 @@ public class GameManager : MonoBehaviour
         }
 
         if (currScene != "Tutorial"){
-            SwitchToDifferentRandomMap();
+            //SwitchToDifferentRandomMap();
+            SwitchToSequentialMap();
         }
     }
     
@@ -202,6 +203,15 @@ public class GameManager : MonoBehaviour
 
         int randomIndex = UnityEngine.Random.Range(0, availableMaps.Count);
         string nextMap = availableMaps[randomIndex];
+
+        SwitchScene(nextMap);
+    }
+
+    public void SwitchToSequentialMap()
+    {
+        int currentIndex = allMaps.IndexOf(currScene);  // Find the current scene's index
+        int nextIndex = (currentIndex + 1) % allMaps.Count;  // Get the next index, and wrap around if at the end
+        string nextMap = allMaps[nextIndex];  // Get the next map using the next index
 
         SwitchScene(nextMap);
     }
