@@ -22,7 +22,7 @@ public class FireBallShooterPowerUp : PowerUp
 
         Weapon newWeapon = Instantiate(fireBallShooterPrefab, player.transform.position + adjustedOffset, Quaternion.identity, player.transform);
         newWeapon.currentAmmo = 5;
-        newWeapon.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        newWeapon.transform.localScale = new Vector3(1f, 1f, 1f);
         player.currentWeapon = newWeapon;
         newWeapon.owningPlayer = player;
         Destroy(gameObject);  // Destroy the PowerUp from the scene
