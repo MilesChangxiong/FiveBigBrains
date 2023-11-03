@@ -107,7 +107,6 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator ShowInstruction(string text, float delay) {
         if((instructionBg != null)&&(sceneInstruction != null)){
-            print(2);
             instructionBg.enabled=true;
             sceneInstruction.enabled = true;
             sceneInstruction.text = text;
