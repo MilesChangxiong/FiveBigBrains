@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+
     }
 
     private void StartGame()
@@ -61,11 +62,13 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
         SceneManager.sceneLoaded += OnSceneLoaded;
         if(currScene=="WindRopeBallBox"){
-            StartCoroutine(ShowInstruction("Shoot pumpkins to grow, smash the blocks below.", 3f));
+            StartCoroutine(ShowInstruction("Shoot pumpkins, box to grow, smash the blocks below.", 3f));
         } else if(currScene=="Laser"){
             StartCoroutine(ShowInstruction("Mirror can be destroyed to change lazer", 3f));
         } else if(currScene=="FiregunAndIce"){
             StartCoroutine(ShowInstruction("Only fire can melt ice", 3f));
+        } else if (currScene=="Victory"){
+            instructionBg.enabled=false;
         }
     }
     private IEnumerator ShowInstruction(string text, float delay) {
