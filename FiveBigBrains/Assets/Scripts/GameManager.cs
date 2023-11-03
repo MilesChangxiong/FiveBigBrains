@@ -104,12 +104,16 @@ public class GameManager : MonoBehaviour
         }
     }
     private IEnumerator ShowInstruction(string text, float delay) {
-        instructionBg.enabled=true;
-        sceneInstruction.enabled = true;
-        sceneInstruction.text = text;
-        yield return new WaitForSeconds(delay);
-        sceneInstruction.enabled = false;
-        instructionBg.enabled=false;
+        if((instructionBg != null)&&(sceneInstruction != null)){
+            instructionBg.enabled=true;
+            sceneInstruction.enabled = true;
+            sceneInstruction.text = text;
+            yield return new WaitForSeconds(delay);
+            sceneInstruction.enabled = false;
+            instructionBg.enabled=false; 
+
+        }
+
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
