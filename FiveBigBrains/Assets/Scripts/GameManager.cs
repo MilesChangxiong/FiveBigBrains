@@ -61,7 +61,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-
+        // TODO:
+        instructionBg.enabled = false;
+        sceneInstruction.enabled = false;
     }
 
     private void StartGame()
@@ -105,6 +107,7 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator ShowInstruction(string text, float delay) {
         if((instructionBg != null)&&(sceneInstruction != null)){
+            print(2);
             instructionBg.enabled=true;
             sceneInstruction.enabled = true;
             sceneInstruction.text = text;
@@ -124,6 +127,10 @@ public class GameManager : MonoBehaviour
 
     void SwitchToVictoryScene()
     {
+        // TODO:
+        instructionBg.enabled = false;
+        sceneInstruction.enabled = false;
+        
         reportMapStatisticsAndReset();
         SceneManager.LoadScene("Victory");
         SceneManager.sceneLoaded += OnVictorySceneLoaded;
@@ -299,6 +306,8 @@ public class GameManager : MonoBehaviour
             // Copy relevant data from the old GameManager instance
             player1ScoreText = instance.player1ScoreText;
             player2ScoreText = instance.player2ScoreText;
+            sceneInstruction = instance.sceneInstruction;
+            instructionBg = instance.instructionBg;
 
             // Update ScoreText.text
             SetPlayerScoreTexts();
