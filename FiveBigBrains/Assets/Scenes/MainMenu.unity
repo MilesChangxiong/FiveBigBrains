@@ -377,6 +377,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 060f780f64757465fa200132dce87f6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentMapStats:
+    MovementDistance: 0
+    AttackCount: 0
+    JumpCount: 0
+    PowerupPickupCount: 0
+    TauntCount: 0
+    Player1PowerupPickupCount: 0
+    Player2PowerupPickupCount: 0
+    Player1Wins: 0
+    Player2Wins: 0
   player1Prefab: {fileID: 6946468557141905351, guid: 0ad06434421314f60a29769d4bbc439c, type: 3}
   player2Prefab: {fileID: 6946468557141905351, guid: 0ad06434421314f60a29769d4bbc439c, type: 3}
   defaultSpawnPoint1: {x: -10, y: 2, z: 0}
@@ -677,7 +687,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
