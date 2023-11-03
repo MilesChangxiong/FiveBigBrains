@@ -92,8 +92,9 @@ public class GameManager : MonoBehaviour
            instructionCoroutine = null;
         }
         if(currScene=="WindRopeBallBox"){
-            instructionCoroutine = StartCoroutine(ShowInstruction("Shoot pumpkins, box to grow, smash the blocks below.", 3f));
-        } else if(currScene=="Laser"){
+            instructionCoroutine = StartCoroutine(ShowInstruction("Fire at pumpkins and boxes to increase their size and control yourself not to fall", 3f));
+        }
+        else if(currScene=="Laser"){
            instructionCoroutine = StartCoroutine(ShowInstruction("Mirror can be destroyed to change lazer", 3f));
         } else if(currScene=="FiregunAndIce"){
             instructionCoroutine = StartCoroutine(ShowInstruction("Only fire can melt ice", 3f));
