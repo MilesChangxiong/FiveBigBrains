@@ -98,8 +98,9 @@ public class GameManager : MonoBehaviour
            instructionCoroutine = StartCoroutine(ShowInstruction("Mirror can be destroyed to change lazer", 3f));
         } else if(currScene=="FiregunAndIce"){
             instructionCoroutine = StartCoroutine(ShowInstruction("Only fire can melt ice", 3f));
-        } else if (currScene=="Victory"){
-            instructionBg.enabled=false;
+        } else{    
+            if (instructionBg != null) instructionBg.enabled = false;
+            if (sceneInstruction != null) sceneInstruction.enabled = false;
         }
     }
     private IEnumerator ShowInstruction(string text, float delay) {
