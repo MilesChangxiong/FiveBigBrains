@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
         SceneManager.sceneLoaded += OnSceneLoaded;
         if(currScene=="WindRopeBallBox"){
-            StartCoroutine(ShowInstruction("Shoot pumpkins, box to grow, smash the blocks below.", 3f));
+            StartCoroutine(ShowInstruction("Fire at pumpkins and boxes to increase their size and control yourself not to fall", 3f));
         } else if(currScene=="Laser"){
             StartCoroutine(ShowInstruction("Mirror can be destroyed to change lazer", 3f));
         } else if(currScene=="FiregunAndIce"){
