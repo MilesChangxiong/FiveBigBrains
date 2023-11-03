@@ -58,11 +58,13 @@ public class TutoralSceneManager : MonoBehaviour
             jumpIcon.SetActive(false);
             attackIcon.SetActive(true);
             movementInstructionText.text = "Attack";
+            textToDisplay.text = "Attack your opponent's head! Each of you has 3 lives.";
+            textToDisplay.enabled = true;
         }else{
             movementInstructionText.text = "Taunt";
             attackIcon.SetActive(false);
             tauntIcon.SetActive(true);
-            textToDisplay.text = "Each balloon layer is a life, beat your opponent!"; 
+            textToDisplay.text = "Taunt your opponent to facilitate an easier attack! "; 
             textToDisplay.enabled = true;
 
         }
