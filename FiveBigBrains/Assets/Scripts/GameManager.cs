@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI sceneInstruction;
     public Image instructionBg;
+    private Coroutine instructionCoroutine; 
 
     private void Start()
     {
@@ -61,12 +62,17 @@ public class GameManager : MonoBehaviour
         currScene=sceneName;
         SceneManager.LoadScene(sceneName);
         SceneManager.sceneLoaded += OnSceneLoaded;
+        if (instructionCoroutine != null)
+        {
+           StopCoroutine(instructionCoroutine);
+           instructionCoroutine = null;
+        }
         if(currScene=="WindRopeBallBox"){
-            StartCoroutine(ShowInstruction("Shoot pumpkins, box to grow, smash the blocks below.", 3f));
+            instructionCoroutine = StartCoroutine(ShowInstruction("Shoot pumpkins, box to grow, smash the blocks below.", 3f));
         } else if(currScene=="Laser"){
-            StartCoroutine(ShowInstruction("Mirror can be destroyed to change lazer", 3f));
+           instructionCoroutine = StartCoroutine(ShowInstruction("Mirror can be destroyed to change lazer", 3f));
         } else if(currScene=="FiregunAndIce"){
-            StartCoroutine(ShowInstruction("Only fire can melt ice", 3f));
+            instructionCoroutine = StartCoroutine(ShowInstruction("Only fire can melt ice", 3f));
         } else if (currScene=="Victory"){
             instructionBg.enabled=false;
         }
