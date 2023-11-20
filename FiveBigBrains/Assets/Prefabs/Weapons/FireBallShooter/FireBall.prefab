@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a211411c42bce437192822d0586e1ea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  owningPlayer: {fileID: 0}
   speed: 40
 --- !u!58 &2157293024417782580
 CircleCollider2D:
@@ -98,11 +99,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3cb7d50d69f24a538a1332598e82489, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  owningPlayer: {fileID: 0}
   speed: 3.82
   explosionRadius: 3
   explosionLayers:
     serializedVersion: 2
     m_Bits: 0
+  fireballExplosion: {fileID: 4444465637970479675, guid: 769d05c4acb30432faa75c7bcbb72ed8, type: 3}
 --- !u!1 &8153179679227975810
 GameObject:
   m_ObjectHideFlags: 0

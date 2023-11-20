@@ -10,6 +10,9 @@ public class FireBullet : Bullet
 
     private bool hasExploded = false;
 
+    // fireball explosion animation
+    public GameObject fireballExplosion;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -45,6 +48,11 @@ public class FireBullet : Bullet
 
     void Explode()
     {
+        // explosion animation
+        GameObject explosion = (GameObject)Instantiate (fireballExplosion);
+        explosion.transform.position = transform.position;
+
+
         // use OverlapCircleAll to detect objects in explosion area
         Collider2D[] objectsInExplosionRadius = Physics2D.OverlapCircleAll(transform.position, explosionRadius, explosionLayers);
 
