@@ -240,6 +240,8 @@ MonoBehaviour:
   isFreezed: 0
   headResizeDuration: 0.5
   isDefensing: 0
+  isBeingDamagedByLaser: 0
+  headExplosion: {fileID: 7717716009886529638, guid: d56755cbda893490eb72d1734fc2ca54, type: 3}
 --- !u!212 &8023998753856976036
 SpriteRenderer:
   m_ObjectHideFlags: 0
