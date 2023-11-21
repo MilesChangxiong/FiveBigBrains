@@ -59,6 +59,9 @@ public class Player : MonoBehaviour
 
     public bool isBeingDamagedByLaser;
 
+    // head explosion object
+    public GameObject headExplosion;
+
     public void TakeDamage(int damageAmount)
     {
         if (isDefensing)
@@ -70,15 +73,28 @@ public class Player : MonoBehaviour
         {
             if (i < heads.Length && i >= 0 && heads[i] != null)
             {
+                // when a head is destroyed, display the explosion
+                explodeHead();
                 Destroy(heads[i]);
             }
         }
         remainingLives -= damageAmount;
+
         if (remainingLives <= 0)
         {
             Die();
             OnPlayerDied?.Invoke(this);
         }
+    }
+
+    // function to instantiate head explosion
+    void explodeHead() {
+        GameObject explosion = (GameObject)Instantiate (headExplosion);
+        //explosion.transform.position = transform.position;
+
+        float yOffset = 1.8f; // Adjust this value to control how much above the current position
+        Vector3 newPosition = transform.position + new Vector3(0f, yOffset, 0f);
+        explosion.transform.position = newPosition;
     }
 
     private void Start()
