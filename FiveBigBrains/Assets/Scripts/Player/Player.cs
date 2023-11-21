@@ -51,8 +51,12 @@ public class Player : MonoBehaviour
 
     // the shooting-angle related variables
     private float shootingAngle = 0f; // 0 means straight ahead
-    private float maxShootingAngle = 45f;
-    private float angleAdjustmentSpeed = 90f; // per second
+    private float maxShootingAngle = 80f;
+    //private float angleAdjustmentSpeed = 90f; // per second
+    private float angleOscillationSpeed = 2.0f;
+    private float angleOscillationAmplitude = 75.0f;
+    public float weaponPickupTime;
+
 
     public delegate void PlayerLivesChanged(Player player);
     public event PlayerLivesChanged OnPlayerDied;
@@ -198,20 +202,34 @@ public class Player : MonoBehaviour
             return;
         }
 
-        float adjustment = 0;
+        //float adjustment = 0;
 
-        if (controlType == PlayerControlType.WASD)
-        {
-            if (Input.GetKey(KeyCode.W)) adjustment = 1;
-            if (Input.GetKey(KeyCode.S)) adjustment = -1;
-        }
-        else if (controlType == PlayerControlType.ARROW_KEYS)
-        {
-            if (Input.GetKey(KeyCode.UpArrow)) adjustment = 1;
-            if (Input.GetKey(KeyCode.DownArrow)) adjustment = -1;
-        }
+        //if (controlType == PlayerControlType.WASD)
+        //{
+        //    if (Input.GetKey(KeyCode.W)) adjustment = 1;
+        //    if (Input.GetKey(KeyCode.S)) adjustment = -1;
+        //}
+        //else if (controlType == PlayerControlType.ARROW_KEYS)
+        //{
+        //    if (Input.GetKey(KeyCode.UpArrow)) adjustment = 1;
+        //    if (Input.GetKey(KeyCode.DownArrow)) adjustment = -1;
+        //}
 
-        shootingAngle += adjustment * angleAdjustmentSpeed * Time.deltaTime;
+        //shootingAngle += adjustment * angleAdjustmentSpeed * Time.deltaTime;
+        //shootingAngle = Mathf.Clamp(shootingAngle, -maxShootingAngle, maxShootingAngle);
+
+        //if (currentWeapon != null)
+        //{
+        //    MagnifyGun gun = currentWeapon.GetComponent<MagnifyGun>();
+        //    if (gun != null)
+        //    {
+        //        gun.SetShootingAngle(shootingAngle);
+        //    }
+        //}
+
+        // Automatically swing the shooting angle using a sine wave function, based on weaponPickupTime
+        float timeSincePickedUp = Time.time - weaponPickupTime;
+        shootingAngle = Mathf.Sin(timeSincePickedUp * angleOscillationSpeed) * angleOscillationAmplitude;
         shootingAngle = Mathf.Clamp(shootingAngle, -maxShootingAngle, maxShootingAngle);
 
         if (currentWeapon != null)
