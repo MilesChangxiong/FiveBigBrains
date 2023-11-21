@@ -92,6 +92,10 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (Time.timeScale == 0f)
+        {
+            return;
+        }
         Attack();
         //Defense();
         Jump();
@@ -279,11 +283,11 @@ public class Player : MonoBehaviour
 
         if (controlType == PlayerControlType.WASD)
         {
-            h = Input.GetAxis("HorizontalWASD");
+            h = Input.GetAxisRaw("HorizontalWASD");
         }
         else if (controlType == PlayerControlType.ARROW_KEYS)
         {
-            h = Input.GetAxis("Horizontal");
+            h = Input.GetAxisRaw("Horizontal");
         }
 
         if (h > 0.01f)
