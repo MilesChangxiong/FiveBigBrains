@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
             "FiregunAndIce",
             "Laser",
             "WindRopeBallBox",
+            "Bridge",
         };
     public MapStatistics currentMapStats = new MapStatistics();
 
@@ -118,6 +119,9 @@ public class GameManager : MonoBehaviour
         else if (currScene == "FiregunAndIce")
         {
             instructionCoroutine = StartCoroutine(ShowInstruction("Only fire can melt ice", 3f));
+        }
+        else if(currScene=="Bridge"){
+            instructionCoroutine = StartCoroutine(ShowInstruction("Bridge can be destroyed", 3f));
         }
         else
         {

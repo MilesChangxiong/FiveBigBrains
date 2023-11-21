@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Laser.unity
     guid: d7a358abe467b4c40a0972f4fd2bbd7e
+  - enabled: 1
+    path: Assets/Scenes/Bridge.unity
+    guid: 3aca4919ec667417ab25055db066554f
   m_configObjects: {}
