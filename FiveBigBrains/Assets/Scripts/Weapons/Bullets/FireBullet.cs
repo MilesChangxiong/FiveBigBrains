@@ -52,18 +52,19 @@ public class FireBullet : Bullet
         GameObject explosion = (GameObject)Instantiate (fireballExplosion);
         explosion.transform.position = transform.position;
 
+        string explosionId = System.Guid.NewGuid().ToString();
 
         // use OverlapCircleAll to detect objects in explosion area
         Collider2D[] objectsInExplosionRadius = Physics2D.OverlapCircleAll(transform.position, explosionRadius, explosionLayers);
 
         foreach (Collider2D collider in objectsInExplosionRadius)
         {
-            Player player = collider.GetComponent<Player>();
+            PlayerBodyParts playerBodyPart = collider.GetComponent<PlayerBodyParts>();
             Ice iceBlock = collider.GetComponent<Ice>();
 
-            if (player)
+            if (playerBodyPart)
             {
-                player.TakeDamage(1);
+                playerBodyPart.transform.parent.GetComponent<Player>().TakeDamageWithEventID(1, explosionId);
                 ReportWeaponAction("HitPlayer");
             }
 

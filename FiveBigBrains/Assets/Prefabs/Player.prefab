@@ -69,6 +69,7 @@ GameObject:
   - component: {fileID: 3879316965201343526}
   - component: {fileID: 7805304513352407799}
   - component: {fileID: 6981243174865243489}
+  - component: {fileID: 525105705753972396}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -169,6 +170,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.9774483, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &525105705753972396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3514406806499622787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05b1cb8d7785b4245a1a43b22279d32f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3599383298752291881
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,11 +250,16 @@ MonoBehaviour:
   maxJumps: 2
   jumpInterval: 0.15
   isTaunted: 0
-  isFreezed: 0
+  isCrouching: 0
   headResizeDuration: 0.5
   isDefensing: 0
+  weaponPickupTime: 0
+  bodyTransform: {fileID: 3879316965201343526}
+  crouchScale: {x: 1, y: 0.5, z: 1}
+  crouchPositionOffset: {x: 0, y: -0.25, z: 0}
   isBeingDamagedByLaser: 0
   headExplosion: {fileID: 7717716009886529638, guid: d56755cbda893490eb72d1734fc2ca54, type: 3}
+  hasReportedDie: 0
 --- !u!212 &8023998753856976036
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -301,7 +319,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3599383298752291881}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -439,6 +457,7 @@ GameObject:
   - component: {fileID: 3114879359434381994}
   - component: {fileID: 3998833540566129098}
   - component: {fileID: 5869858506283157733}
+  - component: {fileID: 1453374369445050441}
   m_Layer: 0
   m_Name: Head1
   m_TagString: Untagged
@@ -529,6 +548,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &1453374369445050441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6213017134413075068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05b1cb8d7785b4245a1a43b22279d32f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7241883567474499719
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,6 +571,7 @@ GameObject:
   - component: {fileID: 5189790719917376217}
   - component: {fileID: 6420116817207467974}
   - component: {fileID: 1877983294791406520}
+  - component: {fileID: 2560144578910318722}
   m_Layer: 0
   m_Name: Head3
   m_TagString: Untagged
@@ -630,6 +662,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &2560144578910318722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7241883567474499719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05b1cb8d7785b4245a1a43b22279d32f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7254705613712355172
 GameObject:
   m_ObjectHideFlags: 0
@@ -641,6 +685,7 @@ GameObject:
   - component: {fileID: 5604802893323632691}
   - component: {fileID: 4586887199044377925}
   - component: {fileID: 5561764551634189919}
+  - component: {fileID: 8018840998081325374}
   m_Layer: 0
   m_Name: Head2
   m_TagString: Untagged
@@ -731,3 +776,15 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &8018840998081325374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7254705613712355172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05b1cb8d7785b4245a1a43b22279d32f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
