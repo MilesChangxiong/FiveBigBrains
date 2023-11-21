@@ -14,6 +14,10 @@ public class MenuButton : MonoBehaviour
 
     public void OnPauseButtonClick()
     {
+        if (MenuBgObject.activeSelf)
+        {
+            return;
+        }
         GameManager.instance.PauseGame();
         MenuBgObject.SetActive(true);
     }

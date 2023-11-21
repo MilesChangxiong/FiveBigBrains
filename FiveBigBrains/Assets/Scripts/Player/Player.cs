@@ -62,6 +62,8 @@ public class Player : MonoBehaviour
     // head explosion object
     public GameObject headExplosion;
 
+    public bool hasReportedDie = false;
+
     public void TakeDamage(int damageAmount)
     {
         if (isDefensing)
@@ -83,7 +85,11 @@ public class Player : MonoBehaviour
         if (remainingLives <= 0)
         {
             Die();
-            OnPlayerDied?.Invoke(this);
+            if (!hasReportedDie)
+            {
+                hasReportedDie = true;
+                OnPlayerDied?.Invoke(this);
+            }
         }
     }
 
