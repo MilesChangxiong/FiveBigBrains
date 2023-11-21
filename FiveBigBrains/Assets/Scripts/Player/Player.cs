@@ -74,8 +74,8 @@ public class Player : MonoBehaviour
             if (i < heads.Length && i >= 0 && heads[i] != null)
             {
                 // when a head is destroyed, display the explosion
-                explodeHead();
                 Destroy(heads[i]);
+                explodeHead();
             }
         }
         remainingLives -= damageAmount;
@@ -92,9 +92,12 @@ public class Player : MonoBehaviour
         GameObject explosion = (GameObject)Instantiate (headExplosion);
         //explosion.transform.position = transform.position;
 
-        float yOffset = 1.8f; // Adjust this value to control how much above the current position
-        Vector3 newPosition = transform.position + new Vector3(0f, yOffset, 0f);
-        explosion.transform.position = newPosition;
+        // float yOffset = 1.8f; // Adjust this value to control how much above the current position
+        // Vector3 newPosition = transform.position + new Vector3(0f, yOffset, 0f);
+        // explosion.transform.position = newPosition;
+        Vector3 eyeTrans = transform.Find("Eye").position;
+        //explosion.transform.position = this.transform.position;
+        explosion.transform.position = eyeTrans;
     }
 
     private void Start()
