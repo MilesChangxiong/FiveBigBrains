@@ -19,6 +19,7 @@ public abstract class PowerUp : MonoBehaviour
         {
             Player player = col.gameObject.GetComponent<Player>();
             ActivatePowerUp(player);
+            player.weaponPickupTime = Time.time;
             hasPickedUp = true;
 
             // Data-report related logic

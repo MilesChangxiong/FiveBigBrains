@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
 
     // the variable to be used in Taunt; 
     public bool isTaunted = false;
-    public bool isFreezed = false;
+    public bool isCrouching = false;
     private float tauntCooldown = 0f;
     private float tauntDuration = 6f;
     private float freezeDuration = 2f;
@@ -51,8 +51,25 @@ public class Player : MonoBehaviour
 
     // the shooting-angle related variables
     private float shootingAngle = 0f; // 0 means straight ahead
-    private float maxShootingAngle = 45f;
-    private float angleAdjustmentSpeed = 90f; // per second
+    private float maxShootingAngle = 80f;
+    //private float angleAdjustmentSpeed = 90f; // per second
+    private float angleOscillationSpeed = 2.0f;
+    private float angleOscillationAmplitude = 75.0f;
+    public float weaponPickupTime;
+
+    // Crouch
+    [SerializeField] private Transform bodyTransform; // Assign this in the inspector
+    private Vector3 originalBodyScale; // To store the original scale
+    private Vector3 originalBodyPosition; // To store the original position
+    public Vector3 crouchScale = new Vector3(1f, 0.5f, 1f); // Adjust as needed
+    public Vector3 crouchPositionOffset = new Vector3(0f, -0.25f, 0f); // Adjust as needed
+
+    // Taunt
+    public const float headEnlargeVolume = 0.35f;
+    public const float headShrinkRate = 0.0001f;
+    private float currentHeadScale = 1f;
+    private Vector2 originalColliderSize;
+
 
     public delegate void PlayerLivesChanged(Player player);
     public event PlayerLivesChanged OnPlayerDied;
@@ -61,6 +78,11 @@ public class Player : MonoBehaviour
 
     // head explosion object
     public GameObject headExplosion;
+
+    // Taking Damage
+    private HashSet<string> processedEvents = new HashSet<string>();
+
+    public bool hasReportedDie = false;
 
     public void TakeDamage(int damageAmount)
     {
@@ -83,13 +105,31 @@ public class Player : MonoBehaviour
         if (remainingLives <= 0)
         {
             Die();
-            OnPlayerDied?.Invoke(this);
+            if (!hasReportedDie)
+            {
+                hasReportedDie = true;
+                OnPlayerDied?.Invoke(this);
+            }
         }
+
+        updateHeadHitBox();
+    }
+
+    public void TakeDamageWithEventID(int damageAmount, string interactionId)
+    {
+        if (processedEvents.Contains(interactionId))
+        {
+            return;
+        }
+        processedEvents.Add(interactionId);
+
+        TakeDamage(damageAmount);
     }
 
     // function to instantiate head explosion
-    void explodeHead() {
-        GameObject explosion = (GameObject)Instantiate (headExplosion);
+    void explodeHead()
+    {
+        GameObject explosion = (GameObject)Instantiate(headExplosion);
         //explosion.transform.position = transform.position;
 
         // float yOffset = 1.8f; // Adjust this value to control how much above the current position
@@ -107,15 +147,32 @@ public class Player : MonoBehaviour
         initializePlayerWeapon();
         initializePlayerDirection();
         initializePlayerHeads();
+
+        originalBodyScale = bodyTransform.localScale;
+        originalBodyPosition = bodyTransform.localPosition;
+        Transform headCollisionBoxTransform = transform.Find("HeadCollisionBox");
+        if (headCollisionBoxTransform != null)
+        {
+            BoxCollider2D collider = headCollisionBoxTransform.GetComponent<BoxCollider2D>();
+            if (collider != null)
+            {
+                originalColliderSize = collider.size;
+            }
+        }
     }
 
     private void Update()
     {
+        if (Time.timeScale == 0f)
+        {
+            return;
+        }
         Attack();
         //Defense();
         Jump();
         Move();
-        Taunt();
+        Crouch();
+        ShrinkHead();
         CheckForFallDamage();
         UpdateShootingAngle();
     }
@@ -163,14 +220,9 @@ public class Player : MonoBehaviour
 
     private void Attack()
     {
-        if (isFreezed)
-        {
-            return;
-        }
-
         if (
-            (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.R) && currentWeapon != null) ||
-            (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.L) && currentWeapon != null)
+            (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.Space) && currentWeapon != null) ||
+            (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.Return) && currentWeapon != null)
            )
         {
             if (currentWeapon.TryAttack())
@@ -191,20 +243,34 @@ public class Player : MonoBehaviour
             return;
         }
 
-        float adjustment = 0;
+        //float adjustment = 0;
 
-        if (controlType == PlayerControlType.WASD)
-        {
-            if (Input.GetKey(KeyCode.W)) adjustment = 1;
-            if (Input.GetKey(KeyCode.S)) adjustment = -1;
-        }
-        else if (controlType == PlayerControlType.ARROW_KEYS)
-        {
-            if (Input.GetKey(KeyCode.UpArrow)) adjustment = 1;
-            if (Input.GetKey(KeyCode.DownArrow)) adjustment = -1;
-        }
+        //if (controlType == PlayerControlType.WASD)
+        //{
+        //    if (Input.GetKey(KeyCode.W)) adjustment = 1;
+        //    if (Input.GetKey(KeyCode.S)) adjustment = -1;
+        //}
+        //else if (controlType == PlayerControlType.ARROW_KEYS)
+        //{
+        //    if (Input.GetKey(KeyCode.UpArrow)) adjustment = 1;
+        //    if (Input.GetKey(KeyCode.DownArrow)) adjustment = -1;
+        //}
 
-        shootingAngle += adjustment * angleAdjustmentSpeed * Time.deltaTime;
+        //shootingAngle += adjustment * angleAdjustmentSpeed * Time.deltaTime;
+        //shootingAngle = Mathf.Clamp(shootingAngle, -maxShootingAngle, maxShootingAngle);
+
+        //if (currentWeapon != null)
+        //{
+        //    MagnifyGun gun = currentWeapon.GetComponent<MagnifyGun>();
+        //    if (gun != null)
+        //    {
+        //        gun.SetShootingAngle(shootingAngle);
+        //    }
+        //}
+
+        // Automatically swing the shooting angle using a sine wave function, based on weaponPickupTime
+        float timeSincePickedUp = Time.time - weaponPickupTime;
+        shootingAngle = Mathf.Sin(timeSincePickedUp * angleOscillationSpeed) * angleOscillationAmplitude;
         shootingAngle = Mathf.Clamp(shootingAngle, -maxShootingAngle, maxShootingAngle);
 
         if (currentWeapon != null)
@@ -220,7 +286,7 @@ public class Player : MonoBehaviour
     // instantiate a shield in front of the player and destroy it after 1s
     private void Defense()
     {
-        if (isFreezed)
+        if (isCrouching)
         {
             return;
         }
@@ -270,8 +336,8 @@ public class Player : MonoBehaviour
         }
 
         if (
-            (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.Space)) ||
-            (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.Return))
+            (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.W)) ||
+            (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.UpArrow))
         )
         {
             rb.velocity = new Vector2(rb.velocity.x, 0); // Reset the vertical velocity (to avoid adding forces together)
@@ -287,22 +353,130 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void Crouch()
+    {
+        if (
+            (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.S)) ||
+            (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.DownArrow))
+        )
+        {
+            isCrouching = true;
+            CheckOpponentHeadSize(); // check if triggers a taunting.
+            // Apply crouch visual effect
+            changeHeadsPosition(1.29f);
+            bodyTransform.localScale = crouchScale;
+            bodyTransform.localPosition += crouchPositionOffset;
+        }
+        else if (
+            (controlType == PlayerControlType.WASD && Input.GetKeyUp(KeyCode.S)) ||
+            (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyUp(KeyCode.DownArrow))
+        )
+        {
+            isCrouching = false;
+            // Reset the body to its original scale and position
+            changeHeadsPosition(2f);
+            bodyTransform.localScale = originalBodyScale;
+            bodyTransform.localPosition = originalBodyPosition;
+        }
+    }
+
+    private void CheckOpponentHeadSize()
+    {
+        // Check if this player is crouching and facing away from the opponent
+        if (IsFacingAwayFromOpponent())
+        {
+            // Enlarge opponent's head
+            opponent.EnlargeHead();
+        }
+    }
+
+    private bool IsFacingAwayFromOpponent()
+    {
+        return (currentDirection == 0 && opponent.transform.position.x > transform.position.x) ||
+               (currentDirection == 1 && opponent.transform.position.x < transform.position.x);
+    }
+
+    public void EnlargeHead()
+    {
+        float currentVolume = 4f / 3f * Mathf.PI * Mathf.Pow(currentHeadScale / 2f, 3);
+        float newVolume = currentVolume + headEnlargeVolume;
+        currentHeadScale = Mathf.Pow((3f * newVolume) / (4f * Mathf.PI), 1f / 3f) * 2f;
+        updateHeadSize();  
+    }
+
+    void updateHeadSize()
+    {
+        Transform head3Trans = transform.Find("Head3");
+        Transform head2Trans = transform.Find("Head2");
+        Transform head1Trans = transform.Find("Head1");
+
+        if (head3Trans != null)
+        {
+            head3Trans.localScale = 2 * new Vector3(currentHeadScale, currentHeadScale, currentHeadScale);
+        }
+        if (head2Trans != null)
+        {
+            head2Trans.localScale = 1.5f * new Vector3(currentHeadScale, currentHeadScale, currentHeadScale);
+        }
+        if (head1Trans != null)
+        {
+            head1Trans.localScale = new Vector3(currentHeadScale, currentHeadScale, currentHeadScale);
+        }
+
+        updateHeadHitBox();
+    }
+
+    void updateHeadHitBox()
+    {
+        Transform headCollisionBoxTransform = transform.Find("HeadCollisionBox");
+        if (headCollisionBoxTransform != null)
+        {
+            BoxCollider2D collider = headCollisionBoxTransform.GetComponent<BoxCollider2D>();
+            if (collider != null)
+            {
+                float scaleMultiplier = currentHeadScale;
+
+                if (transform.Find("Head3") == null)
+                {
+                    scaleMultiplier *= 1.5f / 2.0f;  // 如果head3不在了
+                }
+                else if (transform.Find("Head2") == null)
+                {
+                    scaleMultiplier *= 1.0f / 2.0f;  // 如果head2不在了
+                }
+
+                collider.size = originalColliderSize * scaleMultiplier;
+            }
+        }
+    }
+
+    private void ShrinkHead()
+    {
+        currentHeadScale = Mathf.Max(1f, currentHeadScale - headShrinkRate);
+        updateHeadSize();
+    }
+
+    public void ResetHeadSize()
+    {
+        print(0);
+    }
+
     private void Move()
     {
         float h = 0;
 
-        if (isFreezed || isSpearAttacking)
+        if (isSpearAttacking)
         {
             return;
         }
 
         if (controlType == PlayerControlType.WASD)
         {
-            h = Input.GetAxis("HorizontalWASD");
+            h = Input.GetAxisRaw("HorizontalWASD");
         }
         else if (controlType == PlayerControlType.ARROW_KEYS)
         {
-            h = Input.GetAxis("Horizontal");
+            h = Input.GetAxisRaw("Horizontal");
         }
 
         if (h > 0.01f)
@@ -315,55 +489,37 @@ public class Player : MonoBehaviour
             TurnLeft();
         }
 
+        // reduce speed if player is crouching
+        float _moveSpeed;
+        if (isCrouching)
+        {
+            _moveSpeed = moveSpeed * 0.3f;
+        }
+        else
+        {
+            _moveSpeed = moveSpeed;
+        }
+
         Vector3 moveDirection = new Vector3(h, 0, 0).normalized;
-        transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
+        transform.Translate(moveDirection * _moveSpeed * Time.deltaTime, Space.World);
 
         // Data-report related logic
         if (GameManager.instance != null && GameManager.instance.currentMapStats != null)
         {
-            GameManager.instance.currentMapStats.MovementDistance += moveDirection.magnitude * moveSpeed * Time.deltaTime;
+            GameManager.instance.currentMapStats.MovementDistance += moveDirection.magnitude * _moveSpeed * Time.deltaTime;
         }
     }
 
-    private void Taunt()
-    {
-        if (tauntCooldown > 0)
-            tauntCooldown -= Time.deltaTime;
 
-        // Handle WASD player taunt button
-        if (
-            (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.Q) && tauntCooldown <= 0) ||
-            (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.RightShift) && tauntCooldown <= 0)
-        )
-        {
-            StartCoroutine(TauntSelf());
-            StartCoroutine(TauntOpponent());
-            tauntCooldown = 6f;
-
-            // Data-report related logic
-            if (GameManager.instance != null && GameManager.instance.currentMapStats != null)
-            {
-                GameManager.instance.currentMapStats.TauntCount += 1;
-            }
-        }
-    }
 
     // Side-effect for self after taunting
     private IEnumerator TauntSelf()
     {
         initialHealthOnFreeze = remainingLives;
-        if (transform.position.x < opponent.transform.position.x)
-        {
-            TurnLeft();
-        }
-        else
-        {
-            TurnRight();
-        }
 
-        isFreezed = true;
+        isCrouching = true;
         yield return new WaitForSeconds(freezeDuration);
-        isFreezed = false;
+        isCrouching = false;
 
         ReportHealthLostDuringTauntFreeze(initialHealthOnFreeze - remainingLives);
     }
@@ -408,34 +564,51 @@ public class Player : MonoBehaviour
         }
     }
 
-
-
-    // Enlarge the head when the player is taunted
-    private void EnlargeHead()
+    void changeHeadsPosition(float posY)
     {
-        Transform head3Trans = transform.Find("Head3");
-        Transform head2Trans = transform.Find("Head2");
-        Transform head1Trans = transform.Find("Head1");
-        if (head3Trans != null)
+        List<Transform> Transforms = new List<Transform> {
+            transform.Find("Head3"),
+            transform.Find("Head2"),
+            transform.Find("Head1"),
+            transform.Find("Eye")
+        };
+
+        foreach (Transform trans in Transforms)
         {
-            head3Trans.localScale *= tauntedHeadSizeRatio;
-        }
-        if (head2Trans != null)
-        {
-            head2Trans.localScale *= tauntedHeadSizeRatio;
-        }
-        if (head1Trans != null)
-        {
-            head1Trans.localScale *= tauntedHeadSizeRatio;
+            if (trans != null)
+            {
+                trans.localPosition = new Vector3(trans.localPosition.x, posY, trans.localPosition.z);
+            }
         }
 
-        Transform headCollisionBoxTransform = transform.Find("HeadCollisionBox");
-        if (headCollisionBoxTransform != null)
-        {
-            BoxCollider2D collider = headCollisionBoxTransform.GetComponent<BoxCollider2D>();
-            collider.size *= tauntedHeadSizeRatio;
-        }
     }
+
+    //// Enlarge the head when the player is taunted
+    //private void EnlargeHead()
+    //{
+    //    Transform head3Trans = transform.Find("Head3");
+    //    Transform head2Trans = transform.Find("Head2");
+    //    Transform head1Trans = transform.Find("Head1");
+    //    if (head3Trans != null)
+    //    {
+    //        head3Trans.localScale *= tauntedHeadSizeRatio;
+    //    }
+    //    if (head2Trans != null)
+    //    {
+    //        head2Trans.localScale *= tauntedHeadSizeRatio;
+    //    }
+    //    if (head1Trans != null)
+    //    {
+    //        head1Trans.localScale *= tauntedHeadSizeRatio;
+    //    }
+
+    //    Transform headCollisionBoxTransform = transform.Find("HeadCollisionBox");
+    //    if (headCollisionBoxTransform != null)
+    //    {
+    //        BoxCollider2D collider = headCollisionBoxTransform.GetComponent<BoxCollider2D>();
+    //        collider.size *= tauntedHeadSizeRatio;
+    //    }
+    //}
 
     private IEnumerator ChangeHeadSize(float targetSizeRatio, float duration)
     {
@@ -485,31 +658,31 @@ public class Player : MonoBehaviour
             collider.size = initialColliderSize * targetSizeRatio;
     }
 
-    private void ShrinkHead()
-    {
-        Transform head3Trans = transform.Find("Head3");
-        Transform head2Trans = transform.Find("Head2");
-        Transform head1Trans = transform.Find("Head1");
-        if (head3Trans != null)
-        {
-            head3Trans.localScale /= tauntedHeadSizeRatio;
-        }
-        if (head2Trans != null)
-        {
-            head2Trans.localScale /= tauntedHeadSizeRatio;
-        }
-        if (head1Trans != null)
-        {
-            head1Trans.localScale /= tauntedHeadSizeRatio;
-        }
+    //private void ShrinkHead()
+    //{
+    //    Transform head3Trans = transform.Find("Head3");
+    //    Transform head2Trans = transform.Find("Head2");
+    //    Transform head1Trans = transform.Find("Head1");
+    //    if (head3Trans != null)
+    //    {
+    //        head3Trans.localScale /= tauntedHeadSizeRatio;
+    //    }
+    //    if (head2Trans != null)
+    //    {
+    //        head2Trans.localScale /= tauntedHeadSizeRatio;
+    //    }
+    //    if (head1Trans != null)
+    //    {
+    //        head1Trans.localScale /= tauntedHeadSizeRatio;
+    //    }
 
-        Transform headCollisionBoxTransform = transform.Find("HeadCollisionBox");
-        if (headCollisionBoxTransform != null)
-        {
-            BoxCollider2D collider = headCollisionBoxTransform.GetComponent<BoxCollider2D>();
-            collider.size /= tauntedHeadSizeRatio;
-        }
-    }
+    //    Transform headCollisionBoxTransform = transform.Find("HeadCollisionBox");
+    //    if (headCollisionBoxTransform != null)
+    //    {
+    //        BoxCollider2D collider = headCollisionBoxTransform.GetComponent<BoxCollider2D>();
+    //        collider.size /= tauntedHeadSizeRatio;
+    //    }
+    //}
 
     void CheckForFallDamage()
     {
@@ -539,7 +712,7 @@ public class Player : MonoBehaviour
         }
 
         //
-        if (isFreezed)
+        if (isCrouching)
         {
             ReportHealthLostDuringTauntFreeze(initialHealthOnFreeze - remainingLives);
         }

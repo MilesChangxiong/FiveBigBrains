@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
 
     public Player player1Prefab;
     public Player player2Prefab;
-    
+
     public static Player player1Instance;
     public static Player player2Instance;
 
@@ -53,26 +53,40 @@ public class GameManager : MonoBehaviour
     public int WinningScore = 2; // TODO: changable in MainMenu
     public string winnerName; // this is used in Victory scene.
 
-    public string currScene; 
+    public string currScene;
     public bool showLifeLayerText; //if its true, will display"layers=life" text 
 
     public TextMeshProUGUI sceneInstruction;
     public Image instructionBg;
-    private Coroutine instructionCoroutine; 
+    private Coroutine instructionCoroutine;
+
+    // Time Scale
+    private int timeScale = 1;
+    private bool isSlowMotion = false;
+
+    // Count Down
+    public TextMeshProUGUI countDownText;
+    public bool isCountingDown = false;
+    private bool isGamePaused = false;
+    private const float COUNT_DOWN_TIME = 3.0f;
+    private float currentCountDownTime = COUNT_DOWN_TIME;
+    
 
     private void Start()
     {
         // TODO:
         instructionBg.enabled = false;
         sceneInstruction.enabled = false;
+        countDownText.text = "";
     }
 
     private void StartGame()
     {
         SpawnPlayers();
     }
-    
-    private void Update(){
+
+    private void Update()
+    {
         CheckShowLifeText();
     }
 
@@ -91,34 +105,40 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
         if (instructionCoroutine != null)
         {
-           StopCoroutine(instructionCoroutine);
-           instructionCoroutine = null;
+            StopCoroutine(instructionCoroutine);
+            instructionCoroutine = null;
         }
-        if(currScene=="WindRopeBallBox"){
+        if (currScene == "WindRopeBallBox")
+        {
             instructionCoroutine = StartCoroutine(ShowInstruction("Fire at pumpkins and boxes to increase their size and control yourself not to fall", 3f));
         }
-        else if(currScene=="Laser"){
-           instructionCoroutine = StartCoroutine(ShowInstruction("Mirror can be destroyed to change lazer", 3f));
-        } 
-        else if(currScene=="FiregunAndIce"){
+        else if (currScene == "Laser")
+        {
+            instructionCoroutine = StartCoroutine(ShowInstruction("Mirror can be destroyed to change lazer", 3f));
+        }
+        else if (currScene == "FiregunAndIce")
+        {
             instructionCoroutine = StartCoroutine(ShowInstruction("Only fire can melt ice", 3f));
-        } 
+        }
         else if(currScene=="Bridge"){
             instructionCoroutine = StartCoroutine(ShowInstruction("Bridge can be destroyed", 3f));
-        } 
-        else{    
+        }
+        else
+        {
             if (instructionBg != null) instructionBg.enabled = false;
             if (sceneInstruction != null) sceneInstruction.enabled = false;
         }
     }
-    private IEnumerator ShowInstruction(string text, float delay) {
-        if((instructionBg != null)&&(sceneInstruction != null)){
-            instructionBg.enabled=true;
+    private IEnumerator ShowInstruction(string text, float delay)
+    {
+        if ((instructionBg != null) && (sceneInstruction != null))
+        {
+            instructionBg.enabled = true;
             sceneInstruction.enabled = true;
             sceneInstruction.text = text;
             yield return new WaitForSeconds(delay);
             sceneInstruction.enabled = false;
-            instructionBg.enabled=false; 
+            instructionBg.enabled = false;
 
         }
 
@@ -135,7 +155,7 @@ public class GameManager : MonoBehaviour
         // TODO:
         instructionBg.enabled = false;
         sceneInstruction.enabled = false;
-        
+
         reportMapStatisticsAndReset();
         SceneManager.LoadScene("Victory");
         SceneManager.sceneLoaded += OnVictorySceneLoaded;
@@ -143,7 +163,7 @@ public class GameManager : MonoBehaviour
 
     void OnVictorySceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (player1Score == WinningScore||(currScene=="Tutorial"&&winnerName=="Player 1"))
+        if (player1Score == WinningScore || (currScene == "Tutorial" && winnerName == "Player 1"))
         {
             SpawnPlayer1();
         }
@@ -151,7 +171,7 @@ public class GameManager : MonoBehaviour
         {
             SpawnPlayer2();
         }
-            
+
         SceneManager.sceneLoaded -= OnVictorySceneLoaded;
     }
 
@@ -170,11 +190,14 @@ public class GameManager : MonoBehaviour
     }
 
     void SpawnPlayer1()
-    {   
+    {
         Vector3 spawnPosition;
-        if (currScene=="Tutorial"){
-            spawnPosition=new Vector3(-20, 2, 0);
-        }else{
+        if (currScene == "Tutorial")
+        {
+            spawnPosition = new Vector3(-20, 2, 0);
+        }
+        else
+        {
             spawnPosition = defaultSpawnPoint1;
         }
         GameObject spawnPoint = GameObject.Find("SpawnPoint1");
@@ -191,9 +214,12 @@ public class GameManager : MonoBehaviour
     void SpawnPlayer2()
     {
         Vector3 spawnPosition;
-        if (currScene=="Tutorial"){
-            spawnPosition=new Vector3(20, 2, 0);
-        }else{
+        if (currScene == "Tutorial")
+        {
+            spawnPosition = new Vector3(20, 2, 0);
+        }
+        else
+        {
             spawnPosition = defaultSpawnPoint2;
         }
         GameObject spawnPoint = GameObject.Find("SpawnPoint2");
@@ -206,7 +232,7 @@ public class GameManager : MonoBehaviour
         player2Instance.OnPlayerDied += OnPlayerDies;
     }
 
-    private void OnDestroy() 
+    private void OnDestroy()
     {
         if (player1Instance != null)
             player1Instance.OnPlayerDied -= OnPlayerDies;
@@ -214,14 +240,33 @@ public class GameManager : MonoBehaviour
         if (player2Instance != null)
             player2Instance.OnPlayerDied -= OnPlayerDies;
     }
-    
+
     private void OnPlayerDies(Player player)
+    {
+        StartCoroutine(PlayerDeathSequence(player));
+    }
+
+    IEnumerator PlayerDeathSequence(Player player)
+    {
+        isSlowMotion = true;
+        updateTimeScale(0);
+
+        yield return new WaitForSecondsRealtime(2);
+
+        isSlowMotion = false;
+        updateTimeScale(0);
+        ChangeSceneOnPlayerDies();
+
+    }
+
+    void ChangeSceneOnPlayerDies()
     {
         if (player1Instance.remainingLives <= 0)
         {
             player2Score += 1;
             currentMapStats.Player2Wins = 1;
-            if(currScene=="Tutorial"){
+            if (currScene == "Tutorial")
+            {
                 winnerName = "Player 2";
                 SwitchToVictoryScene();
                 return;
@@ -231,14 +276,15 @@ public class GameManager : MonoBehaviour
         {
             player1Score += 1;
             currentMapStats.Player1Wins = 1;
-            if (currScene=="Tutorial"){
+            if (currScene == "Tutorial")
+            {
                 winnerName = "Player 1";
                 SwitchToVictoryScene();
                 return;
             }
         }
 
-        SetPlayerScoreTexts();       
+        SetPlayerScoreTexts();
 
         if (player1Score == WinningScore)
         {
@@ -253,19 +299,23 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (currScene != "Tutorial"){
+        if (currScene != "Tutorial")
+        {
             //SwitchToDifferentRandomMap();
             SwitchToSequentialMap();
         }
     }
-    
-    private void CheckShowLifeText(){
-        if (player1Instance == null || player2Instance == null) {
-        return; 
+
+    private void CheckShowLifeText()
+    {
+        if (player1Instance == null || player2Instance == null)
+        {
+            return;
         }
-        if((player1Instance.remainingLives==2||player2Instance.remainingLives==2)&&currScene=="Tutorial"){
-            showLifeLayerText=true;
-        }   
+        if ((player1Instance.remainingLives == 2 || player2Instance.remainingLives == 2) && currScene == "Tutorial")
+        {
+            showLifeLayerText = true;
+        }
     }
 
     public void SwitchToDifferentRandomMap()
@@ -286,6 +336,31 @@ public class GameManager : MonoBehaviour
         string nextMap = allMaps[nextIndex];  // Get the next map using the next index
 
         SwitchScene(nextMap);
+        updateTimeScale(-1);
+        currentCountDownTime = COUNT_DOWN_TIME;
+        StartCoroutine(CountdownCoroutine());
+    }
+
+    IEnumerator CountdownCoroutine()
+    {
+        while (currentCountDownTime > 0)
+        {
+            if (isGamePaused)
+            {
+                yield return new WaitForSecondsRealtime(0.1f); ;
+            }
+            else
+            {
+                yield return new WaitForSecondsRealtime(0.1f);
+                countDownText.text = Mathf.CeilToInt(currentCountDownTime).ToString();
+                currentCountDownTime -= 0.1f;
+            }
+
+        }
+
+        isCountingDown = false;
+        countDownText.text = "";
+        updateTimeScale(1);
     }
 
     void SetPlayerScoreTexts()
@@ -313,6 +388,7 @@ public class GameManager : MonoBehaviour
             player2ScoreText = instance.player2ScoreText;
             sceneInstruction = instance.sceneInstruction;
             instructionBg = instance.instructionBg;
+            countDownText = instance.countDownText;
 
             // Update ScoreText.text
             SetPlayerScoreTexts();
@@ -321,6 +397,46 @@ public class GameManager : MonoBehaviour
             Destroy(instance.gameObject);
             instance = this;
             DontDestroyOnLoad(gameObject);
+        }
+    }
+
+    public void PauseGame()
+    {
+        isGamePaused = true;
+        updateTimeScale(-1);
+    }
+
+    public void ResumeGame()
+    {
+        isGamePaused = false;
+        updateTimeScale(1);
+    }
+
+    /// <summary>
+    /// Updates the game's time scale (Time.timeScale).
+    /// This method uses a counter to track changes in the game's pause state.
+    /// </summary>
+    /// <param name="delta">The change in time scale. Pass 1 to resume time flow, or -1 to pause time.</param>
+    public void updateTimeScale(int delta)
+    {
+        timeScale += delta;
+
+        // If the counter is 1, it means there are no active pause states, so resume normal time flow
+        if (timeScale == 1)
+        {
+            if (isSlowMotion)
+            {
+                Time.timeScale = 0.05f;
+            }
+            else
+            {
+                Time.timeScale = 1f;
+            }
+        }
+        // If the counter is not 1, e.g. 0/-1/-2, it means the game is in some form of paused state, so pause time flow
+        else
+        {
+            Time.timeScale = 0f;
         }
     }
 }

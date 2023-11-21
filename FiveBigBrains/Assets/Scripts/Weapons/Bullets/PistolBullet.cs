@@ -6,6 +6,8 @@ public class PistolBullet : Bullet
 {
     public float speed = 10f;
 
+    private bool hasExploded = false;
+
     void Update()
     {
         Move();
@@ -34,11 +36,16 @@ public class PistolBullet : Bullet
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Player playerHit = collision.GetComponent<Player>();
+        PlayerBodyParts playerBodyPart = collision.GetComponent<PlayerBodyParts>();
 
-        if (playerHit) // if the bullet hit a player
+        if (playerBodyPart) // if the bullet hit a player
         {
-            playerHit.TakeDamage(1); // deal 1 damage
+            if (hasExploded)
+            {
+                return;
+            }
+            playerBodyPart.transform.parent.GetComponent<Player>().TakeDamage(1); // deal 1 damage
+            hasExploded = true;
             Destroy(gameObject); // destroy the bullet
             ReportWeaponAction("HitPlayer");
         }

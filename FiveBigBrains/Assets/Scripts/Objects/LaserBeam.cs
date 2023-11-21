@@ -23,9 +23,9 @@ public class LaserBeam : MonoBehaviour
     IEnumerator DamagePlayer(Player player)
     {
         isDamagingPlayer = true;
-        player.TakeDamage(1);  // 每次掉一滴血
-        yield return new WaitForSeconds(1f);  // 等待1秒
-        //player.TakeDamage(1);  // 每次掉一滴血
+        player.TakeDamage(1);  // ????????????
+        yield return new WaitForSeconds(1f);  // ????1??
+        //player.TakeDamage(1);  // ????????????
         isDamagingPlayer = false;
     }
 
@@ -48,7 +48,8 @@ public class LaserBeam : MonoBehaviour
                 lineRenderer.SetPosition(lineRenderer.positionCount - 1, hit.point);
                 lastLaserPosition = hit.point + hit.normal * 0.01f;
 
-                Player player = hit.collider.GetComponent<Player>();
+                PlayerBodyParts playerBodyPart = hit.collider.GetComponent<PlayerBodyParts>();
+                //Player player = hit.collider.GetComponent<Player>();
 
                 /***if (player)
                 {
@@ -56,13 +57,13 @@ public class LaserBeam : MonoBehaviour
                     break;
                 }***/
 
-                if (player)
+                if (playerBodyPart)
                 {
                     if (!isDamagingPlayer)
                     {
-                        StartCoroutine(DamagePlayer(player));  // 使用协程来实现延时
+                        StartCoroutine(DamagePlayer(playerBodyPart.transform.parent.GetComponent<Player>()));  // ??????????????????
                     }
-                    return;  // 这里应该是 return 而不是 break，以便继续激光的其他逻辑
+                    return;  // ?????????? return ?????? break????????????????????????
                 }
 
                 Mirror mirror = hit.collider.GetComponent<Mirror>();

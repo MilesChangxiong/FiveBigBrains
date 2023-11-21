@@ -42,7 +42,7 @@ public abstract class Weapon : MonoBehaviour
     {
         var eventData = new WeaponEvent(
             weaponName: GetType().Name,
-            isFreezed: owningPlayer.isFreezed,
+            isFreezed: false,
             isOpponentTaunted: owningPlayer.opponent.isTaunted,
             eventType: hitType
         );
