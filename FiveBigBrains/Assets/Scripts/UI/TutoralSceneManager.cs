@@ -53,6 +53,8 @@ public class TutoralSceneManager : MonoBehaviour
             moveIcon.SetActive(false);
             jumpIcon.SetActive(true);
             movementInstructionText.text = "Jump";
+            textToDisplay.text = "Try double jump to arrive at the stage.";
+            textToDisplay.enabled = true;
         }else if( isTrigger1&&isTrigger2&&GameManager.instance != null &&( !GameManager.instance.showLifeLayerText)){
             jumpCheckPoint.SetActive(false);
             jumpIcon.SetActive(false);
