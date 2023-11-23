@@ -29,10 +29,12 @@ public class GameManager : MonoBehaviour
 
     private List<string> allMaps = new List<string>()
         {
+            "StrongWind",
             "FiregunAndIce",
             "Laser",
             "WindRopeBallBox",
             "Bridge",
+            
         };
     public MapStatistics currentMapStats = new MapStatistics();
 
@@ -108,13 +110,17 @@ public class GameManager : MonoBehaviour
             StopCoroutine(instructionCoroutine);
             instructionCoroutine = null;
         }
-        if (currScene == "WindRopeBallBox")
+        if (currScene == "StrongWind")
+        {
+            instructionCoroutine = StartCoroutine(ShowInstruction("Be careful! The wind is stong", 3f));
+        }
+        else if (currScene == "WindRopeBallBox")
         {
             instructionCoroutine = StartCoroutine(ShowInstruction("Fire at pumpkins and boxes to increase their size and control yourself not to fall", 3f));
         }
         else if (currScene == "Laser")
         {
-            instructionCoroutine = StartCoroutine(ShowInstruction("Mirror can be destroyed to change lazer", 3f));
+            instructionCoroutine = StartCoroutine(ShowInstruction("Mirror can be destroyed to change laser", 3f));
         }
         else if (currScene == "FiregunAndIce")
         {
@@ -123,6 +129,7 @@ public class GameManager : MonoBehaviour
         else if(currScene=="Bridge"){
             instructionCoroutine = StartCoroutine(ShowInstruction("Bridge can be destroyed", 3f));
         }
+        
         else
         {
             if (instructionBg != null) instructionBg.enabled = false;
