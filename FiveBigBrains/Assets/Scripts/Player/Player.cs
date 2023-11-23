@@ -84,6 +84,8 @@ public class Player : MonoBehaviour
 
     public bool hasReportedDie = false;
 
+    public bool canAttack=true; 
+
     public void TakeDamage(int damageAmount)
     {
         if (isDefensing)
@@ -220,6 +222,10 @@ public class Player : MonoBehaviour
 
     private void Attack()
     {
+        
+        if(canAttack==false){
+            return;
+        }
         if (
             (controlType == PlayerControlType.WASD && Input.GetKeyDown(KeyCode.Space) && currentWeapon != null) ||
             (controlType == PlayerControlType.ARROW_KEYS && Input.GetKeyDown(KeyCode.Return) && currentWeapon != null)
