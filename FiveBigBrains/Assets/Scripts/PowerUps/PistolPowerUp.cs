@@ -10,10 +10,6 @@ public class PistolPowerUp : PowerUp
 
     public override void ActivatePowerUp(Player player)
     {
-        if (!(player.currentWeapon is Spear))
-        {
-            return;
-        }
 
         Destroy(player.currentWeapon.gameObject);
 
