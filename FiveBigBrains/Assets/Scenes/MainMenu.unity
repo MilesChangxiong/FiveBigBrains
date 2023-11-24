@@ -1098,6 +1098,7 @@ MonoBehaviour:
   videoPlayer: {fileID: 476824682}
   instructionCanvas: {fileID: 1007051280}
   rawImage: {fileID: 158811796}
+  continueButton: {fileID: 1944182529}
   isShowLaser: 0
   isShowWind: 0
   isShowFire: 0
@@ -2812,6 +2813,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5364847828397241805, guid: 24c656e364382da4c93c229245a5091a, type: 3}
   m_PrefabInstance: {fileID: 1944182527}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1944182529 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5364847828397241806, guid: 24c656e364382da4c93c229245a5091a, type: 3}
+  m_PrefabInstance: {fileID: 1944182527}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2051279214
 GameObject:
   m_ObjectHideFlags: 0
