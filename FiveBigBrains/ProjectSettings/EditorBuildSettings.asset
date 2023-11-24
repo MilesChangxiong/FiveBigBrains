@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Bridge.unity
     guid: 3aca4919ec667417ab25055db066554f
+  - enabled: 1
+    path: Assets/Scenes/StrongWind.unity
+    guid: 99ec328d456bb964fbd7570c96f0a490
   m_configObjects: {}

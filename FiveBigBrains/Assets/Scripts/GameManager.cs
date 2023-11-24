@@ -30,10 +30,12 @@ public class GameManager : MonoBehaviour
 
     private List<string> allMaps = new List<string>()
         {
+            "StrongWind",
             "FiregunAndIce",
             "Laser",
             "WindRopeBallBox",
             "Bridge",
+            
         };
     public MapStatistics currentMapStats = new MapStatistics();
 
@@ -110,20 +112,24 @@ public class GameManager : MonoBehaviour
         currScene = sceneName;
         SceneManager.LoadScene(sceneName);
         SceneManager.sceneLoaded += OnSceneLoaded;
-        // if (instructionCoroutine != null)
-        // {
-        //     StopCoroutine(instructionCoroutine);
-        //     instructionCoroutine = null;
-        // }
-        if (currScene == "WindRopeBallBox"&&isShowWind==false)
+
+
+        if (currScene == "StrongWind")
+        {
+            ShowInstruction("","Be careful! The wind is stong");
+        }
+        else if (currScene == "WindRopeBallBox"&&isShowWind==false)
+
         {
              isShowWind=true;
              ShowInstruction( "Videos/WindRopeBallBoxClip.mp4","Fire at pumpkins and boxes to increase their size and control yourself not to fall");
         }
         else if (currScene == "Laser"&&isShowLaser==false)
         {
+
              isShowLaser=true;
              ShowInstruction( "Videos/LaserClip.mov","Mirror can be destroyed to change lazer");
+
         }
         else if (currScene == "FiregunAndIce"&&isShowFire==false)
         {
@@ -133,6 +139,7 @@ public class GameManager : MonoBehaviour
         else if(currScene=="Bridge"){
             ShowInstruction("","Bridge can be destroyed");
         }
+        
         else
         {
             instructionCanvas.enabled=false; 
