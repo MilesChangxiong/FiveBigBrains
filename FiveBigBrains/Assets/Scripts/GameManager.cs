@@ -30,12 +30,12 @@ public class GameManager : MonoBehaviour
 
     private List<string> allMaps = new List<string>()
         {
-        "Bridge",
+        "WindRopeBallBox",
+            "Bridge",
             "StrongWind",
             "FiregunAndIce",
             "Laser",
             "WindRopeBallBox",
-            
         };
     public MapStatistics currentMapStats = new MapStatistics();
 
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI player1ScoreText;
     public TextMeshProUGUI player2ScoreText;
 
-    public int WinningScore = 2; // TODO: changable in MainMenu
+    public int WinningScore = 5; // TODO: changable in MainMenu
     public string winnerName; // this is used in Victory scene.
 
     public string currScene;
@@ -459,6 +459,9 @@ public class GameManager : MonoBehaviour
             rawImage=instance.rawImage;
             continueButton=instance.continueButton;
             continueButton.onClick.AddListener(returnToGame);
+            isShowFire = instance.isShowFire;
+            isShowLaser = instance.isShowLaser;
+            isShowWind = instance.isShowWind;
             // Update ScoreText.text
             SetPlayerScoreTexts();
 
@@ -491,7 +494,7 @@ public class GameManager : MonoBehaviour
         timeScale += delta;
 
         // If the counter is 1, it means there are no active pause states, so resume normal time flow
-        if (timeScale == 1)
+        if (timeScale >= 1)
         {
             if (isSlowMotion)
             {
@@ -501,6 +504,8 @@ public class GameManager : MonoBehaviour
             {
                 Time.timeScale = 1f;
             }
+
+            timeScale = 1;
         }
         // If the counter is not 1, e.g. 0/-1/-2, it means the game is in some form of paused state, so pause time flow
         else

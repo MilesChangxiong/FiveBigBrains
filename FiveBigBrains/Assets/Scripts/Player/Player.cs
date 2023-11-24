@@ -69,6 +69,7 @@ public class Player : MonoBehaviour
     public const float headShrinkRate = 0.0001f;
     private float currentHeadScale = 1f;
     private Vector2 originalColliderSize;
+    public bool everTaunt = false;
 
 
     public delegate void PlayerLivesChanged(Player player);
@@ -222,7 +223,6 @@ public class Player : MonoBehaviour
 
     private void Attack()
     {
-        
         if(canAttack==false){
             return;
         }
@@ -393,6 +393,8 @@ public class Player : MonoBehaviour
         {
             // Enlarge opponent's head
             opponent.EnlargeHead();
+
+            everTaunt = true;
         }
     }
 
@@ -727,7 +729,7 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Platform")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Platform" || collision.gameObject.tag == "IronBall")
         {
             foreach (ContactPoint2D point in collision.contacts)
             {
@@ -743,7 +745,7 @@ public class Player : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Platform")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Platform" || collision.gameObject.tag == "IronBall")
         {
             isGrounded = false;
         }

@@ -23,8 +23,9 @@ public class TutoralSceneManager : MonoBehaviour
     public Color blinkColor1=Color.yellow ;
     public Color blinkColor2 = Color.white;
 
-    public bool everTaunt=false; 
-    public bool disableAttack=false; 
+    public bool everTaunt=false;
+
+    bool hasClearedEverTaunt = false;
 
     // Start is called before the first frame update
     void Start()
@@ -66,19 +67,28 @@ public class TutoralSceneManager : MonoBehaviour
             textToDisplay.text = "Attack your opponent's head! Each of you has 3 lives.";
             textToDisplay.enabled = true;
         }else{
+            if (!hasClearedEverTaunt)
+            {
+                GameManager.player1Instance.everTaunt = false;
+                GameManager.player2Instance.everTaunt = false;
+                hasClearedEverTaunt = true;
+            }
+            
             movementInstructionText.text = "Taunt";
             attackIcon.SetActive(false);
             tauntIcon.SetActive(true);
             textToDisplay.text = "Taunt your opponent to facilitate an easier attack! "; 
             textToDisplay.enabled = true;
-            if(everTaunt=false){
-                everTaunt=true;
-                disableAttack=true;
+            if(everTaunt==false){
+                GameManager.player1Instance.canAttack = false;
+                GameManager.player2Instance.canAttack = false;
             }
-            if(Input.GetKey(KeyCode.Space) && Input.GetKey(KeyCode.Return)){
-                disableAttack=false; 
+            if(GameManager.player1Instance.everTaunt || GameManager.player2Instance.everTaunt)
+            {
+                GameManager.player1Instance.canAttack = true;
+                GameManager.player2Instance.canAttack = true;
+                everTaunt = true;
             }
-
         }
     }
     public void ReturnToMainMenu()
