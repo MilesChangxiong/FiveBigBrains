@@ -752,6 +752,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 681789520}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: returnToGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &479350744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1086,6 +1098,9 @@ MonoBehaviour:
   videoPlayer: {fileID: 476824682}
   instructionCanvas: {fileID: 1007051280}
   rawImage: {fileID: 158811796}
+  isShowLaser: 0
+  isShowWind: 0
+  isShowFire: 0
   countDownText: {fileID: 215653644}
   isCountingDown: 0
 --- !u!4 &681789521
