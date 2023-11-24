@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         // TODO:
+        SetCameraAspectRatios();
         instructionBg.enabled = false;
         sceneInstruction.enabled = false;
         countDownText.text = "";
@@ -97,6 +98,15 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         CheckShowLifeText();
+    }
+
+    static void SetCameraAspectRatios()
+    {
+        Camera[] cameras = FindObjectsOfType<Camera>();
+        foreach (Camera cam in cameras)
+        {
+            cam.aspect = 16f / 9f; 
+        }
     }
 
     void reportMapStatisticsAndReset()
