@@ -693,7 +693,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -15, y: -12.200012}
+  m_AnchoredPosition: {x: -15, y: -12.199951}
   m_SizeDelta: {x: 62.6, y: 22.6}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &479350743
@@ -743,18 +743,6 @@ MonoBehaviour:
       - m_Target: {fileID: 1780571593}
         m_TargetAssemblyTypeName: MenuButton, Assembly-CSharp
         m_MethodName: OnPauseButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 681789520}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: returnToGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1089,7 +1077,7 @@ MonoBehaviour:
   defaultSpawnPoint2: {x: 10, y: 2, z: 0}
   player1ScoreText: {fileID: 240729978}
   player2ScoreText: {fileID: 1863858864}
-  WinningScore: 3
+  WinningScore: 5
   winnerName: 
   currScene: 
   showLifeLayerText: 0
@@ -1885,6 +1873,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27766baff8ef4b3448fa06212ba969e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InstructionUI: {fileID: 1007051277}
 --- !u!4 &1244177122
 Transform:
   m_ObjectHideFlags: 0

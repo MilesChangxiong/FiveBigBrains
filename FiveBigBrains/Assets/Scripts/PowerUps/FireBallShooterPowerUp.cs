@@ -10,11 +10,6 @@ public class FireBallShooterPowerUp : PowerUp
 
     public override void ActivatePowerUp(Player player)
     {
-        if (!(player.currentWeapon is Spear))
-        {
-            return;
-        }
-
         Destroy(player.currentWeapon.gameObject);
 
         Vector3 adjustedOffset = player.currentDirection == 0 ?
