@@ -30,11 +30,11 @@ public class GameManager : MonoBehaviour
 
     private List<string> allMaps = new List<string>()
         {
+        "Bridge",
             "StrongWind",
             "FiregunAndIce",
             "Laser",
             "WindRopeBallBox",
-            "Bridge",
             
         };
     public MapStatistics currentMapStats = new MapStatistics();
@@ -191,10 +191,10 @@ public class GameManager : MonoBehaviour
     }
 
     public void returnToGame(){
-            // sceneInstruction.enabled = false;
-            // instructionBg.enabled = false;
-            instructionCanvas.enabled=false; 
-            ResumeGame();
+        // sceneInstruction.enabled = false;
+        // instructionBg.enabled = false;
+        instructionCanvas.enabled=false; 
+        ResumeGame();
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
