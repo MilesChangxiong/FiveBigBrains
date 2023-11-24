@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 using TMPro;
 
@@ -59,7 +60,12 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI sceneInstruction;
     public Image instructionBg;
     private Coroutine instructionCoroutine;
-
+    public VideoPlayer videoPlayer;
+    public Canvas instructionCanvas;
+    public RawImage rawImage; 
+    public bool isShowLaser=false; 
+    public bool isShowWind=false;
+    public bool isShowFire=false; 
     // Time Scale
     private int timeScale = 1;
     private bool isSlowMotion = false;
@@ -78,6 +84,7 @@ public class GameManager : MonoBehaviour
         instructionBg.enabled = false;
         sceneInstruction.enabled = false;
         countDownText.text = "";
+        instructionCanvas.enabled=false; 
     }
 
     private void StartGame()
@@ -103,45 +110,73 @@ public class GameManager : MonoBehaviour
         currScene = sceneName;
         SceneManager.LoadScene(sceneName);
         SceneManager.sceneLoaded += OnSceneLoaded;
-        if (instructionCoroutine != null)
+        // if (instructionCoroutine != null)
+        // {
+        //     StopCoroutine(instructionCoroutine);
+        //     instructionCoroutine = null;
+        // }
+        if (currScene == "WindRopeBallBox"&&isShowWind==false)
         {
-            StopCoroutine(instructionCoroutine);
-            instructionCoroutine = null;
+             isShowWind=true;
+             ShowInstruction( "Videos/WindRopeBallBoxClip.mp4","Fire at pumpkins and boxes to increase their size and control yourself not to fall");
         }
-        if (currScene == "WindRopeBallBox")
+        else if (currScene == "Laser"&&isShowLaser==false)
         {
-            instructionCoroutine = StartCoroutine(ShowInstruction("Fire at pumpkins and boxes to increase their size and control yourself not to fall", 3f));
+             isShowLaser=true;
+             ShowInstruction( "Videos/LaserClip.mov","Mirror can be destroyed to change lazer");
         }
-        else if (currScene == "Laser")
+        else if (currScene == "FiregunAndIce"&&isShowFire==false)
         {
-            instructionCoroutine = StartCoroutine(ShowInstruction("Mirror can be destroyed to change lazer", 3f));
-        }
-        else if (currScene == "FiregunAndIce")
-        {
-            instructionCoroutine = StartCoroutine(ShowInstruction("Only fire can melt ice", 3f));
+            isShowFire=true;
+            ShowInstruction( "Videos/FiregunAndIceClip.mp4","Only fire can melt ice");
         }
         else if(currScene=="Bridge"){
-            instructionCoroutine = StartCoroutine(ShowInstruction("Bridge can be destroyed", 3f));
+            ShowInstruction("","Bridge can be destroyed");
         }
         else
         {
+            instructionCanvas.enabled=false; 
             if (instructionBg != null) instructionBg.enabled = false;
             if (sceneInstruction != null) sceneInstruction.enabled = false;
         }
     }
-    private IEnumerator ShowInstruction(string text, float delay)
-    {
-        if ((instructionBg != null) && (sceneInstruction != null))
+    private void ShowInstruction(string videoPath,string text)
+    {   
+        Debug.Log("1"+currScene);
+       
+        if ((instructionCanvas!=null)&&(instructionBg != null) && (sceneInstruction != null))
         {
+            Debug.Log("2"+currScene);
+            
+            instructionCanvas.enabled=true;
+            videoPlayer.enabled=false; 
+            rawImage.enabled=false;
+            if(videoPath!=""){
+                videoPlayer.enabled=true;
+                rawImage.enabled=true;
+                string filePath = System.IO.Path.Combine(Application.dataPath, videoPath);
+                videoPlayer.url = filePath;
+            }
+
+            // videoPlayer.Prepare();
+            // videoPlayer.Play();
             instructionBg.enabled = true;
             sceneInstruction.enabled = true;
             sceneInstruction.text = text;
-            yield return new WaitForSeconds(delay);
-            sceneInstruction.enabled = false;
-            instructionBg.enabled = false;
+            PauseGame();
+            // yield return new WaitForSeconds(delay);
+            // sceneInstruction.enabled = false;
+            // instructionBg.enabled = false;
 
         }
 
+    }
+
+    public void returnToGame(){
+            // sceneInstruction.enabled = false;
+            // instructionBg.enabled = false;
+            instructionCanvas.enabled=false; 
+            ResumeGame();
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
