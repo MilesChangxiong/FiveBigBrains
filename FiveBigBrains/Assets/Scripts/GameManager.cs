@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
     public VideoPlayer videoPlayer;
     public Canvas instructionCanvas;
     public RawImage rawImage; 
+    public Button continueButton;
     public bool isShowLaser=false; 
     public bool isShowWind=false;
     public bool isShowFire=false; 
@@ -150,12 +151,20 @@ public class GameManager : MonoBehaviour
         else if(currScene=="Bridge"){
             ShowInstruction("","Bridge can be destroyed");
         }
+        else if (currScene=="Tutorial"){
+             Debug.Log("ttttt"+currScene+instructionCanvas!=null);
+             Debug.Log(currScene);
+        }
         
         else
         {
-            instructionCanvas.enabled=false; 
-            if (instructionBg != null) instructionBg.enabled = false;
-            if (sceneInstruction != null) sceneInstruction.enabled = false;
+            Debug.Log("1111"+currScene+instructionCanvas!=null);
+            if(instructionCanvas!=null){
+                
+                 Debug.Log("222"+currScene+instructionCanvas!=null);
+                instructionCanvas.enabled=false; 
+             if (instructionBg != null) instructionBg.enabled = false;
+             if (sceneInstruction != null) sceneInstruction.enabled = false;}
         }
     }
     private void ShowInstruction(string videoPath,string text)
@@ -209,7 +218,7 @@ public class GameManager : MonoBehaviour
         // TODO:
         instructionBg.enabled = false;
         sceneInstruction.enabled = false;
-
+          
         reportMapStatisticsAndReset();
         SceneManager.LoadScene("Victory");
         SceneManager.sceneLoaded += OnVictorySceneLoaded;
@@ -232,6 +241,8 @@ public class GameManager : MonoBehaviour
     public void RestartGameAfterVictory()
     {
         SceneManager.LoadScene("MainMenu");
+        Debug.Log("RestartGameAfterVictory");
+        Debug.Log(instructionCanvas!=null);
     }
 
     private void SpawnPlayers()
@@ -443,7 +454,11 @@ public class GameManager : MonoBehaviour
             sceneInstruction = instance.sceneInstruction;
             instructionBg = instance.instructionBg;
             countDownText = instance.countDownText;
-
+            instructionCanvas=instance.instructionCanvas;
+            videoPlayer=instance.videoPlayer;
+            rawImage=instance.rawImage;
+            continueButton=instance.continueButton;
+            continueButton.onClick.AddListener(returnToGame);
             // Update ScoreText.text
             SetPlayerScoreTexts();
 
