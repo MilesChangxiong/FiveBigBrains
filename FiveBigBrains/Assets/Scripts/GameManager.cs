@@ -99,6 +99,7 @@ public class GameManager : MonoBehaviour
 
     public void SwitchScene(string sceneName)
     {
+        resetTimeScale();
         reportMapStatisticsAndReset();
         currScene = sceneName;
         SceneManager.LoadScene(sceneName);
@@ -152,6 +153,7 @@ public class GameManager : MonoBehaviour
 
     void SwitchToVictoryScene()
     {
+        resetTimeScale();
         // TODO:
         instructionBg.enabled = false;
         sceneInstruction.enabled = false;
@@ -438,5 +440,11 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 0f;
         }
+    }
+
+    void resetTimeScale()
+    {
+        timeScale = 1;
+        updateTimeScale(0);
     }
 }
