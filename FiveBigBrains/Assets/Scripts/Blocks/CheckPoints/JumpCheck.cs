@@ -18,9 +18,15 @@ public class JumpCheck : MonoBehaviour
     }
      private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        // if (other.CompareTag("Player"))
+        // {
+        //    Debug.Log("Player entered the jumpcheckpoint!");
+        //    ActivateCheckpoint();
+        // }
+        PlayerBodyParts playerBodyPart = other.GetComponent<PlayerBodyParts>();
+        if (playerBodyPart)
         {
-           Debug.Log("Player entered the jumpcheckpoint!");
+           Debug.Log("Player entered the movecheckpoint!");
            ActivateCheckpoint();
         }
     }

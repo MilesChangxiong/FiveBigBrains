@@ -20,7 +20,8 @@ public class MoveCheckpoint : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        PlayerBodyParts playerBodyPart = other.GetComponent<PlayerBodyParts>();
+        if (playerBodyPart)
         {
            Debug.Log("Player entered the movecheckpoint!");
            ActivateCheckpoint();

@@ -23,6 +23,9 @@ public class TutoralSceneManager : MonoBehaviour
     public Color blinkColor1=Color.yellow ;
     public Color blinkColor2 = Color.white;
 
+    public bool everTaunt=false; 
+    public bool disableAttack=false; 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -68,6 +71,13 @@ public class TutoralSceneManager : MonoBehaviour
             tauntIcon.SetActive(true);
             textToDisplay.text = "Taunt your opponent to facilitate an easier attack! "; 
             textToDisplay.enabled = true;
+            if(everTaunt=false){
+                everTaunt=true;
+                disableAttack=true;
+            }
+            if(Input.GetKey(KeyCode.Space) && Input.GetKey(KeyCode.Return)){
+                disableAttack=false; 
+            }
 
         }
     }
