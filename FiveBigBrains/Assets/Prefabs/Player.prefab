@@ -69,6 +69,7 @@ GameObject:
   - component: {fileID: 3879316965201343526}
   - component: {fileID: 7805304513352407799}
   - component: {fileID: 6981243174865243489}
+  - component: {fileID: 5853589403576017138}
   - component: {fileID: 525105705753972396}
   m_Layer: 0
   m_Name: Body
@@ -151,7 +152,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3514406806499622787}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -170,6 +171,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.9774483, y: 2}
   m_EdgeRadius: 0
+--- !u!70 &5853589403576017138
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3514406806499622787}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1, y: 2}
+  m_Direction: 0
 --- !u!114 &525105705753972396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,6 +277,7 @@ MonoBehaviour:
   isBeingDamagedByLaser: 0
   headExplosion: {fileID: 7717716009886529638, guid: d56755cbda893490eb72d1734fc2ca54, type: 3}
   hasReportedDie: 0
+  canAttack: 1
 --- !u!212 &8023998753856976036
 SpriteRenderer:
   m_ObjectHideFlags: 0

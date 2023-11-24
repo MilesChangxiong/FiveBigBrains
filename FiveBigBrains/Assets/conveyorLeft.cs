@@ -13,7 +13,7 @@ public class conveyorLeft : MonoBehaviour
 
         if (rb != null && !rb.isKinematic)
         {
-            Vector2 direction = -transform.right * speed;
+            Vector2 direction = -1.0 *transform.right * speed;
             rb.velocity = new Vector2(direction.x, rb.velocity.y); 
         }
     }
