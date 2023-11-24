@@ -399,9 +399,9 @@ public class GameManager : MonoBehaviour
     {
         while (currentCountDownTime > 0)
         {
-            if (isGamePaused)
+            if (timeScale < 0) // i.e. timeScale = -1/-2/..., which means there are other pausing events, e.g. Menu or Tutorial instruction
             {
-                yield return new WaitForSecondsRealtime(0.1f); ;
+                yield return new WaitForSecondsRealtime(0.1f);
             }
             else
             {
