@@ -88,6 +88,10 @@ public class TutoralSceneManager : MonoBehaviour
             {
                 textToDisplay.text = "Each of you has 3 lives. Continue attack to win!";
                 textToDisplay.enabled = true;
+                            
+            movementInstructionText.text = "";
+           
+            tauntIcon.SetActive(false);
                 GameManager.player1Instance.canAttack = true;
                 GameManager.player2Instance.canAttack = true;
                 everTaunt = true;
