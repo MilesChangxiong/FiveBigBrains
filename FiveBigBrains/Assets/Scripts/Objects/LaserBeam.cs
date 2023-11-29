@@ -9,6 +9,9 @@ public class LaserBeam : MonoBehaviour
     public int maxReflections = 5;
     public LayerMask collisionLayers;
     private bool isDamagingPlayer = false;
+    private bool isLaserActive = false;
+    private float timer = 0f;
+    private float switchInterval = 3f;
 
     private void Awake()
     {
@@ -17,9 +20,23 @@ public class LaserBeam : MonoBehaviour
 
     private void Update()
     {
-        DrawLaser();
-    }
+        timer += Time.deltaTime;
 
+        if (timer >= switchInterval)
+        {
+            isLaserActive = !isLaserActive;
+            timer = 0f;
+        }
+
+        if (isLaserActive)
+        {
+            DrawLaser();
+        }
+        else
+        {
+            lineRenderer.positionCount = 0; // 关闭激光
+        }
+    }
     IEnumerator DamagePlayer(Player player)
     {
         isDamagingPlayer = true;
