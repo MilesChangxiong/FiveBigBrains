@@ -66,7 +66,7 @@ public class TutoralSceneManager : MonoBehaviour
             movementInstructionText.text = "Taunt";
             attackIcon.SetActive(false);
             tauntIcon.SetActive(true);
-            textToDisplay.text = "Taunt your opponent to facilitate an easier attack! "; 
+            textToDisplay.text = "Taunt your opponent while facing away for an easier attack!"; 
             textToDisplay.enabled = true;
 
         }
