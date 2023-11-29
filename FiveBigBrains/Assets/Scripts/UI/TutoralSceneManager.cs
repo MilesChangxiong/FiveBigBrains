@@ -64,7 +64,7 @@ public class TutoralSceneManager : MonoBehaviour
             jumpIcon.SetActive(false);
             attackIcon.SetActive(true);
             movementInstructionText.text = "Attack";
-            textToDisplay.text = "Attack your opponent's head! Each of you has 3 lives.";
+            textToDisplay.text = "Attack your opponent's head!";
             textToDisplay.enabled = true;
         }else{
             if (!hasClearedEverTaunt)
@@ -77,7 +77,7 @@ public class TutoralSceneManager : MonoBehaviour
             movementInstructionText.text = "Taunt";
             attackIcon.SetActive(false);
             tauntIcon.SetActive(true);
-            textToDisplay.text = "Taunt your opponent to facilitate an easier attack! "; 
+            textToDisplay.text = "Taunt your opponent one or more times while facing away for an easier attack!"; 
             textToDisplay.enabled = true;
             if(everTaunt==false){
                 GameManager.player1Instance.canAttack = false;
@@ -85,6 +85,8 @@ public class TutoralSceneManager : MonoBehaviour
             }
             if(GameManager.player1Instance.everTaunt || GameManager.player2Instance.everTaunt)
             {
+                textToDisplay.text = "Each of you has 3 lives. Continue attack to win!";
+                textToDisplay.enabled = true;
                 GameManager.player1Instance.canAttack = true;
                 GameManager.player2Instance.canAttack = true;
                 everTaunt = true;
