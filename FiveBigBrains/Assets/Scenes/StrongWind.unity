@@ -661,7 +661,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1185156434}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: a0daa816de4a9a54687927cfe42a47ea, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -887,6 +887,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8274330310174747886, guid: 002db29e574c3a84894ef361a56dc492, type: 3}
     - target: {fileID: 1627655513037309710, guid: 45630fe4487048d49a212203f9f8dd15, type: 3}
+      propertyPath: initialDelay
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1627655513037309710, guid: 45630fe4487048d49a212203f9f8dd15, type: 3}
       propertyPath: spawnInterval
       value: 10
       objectReference: {fileID: 0}
@@ -1028,7 +1032,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1495867485}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: a0daa816de4a9a54687927cfe42a47ea, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1123,6 +1127,10 @@ PrefabInstance:
       propertyPath: boxPrefab
       value: 
       objectReference: {fileID: 8274330310174747886, guid: 002db29e574c3a84894ef361a56dc492, type: 3}
+    - target: {fileID: 1627655513037309710, guid: 45630fe4487048d49a212203f9f8dd15, type: 3}
+      propertyPath: initialDelay
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1627655513037309710, guid: 45630fe4487048d49a212203f9f8dd15, type: 3}
       propertyPath: spawnInterval
       value: 10

@@ -3,9 +3,9 @@ using System.Collections;
 
 public class StrongWindBoxSpawner : MonoBehaviour
 {
-    public GameObject boxPrefab; // 设置为你的箱子预制件
-    public float initialDelay = 0f; // 开始生成前的延迟时间
-    public float spawnInterval = 5f; // 生成新箱子之间的间隔时间
+    public GameObject boxPrefab; 
+    public float initialDelay = 0f; 
+    public float spawnInterval = 5f; 
 
     private void Start()
     {
@@ -20,8 +20,15 @@ public class StrongWindBoxSpawner : MonoBehaviour
         while (true)
         {
             Instantiate(boxPrefab, transform.position, Quaternion.identity);
+            spawnInterval /= 2; 
+
+            
+            if (spawnInterval < 1.0f)
+                spawnInterval = 1.0f;
+
             yield return new WaitForSeconds(spawnInterval);
         }
     }
 }
+
 
