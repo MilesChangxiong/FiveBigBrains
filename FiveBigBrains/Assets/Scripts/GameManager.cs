@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     private List<string> allMaps = new List<string>()
         {
-        "WindRopeBallBox",
+            "WindRopeBallBox",
             "Bridge",
             "StrongWind",
             "FiregunAndIce",
@@ -70,7 +70,10 @@ public class GameManager : MonoBehaviour
     public bool isShowWind=false;
     public bool isShowFire=false; 
     public bool isShowStrong=false; 
-    public bool isShowBridge=false; 
+    public bool isShowBridge=false;
+
+    private bool hasPlayerDied = false;
+
     // Time Scale
     private int timeScale = 1;
     private bool isSlowMotion = false;
@@ -311,6 +314,11 @@ public class GameManager : MonoBehaviour
 
     private void OnPlayerDies(Player player)
     {
+        if (hasPlayerDied)
+        {
+            return;
+        }
+        hasPlayerDied = true;
         StartCoroutine(PlayerDeathSequence(player));
     }
 
@@ -324,7 +332,7 @@ public class GameManager : MonoBehaviour
         isSlowMotion = false;
         updateTimeScale(0);
         ChangeSceneOnPlayerDies();
-
+        hasPlayerDied = false;
     }
 
     void ChangeSceneOnPlayerDies()
