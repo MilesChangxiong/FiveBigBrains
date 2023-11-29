@@ -187,7 +187,8 @@ public class GameManager : MonoBehaviour
             if(videoPath!=""){
                 videoPlayer.enabled=true;
                 rawImage.enabled=true;
-                string filePath = System.IO.Path.Combine(Application.dataPath, videoPath);
+                //string filePath = System.IO.Path.Combine(Application.dataPath, videoPath);
+                string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, videoPath);
                 videoPlayer.url = filePath;
             }
 
