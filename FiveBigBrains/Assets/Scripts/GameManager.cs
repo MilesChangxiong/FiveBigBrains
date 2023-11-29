@@ -69,6 +69,8 @@ public class GameManager : MonoBehaviour
     public bool isShowLaser=false; 
     public bool isShowWind=false;
     public bool isShowFire=false; 
+    public bool isShowStrong=false; 
+    public bool isShowBridge=false; 
     // Time Scale
     private int timeScale = 1;
     private bool isSlowMotion = false;
@@ -126,9 +128,13 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
 
 
-        if (currScene == "StrongWind")
+        if (currScene == "StrongWind"&&isShowStrong==false)
         {
+
+            isShowStrong=true;
+           
             ShowInstruction("Videos/StrongWindClip.mp4","Be careful! The wind is strong");
+
         }
         else if (currScene == "WindRopeBallBox"&&isShowWind==false)
 
@@ -148,8 +154,11 @@ public class GameManager : MonoBehaviour
             isShowFire=true;
             ShowInstruction( "Videos/FiregunAndIceClip.mov","Only fire can melt ice");
         }
-        else if(currScene=="Bridge"){
+
+        else if(currScene=="Bridge"&&isShowBridge==false){
+            isShowBridge=true;
             ShowInstruction("Videos/BridgeClip.mp4","Bridge can be destroyed");
+
         }
         else if (currScene=="Tutorial"){
           
@@ -456,6 +465,8 @@ public class GameManager : MonoBehaviour
             isShowFire = instance.isShowFire;
             isShowLaser = instance.isShowLaser;
             isShowWind = instance.isShowWind;
+            isShowStrong=instance.isShowStrong;
+            isShowBridge=instance.isShowBridge;
             // Update ScoreText.text
             SetPlayerScoreTexts();
 
