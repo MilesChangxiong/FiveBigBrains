@@ -389,7 +389,7 @@ public class Player : MonoBehaviour
     private void CheckOpponentHeadSize()
     {
         // Check if this player is crouching and facing away from the opponent
-        if (IsFacingAwayFromOpponent())
+        if (opponent != null && IsFacingAwayFromOpponent())
         {
             // Enlarge opponent's head
             opponent.EnlargeHead();
