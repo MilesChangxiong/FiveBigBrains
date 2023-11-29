@@ -130,8 +130,11 @@ public class GameManager : MonoBehaviour
 
         if (currScene == "StrongWind"&&isShowStrong==false)
         {
+
             isShowStrong=true;
-            ShowInstruction("","Be careful! The wind is stong");
+           
+            ShowInstruction("Videos/StrongWindClip.mp4","Be careful! The wind is strong");
+
         }
         else if (currScene == "WindRopeBallBox"&&isShowWind==false)
 
@@ -149,23 +152,21 @@ public class GameManager : MonoBehaviour
         else if (currScene == "FiregunAndIce"&&isShowFire==false)
         {
             isShowFire=true;
-            ShowInstruction( "Videos/FiregunAndIceClip.mp4","Only fire can melt ice");
+            ShowInstruction( "Videos/FiregunAndIceClip.mov","Only fire can melt ice");
         }
+
         else if(currScene=="Bridge"&&isShowBridge==false){
             isShowBridge=true;
-            ShowInstruction("","Bridge can be destroyed");
+            ShowInstruction("Videos/BridgeClip.mp4","Bridge can be destroyed");
+
         }
         else if (currScene=="Tutorial"){
-             Debug.Log("ttttt"+currScene+instructionCanvas!=null);
-             Debug.Log(currScene);
+          
         }
         
         else
         {
-            Debug.Log("1111"+currScene+instructionCanvas!=null);
             if(instructionCanvas!=null){
-                
-                 Debug.Log("222"+currScene+instructionCanvas!=null);
                 instructionCanvas.enabled=false; 
              if (instructionBg != null) instructionBg.enabled = false;
              if (sceneInstruction != null) sceneInstruction.enabled = false;}
@@ -173,11 +174,9 @@ public class GameManager : MonoBehaviour
     }
     private void ShowInstruction(string videoPath,string text)
     {   
-        Debug.Log("1"+currScene);
        
         if ((instructionCanvas!=null)&&(instructionBg != null) && (sceneInstruction != null))
         {
-            Debug.Log("2"+currScene);
             
             instructionCanvas.enabled=true;
             videoPlayer.enabled=false; 
