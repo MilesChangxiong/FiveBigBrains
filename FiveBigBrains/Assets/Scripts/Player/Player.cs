@@ -66,7 +66,8 @@ public class Player : MonoBehaviour
 
     // Taunt
     public const float headEnlargeVolume = 0.35f;
-    public const float headShrinkRate = 0.0001f;
+    //public const float headShrinkRate = 0.0001f;
+    public const float totalShrinkPerSecond = 0.12f;
     private float currentHeadScale = 1f;
     private Vector2 originalColliderSize;
     public bool everTaunt = false;
@@ -460,7 +461,9 @@ public class Player : MonoBehaviour
 
     private void ShrinkHead()
     {
-        currentHeadScale = Mathf.Max(1f, currentHeadScale - headShrinkRate);
+        //currentHeadScale = Mathf.Max(1f, currentHeadScale - headShrinkRate);
+        float shrinkThisFrame = totalShrinkPerSecond * Time.deltaTime;
+        currentHeadScale = Mathf.Max(1f, currentHeadScale - shrinkThisFrame);
         updateHeadSize();
     }
 
