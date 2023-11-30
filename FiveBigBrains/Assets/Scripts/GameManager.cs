@@ -135,7 +135,6 @@ public class GameManager : MonoBehaviour
         {
 
             isShowStrong=true;
-           
             ShowInstruction("Videos/StrongWindClip.mp4","Be careful! The wind is strong");
 
         }
@@ -182,7 +181,7 @@ public class GameManager : MonoBehaviour
         {
             
             instructionCanvas.enabled=true;
-            videoPlayer.enabled=false; 
+            videoPlayer.enabled=false;
             rawImage.enabled=false;
             if(videoPath!=""){
                 videoPlayer.enabled=true;
