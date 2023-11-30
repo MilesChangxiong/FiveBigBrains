@@ -441,8 +441,8 @@ public class GameManager : MonoBehaviour
 
     void SetPlayerScoreTexts()
     {
-        player1ScoreText.text = "Score: " + player1Score;
-        player2ScoreText.text = "Score: " + player2Score;
+        player1ScoreText.text = "Score: " + player1Score + "/5";
+        player2ScoreText.text = "Score: " + player2Score + "/5";
     }
 
     /// <summary>
